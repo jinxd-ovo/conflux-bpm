@@ -1,0 +1,234 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal" style="overflow: auto;">
+		<input name="id" type="hidden" id="id"/>
+			<input name="parent.id" type="hidden"/>
+		<input name="formNo" type="hidden" id="formNo"/>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>名称</label>
+	  		<fieldset class="set">
+				<input name="s01" component-type="input" type="text" maxlength="50"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>排序号</label>
+	  		<fieldset class="set">
+				<input name="sort" component-type="input" type="text" maxlength="50"    class="form-control digits required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>备注</label>
+	  		<fieldset class="set">
+				<textarea name="m02" component-type="textarea" rows="3" maxlength="500"    class="form-control  "></textarea>
+	  		</fieldset>
+	  	</div>
+	</form>
+	<div id="body-div">
+		<div class="layui-tab layui-tab-brief">
+			<div><button id="addBtn" class="btn btn-sm btn-success"><i class="glyphicon "></i> 添加</button></div>
+			<ul class="layui-tab-title">
+				<li class="layui-this" data-url="gen_realm_property">领域属性</li>
+			</ul>
+			<div class="layui-tab-content">
+				<div class="layui-tab-item layui-show">
+					<table id="table-list-gen_realm_property"></table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	//表单页自执行方法
+	window.formFuction = function(res,layero){
+        var getTime = "-" + new Date().getTime();
+		//这段必须写，防止id重复
+        $(layero).find("#body-div").attr("id", "body-div" + getTime);
+
+		var bootstrapTableUtilArr = [];
+		pushArr();
+		function pushArr(){
+			var bootstrapTableUtil_gen_realm_property = new BootstrapTableUtil("-gen_realm_property",false,getTime);
+			bootstrapTableUtil_gen_realm_property.init({
+				url: layui.admin.basePath + '/dynamic/zform/dataChildren?formNo=gen_realm_property&path=path&traceFlag=&parentId=' + $(layero).find("#id").val(),
+				method: 'post',
+				columns: [
+					{
+						checkbox: false
+					}
+					,{
+						field: 's01',
+						title: '名称',
+						sortable: true
+						
+						,formatter:function(value, row , index){
+							if(!value){
+								value = "";
+							}
+							return "<a href='javascript:;' class='view'>"+value+"</a>";
+						},
+						events: {
+							'click .view': function (e, value, row, index) {
+								viewForm({
+									id: row.id
+								})
+							}
+						}
+					}
+					,{
+						field: 's02',
+						title: '说明',
+						sortable: true
+						
+					}
+					,{
+						field: 's03',
+						title: '物理类型',
+						sortable: true,
+						
+						formatter:function(value, row , index){
+							return myHelper.getValueFromDictionary("oa_physical_type",value);
+						},
+					}
+					,{
+						field: 's04',
+						title: '表单类型',
+						sortable: true,
+						
+						formatter:function(value, row , index){
+							return myHelper.getValueFromDictionary("oa_form_type",value);
+						},
+					}
+					,{
+					title: layui.admin.lang() ? 'Operation' : '操作',
+                	width: '45px',
+					"class": 'center must',
+					events: {
+						'click .edit': function (e, value, row, index) {
+							addOrEdit({
+								id: row.id,
+								parent:{
+									id: $(layero).find("#id").val()
+								}
+							})
+						},
+						'click .del': function (e, value, row, index) {
+							delFuc(row);
+						},
+						'click .view': function (e, value, row, index) {
+							viewForm({id: row.id})
+						},
+					},
+					formatter: function(value, row, index) {
+						return  '<div class="show-btn-group">'+
+							'<i class="fa fa-cog" aria-hidden="true"></i>'+
+							'<div class="hide-btn-group" style="width: 240px;">'+
+								'<a class="btn view" dealname="查看">查看</a>'+
+								'<a class="btn edit" dealname="编辑">编辑</a>'+
+								'<a class="btn del" dealname="删除">删除</a>'+
+							'</div>'+
+						'</div>';
+					}
+				}],
+			});
+			bootstrapTableUtilArr.push(bootstrapTableUtil_gen_realm_property);
+		}
+
+		$(layero).find("#addBtn").on("click",function(){
+			if(!$(layero).find("#id").val()){
+				var validateForm = $(layero).find("#inputForm").validate({});
+	        	if(validateForm.form()){
+					var data = myHelper.composeData($(layero).find("#inputForm"));
+					LayerUtil.ajax({
+						url : layui.admin.basePath + '/dynamic/zform/beforeSave',
+						type : 'post',
+						data : JSON.stringify(data),
+						shade: true,
+						success : function(res) {
+							$(layero).find("#id").val(res.insertedId);
+							$.each(bootstrapTableUtilArr, function(idx,obj) {
+								obj.destroy();
+							});
+							bootstrapTableUtilArr = [];
+							pushArr();
+							addOrEdit({
+								parent:{
+							 		id: $(layero).find("#id").val()
+								}
+						   	});
+						}
+					});
+	        	}
+			}else{
+				addOrEdit({
+					parent:{
+				 		id: $(layero).find("#id").val()
+					}
+			   	});
+			}
+		})
+
+		function addOrEdit(initData) {
+			var subTableName = $(layero).find(".layui-this").attr("data-url");
+			var subTableComments = $(layero).find(".layui-this").text();
+			var id = initData ? initData.id : '';
+			LayerUtil.openDialog({
+				title : layui.admin.lang() ? 'New ' + subTableComments : '添加' + subTableComments,
+				formLay : subTableName,
+				initData : initData,
+				setDataWidthAjax : true,
+				actionDataName : 'data',
+				url : 'admin/' + subTableName + '/form',
+				actionUrl : layui.admin.basePath + '/dynamic/zform/getZform?formNo=' + subTableName + '&id=' + id,
+	            btn : ['保存', '取消'],
+	            btn_EN : ['Save', 'Cancel'],
+	            func1 : function(index,layero) {
+					var data = myHelper.composeData($(layero).find("#inputForm"));
+	            	LayerUtil.ajax({
+                		url : layui.admin.basePath + '/dynamic/zform/save',
+                		type : 'post',
+                		data : JSON.stringify(data),
+                		success : function(res) {
+                			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+                			$.each(bootstrapTableUtilArr, function(idx,obj) {
+								obj.refresh();
+							});
+                			layui.layer.close(index)
+                		}
+                	});
+	            }
+			})
+		}
+
+		function viewForm(initData) {
+			var subTableName = $(layero).find(".layui-this").attr("data-url");
+			var subTableComments = $(layero).find(".layui-this").text();
+			LayerUtil.openDialogView({
+				title : layui.admin.lang() ? 'View ' + subTableComments : '查看' + subTableComments,
+				formLay : subTableName,
+				initData : initData,
+				url : 'admin/' + subTableName + '/form',
+				actionUrl : layui.admin.basePath + '/dynamic/zform/getZform?formNo=' + subTableName + '&id=' + initData.id,
+				actionDataName : 'data',
+				setIdAndDoByAction : true,
+			})
+		}
+
+		function delFuc(row){
+    		LayerUtil.confirm(layui.admin.lang() ? 'Are you sure you want to delete?':'确认要删除吗？', function() {
+    			var subTableName = $(layero).find(".layui-this").attr("data-url");
+				LayerUtil.ajax({
+					url: layui.admin.basePath + '/dynamic/zform/delete?formNo=' + subTableName + '&ids=' + row.id,
+					type:'post',
+	        		shade:true,
+					success: function(res){
+	        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+	        			$.each(bootstrapTableUtilArr, function(idx,obj) {
+            				obj.refresh();
+            			});
+	        		}
+				});
+			});
+    	}
+
+	}
+</script>

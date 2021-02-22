@@ -1,0 +1,41 @@
+{
+	"code": 0,
+	"data": {
+		"data": [
+			{
+				"id": "1",
+				"name": "菜单1",
+				"sort": 5,
+				"hasChildren": false,
+				"parentIds": "110,1,",
+				"parentId": "0",
+				"href":"test"
+			}, {
+				"id": "2",
+				"name": "菜单2",
+				"sort": 10,
+				"hasChildren": true,
+				"parentIds": "110,1,",
+				"parentId": "0",
+				"href":"test"
+			}, {
+				"id": "3",
+				"name": "菜单3",
+				"sort": 30,
+				"hasChildren": true,
+				"parentIds": "10,1,",
+				"parentId": "0",
+				"href":"",
+				"permission":false
+			},{
+				"id": "12",
+				"name": "菜单12",
+				"sort": 5,
+				"hasChildren": false,
+				"parentIds": "10,1,",
+				"parentId": "0",
+				"href":"test"
+			}
+		]
+	}
+}

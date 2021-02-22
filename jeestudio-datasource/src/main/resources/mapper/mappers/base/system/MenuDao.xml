@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.system.MenuDao">
+
+    <sql id="menuCacheColumns">
+		a.id AS "pageID",
+		a.parent_id AS "parentID",
+		a.name AS "pageName",
+		a.href AS "pageUrl",
+		a.icon AS "pageIcon",
+		a.sort AS "orderNo",
+		a.sign AS "sign",
+		a.type_ AS "type",
+		a.name_en AS "pageName_EN",
+		a.href AS "actionUrl",
+		a.is_show AS "isShow"
+	</sql>
+
+	<resultMap id="menuCacheResult" type="MenuResult">
+		<result property="pageID" column="pageID" />
+		<result property="parentID" column="parentID" />
+		<result property="pageName" column="pageName" />
+		<result property="pageUrl" column="pageUrl" />
+		<result property="pageIcon" column="pageIcon" />
+		<result property="orderNo" column="orderNo" />
+		<result property="sign" column="sign" />
+		<result property="type" column="type" />
+		<result property="pageName_EN" column="pageName_EN" />
+		<result property="actionUrl" column="actionUrl" />
+		<result property="isShow" column="isShow"/>
+	</resultMap>
+
+    <sql id="menuList">
+        a.id AS "pageID",
+		a.parent_id AS "parentID",
+		a.name AS "pageName",
+		a.href AS "pageUrl",
+		a.icon AS "pageIcon",
+		a.sort AS "orderNo",
+		a.sign AS "sign",
+		a.type_ AS "type",
+		a.name_en AS "pageName_EN",
+		a.href AS "actionUrl",
+		a.remarks AS "remarks",
+		a.permission AS "permission",
+		a.create_by AS "createdBy",
+		a.create_date AS "createdOn",
+		a.update_by AS "modifiedBy",
+		a.update_date AS "modifiedOn",
+		a.is_show AS "isShow",
+		p.name AS "parent.name"
+    </sql>
+
+    <resultMap id="menuResult" type="Menu">
+        <id property="id" column="id" />
+        <result property="parentIds" column="parentIds" />
+        <result property="name" column="name" />
+        <result property="href" column="href" />
+        <result property="target" column="target" />
+        <result property="icon" column="icon" />
+        <result property="sort" column="sort" />
+        <result property="isShow" column="isShow" />
+        <result property="permission" column="permission" />
+        <result property="subSystemCodeList" column="subSystemCodeList" />
+        <result property="sign" column="sign"/>
+        <result property="type" column="type_"/>
+    </resultMap>
+
+    <resultMap id="menuResultForAdmin" type="Menu">
+        <id property="id" column="id" />
+        <result property="parentIds" column="parentIds" />
+        <result property="name" column="name" />
+        <result property="href" column="href" />
+        <result property="target" column="target" />
+        <result property="icon" column="icon" />
+        <result property="sort" column="sort" />
+        <result property="isShow" column="isShow" />
+        <result property="permission" column="permission" />
+        <result property="subSystemCodeList" column="subSystemCodeList" />
+        <result property="hasChildren" column="hasChildren" />
+    </resultMap>
+
+    <sql id="menuColumns">
+		a.id,
+		a.parent_id AS "parent.id",
+		a.parent_ids AS "parentIds",
+		a.name,
+		a.href,
+		a.target,
+		a.icon,
+		a.sort,
+		a.is_show AS "isShow",
+		a.permission,
+		a.remarks,
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		p.name AS "parent.name",
+		a.subsystem_codelist AS "subSystemCodeList",
+		a.sign AS "sign",
+		a.type_ AS "type"
+	</sql>
+
+    <sql id="menuJoins">
+		LEFT JOIN sys_menu p ON p.id = a.parent_id
+    </sql>
+
+    <select id="get"  resultMap="menuResult">
+        SELECT
+        <include refid="menuColumns"/>
+        FROM sys_menu a
+        <include refid="menuJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <!--<select id="findMenuAllList" resultType="MenuResult">-->
+    <select id="findMenuAllList" resultMap="menuCacheResult">
+        SELECT DISTINCT
+        <include refid="menuCacheColumns"/>
+        FROM sys_menu a
+        WHERE a.id != '1' /*AND a.is_show = '1'*/
+        ORDER BY a.sort
+    </select>
+
+    <select id="findAllPermissionList" resultType="java.lang.String">
+        SELECT DISTINCT a.permission
+        FROM sys_menu a
+        WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.permission IS NOT NULL
+    </select>
+
+    <select id="findMenuByUserId" resultType="MenuResult">
+        SELECT DISTINCT
+        <include refid="menuCacheColumns"/>
+        FROM sys_menu a
+        LEFT JOIN sys_menu p ON p.id = a.parent_id
+        JOIN sys_role_menu rm ON rm.menu_id = a.id
+        JOIN sys_role r ON r.id = rm.role_id AND r.useable='1'
+        JOIN sys_user_role ur ON ur.role_id = r.id
+        JOIN sys_user u ON u.id = ur.user_id AND u.id = #{userId}
+        WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+        AND r.del_flag = #{DEL_FLAG_NORMAL}
+        AND u.del_flag = #{DEL_FLAG_NORMAL}
+        AND a.id != '1' /*AND a.is_show = '1'*/
+        ORDER BY a.sort
+    </select>
+
+    <select id="findPermissionByUserId" resultType="java.lang.String">
+        SELECT DISTINCT a.permission
+        FROM sys_menu a
+        LEFT JOIN sys_menu p ON p.id = a.parent_id
+        JOIN sys_role_menu rm ON rm.menu_id = a.id
+        JOIN sys_role r ON r.id = rm.role_id AND r.useable='1'
+        JOIN sys_user_role ur ON ur.role_id = r.id
+        JOIN sys_user u ON u.id = ur.user_id AND u.id = #{userId}
+        WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+        AND r.del_flag = #{DEL_FLAG_NORMAL}
+        AND u.del_flag = #{DEL_FLAG_NORMAL}
+        AND a.permission IS NOT NULL
+    </select>
+
+    <select id="getMenuList" resultMap="menuResultForAdmin">
+        SELECT
+        a.*
+        ,(select case when exists(select 1 from sys_menu where parent_id = a.id) then 1 else 0 end from sys_dual) AS "hasChildren"
+        FROM sys_menu a
+        WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+        <if test="id != null and id != ''">
+            AND a.parent_id = #{id}
+        </if>
+        <if test="id == null or id == ''">
+            AND a.parent_id = '0'
+        </if>
+        ORDER BY sort
+    </select>
+
+    <insert id="insert">
+		INSERT INTO sys_menu(
+			id,
+			parent_id,
+			parent_ids,
+			name,
+			name_en,
+			href,
+			target,
+			icon,
+			sort,
+			is_show,
+			permission,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			subsystem_codelist,
+			sign,
+			type_
+		) VALUES (
+			#{id},
+			#{parent.id},
+			#{parentIds},
+			#{name},
+			#{nameEn},
+			#{href},
+			#{target},
+			#{icon},
+			#{sort},
+			#{isShow},
+			#{permission},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{subSystemCodeList},
+			#{sign},
+			#{type}
+		)
+	</insert>
+
+    <update id="update">
+		UPDATE sys_menu SET
+			parent_id = #{parent.id},
+			parent_ids = #{parentIds},
+			name = #{name},
+			name_en = #{nameEn},
+			href = #{href},
+			target = #{target},
+			icon = #{icon},
+			sort = #{sort},
+			is_show = #{isShow},
+			permission = #{permission},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			subsystem_codelist = #{subSystemCodeList},
+			sign = #{sign},
+			type_ = #{type_}
+		WHERE id = #{id}
+	</update>
+
+    <update id="delete">
+        <bind name="idLike" value="'%,' + id + ',%'" />
+        DELETE FROM sys_menu
+        WHERE id = #{id} OR parent_ids LIKE '${idLike}'
+    </update>
+
+    <update id="updateSort">
+		UPDATE sys_menu SET
+			sort = #{sort}
+		WHERE id = #{id}
+	</update>
+
+	<select id="getMenuTagTree" resultMap="menuResult">
+		SELECT
+		<include refid="menuColumns"/>
+		FROM sys_menu a
+		<include refid="menuJoins"/>
+		WHERE a.is_show = '1'
+	</select>
+
+	<select id="hasPermission" resultType="java.lang.Integer">
+		SELECT COUNT(1) FROM sys_role_menu a
+		INNER JOIN sys_menu b ON b.id = a.menu_id
+		INNER JOIN sys_role c ON c.id = a.role_id
+		INNER JOIN sys_user_role d ON d.role_id = c.id
+		INNER JOIN sys_user e ON e.id = d.user_id
+		WHERE e.id = #{userId} AND b.permission = #{permission}
+	</select>
+</mapper>

@@ -1,0 +1,16 @@
+{
+	"code": 0,
+	"msg": "操作成功！",
+	"temp_token": "temp_token",
+	"long_token": "long_token",
+	"data": [
+		{
+			"label":"字典1",
+			"value": 1
+		},
+		{
+			"label":"字典2",
+			"value": 2
+		}
+	]
+}

@@ -1,0 +1,26 @@
+{
+	"code": 0,
+	"data": [
+		{
+			"RoleID": "3f9578c5-c0a2-4c7a-b0fd-c93fae47194b",
+			"RoleName": "系统管理员",
+			"RoleName_EN": "Admin"
+		}, {
+			"RoleID": "3f9578c5-c0a2-4c7a-b0fd-c93fae47194c",
+			"RoleName": "小程序管理员",
+			"RoleName_EN": "admin_wechat"
+		}, {
+			"RoleID": "80eba9b2-eabf-4e7a-9afa-3a7082c0921f",
+			"RoleName": "普通用户",
+			"RoleName_EN": "commonUser"
+		}, {
+			"RoleID": "3ee45e90-e219-43d6-9563-1fddb5b2b62d",
+			"RoleName": "开发维护人员",
+			"RoleName_EN": "develop"
+		}, {
+			"RoleID": "1799e107-3456-4616-a034-43bbd155628d",
+			"RoleName": "雀巢",
+			"RoleName_EN": "Nestle"
+		}
+	]
+}

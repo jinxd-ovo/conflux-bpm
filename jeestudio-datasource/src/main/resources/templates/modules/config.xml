@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<!-- Template category -->
+	<category>
+		<category code="dynamic" name="动态表单" name_EN="Dynamic form">
+			<template>gen/zform/form.xml</template>
+			<template>gen/zform/list.xml</template>
+			<template>gen/zform/mobile/viewList.xml</template>
+			<template>gen/zform/mobile/viewListJs.xml</template>
+			<template>gen/zform/mobile/viewForm.xml</template>
+			<template>gen/zform/mobile/viewFormJs.xml</template>
+			<template>gen/zform/app/viewList.xml</template>
+			<template>gen/zform/app/viewListJs.xml</template>
+			<template>gen/zform/app/viewForm.xml</template>
+			<template>gen/zform/app/viewFormJs.xml</template>
+		</category>
+	</category>
+	<!-- Java type-->
+	<javaType>
+		<dict value="String" label="String"/>
+		<dict value="Long" label="Long"/>
+		<dict value="Integer" label="Integer"/>
+		<dict value="Double" label="Double"/>
+		<dict value="java.util.Date" label="Date"/>
+		<dict value="com.jeestudio.common.entity.system.User" label="User"/>
+		<dict value="com.jeestudio.common.entity.system.Office" label="Office"/>
+		<dict value="com.jeestudio.common.entity.system.Area" label="Area"/>
+		<dict value="This" label="ThisObj" description="Current Object"/>
+	</javaType>
+	<!-- Query type -->
+	<queryType>
+		<dict value="=" label="="/>
+		<dict value="!=" label="!="/>
+		<dict value="&gt;" label="&gt;"/>
+		<dict value="&gt;=" label="&gt;="/>
+		<dict value="&lt;" label="&lt;"/>
+		<dict value="&lt;=" label="&lt;="/>
+		<dict value="between" label="Between"/>
+		<dict value="like" label="Like"/>
+		<dict value="left_like" label="Left Like"/>
+		<dict value="right_like" label="Right Like"/>
+	</queryType>
+	<!-- Field display type -->
+	<showType>
+		<dict value="input" label="单行文本" labelen="Single line text" />
+		<dict value="textarea" label="多行文本" labelen="Multiline text" />
+		<dict value="umeditor" label="富文本编辑器" labelen="Rich Text Editor" />
+		<dict value="select" label="下拉选项" labelen="Dropdown option" />
+		<dict value="radiobox" label="单选按钮" labelen="Radio button" />
+		<dict value="checkbox" label="复选框" labelen="Checkbox" />
+		<dict value="dateselect" label="日期选择" labelen="Date selection" />
+		<dict value="treeselectRedio" label="人员选择" labelen="" />
+		<dict value="treeselectCheck" label="人员多选" labelen="" />
+		<dict value="officeselectTree" label="部门选择" labelen="" />
+		<dict value="areaselect" label="区域选择" labelen="" />
+		<dict value="treeselect" label="树选择控件" labelen="" />
+		<dict value="gridselect" label="Grid选择框(自定义java对象)" labelen="" />
+		<dict value="fileupload" label="普通附件" labelen="" />
+		<dict value="fileuploadsec" label="加密附件" labelen="" />
+		<dict value="fileuploadpic" label="图片附件" labelen="" />
+		<dict value="parentId" label="上级" labelen="Parent" />
+		<dict value="iconselect" label="图标选择" labelen="Icon selection" />
+	</showType>
+	<!-- Validation type -->
+	<validateType>
+		<dict value="" label="" labelen="" />
+		<dict value="string" label="字符串" labelen="Character string" />
+		<dict value="email" label="电子邮件" labelen="E-mail" />
+		<dict value="url" label="网址" labelen="Website" />
+		<dict value="date" label="日期" labelen="Date" />
+		<dict value="dateISO" label="日期(ISO)" labelen="Date(ISO)" />
+		<dict value="number" label="数字" labelen="Number" />
+		<dict value="digits" label="整数" labelen="Integer" />
+		<dict value="creditcard" label="信用卡号" labelen="Card number" />
+		<dict value="mobile" label="手机号码" labelen="Mobile number" />
+		<dict value="phone" label="电话号码" labelen="Phone number" />
+		<dict value="telephone" label="联系方式" labelen="Contact information" />
+		<dict value="isQq" label="QQ号码" labelen="QQ number" />
+		<dict value="fax" label="传真" labelen="Fax" />
+		<dict value="zipCode" label="邮政编码" labelen="Postal Code" />
+		<dict value="idCard" label="身份证号" labelen="ID number" />
+		<dict value="bankNo" label="银行卡号" labelen="Bank card number" />
+		<dict value="isNumber" label="数值(整数、小数)" labelen="Value (integer, decimal)" />
+		<dict value="ip" label="IP" labelen="IP" />
+		<dict value="latitude" label="纬度" labelen="Latitude" />
+		<dict value="longitude" label="经度" labelen="Longitude" />
+	</validateType>
+</config>

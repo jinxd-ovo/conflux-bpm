@@ -1,0 +1,103 @@
+<html>
+<head>
+	<title>表单列表</title>
+	<link rel="stylesheet" href="static/plugin/awesome/4.4/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="static/plugin/iCheck/custom.css" />
+	<link rel="stylesheet" href="static/plugin/select2/select2.full.min.css" />
+	<link rel="stylesheet" href="js/layui/css/layui.css" media="all">
+	<link rel="stylesheet" href="static/plugin/bootstrap/3.3.4/css_default/bootstrap.min.css" />
+	<link rel="stylesheet" href="static/plugin/jstree/themes/default/style.css"/>
+	<link rel="stylesheet" href="static/css/taskPerlist.css"/>
+	<script type="text/javascript" src="static/plugin/jquery/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="static/plugin/iCheck/icheck.min.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="static/plugin/select2/select2.full.min.js"></script>
+	<script type="text/javascript" src="static/util/bootstrapTable-util.js"></script>
+	<script src="js/layui/layui.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrapTable/bootstrap-table.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrapTable/bootstrap-table-zh-CN.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrapTable/bootstrap-table-contextmenu.js"></script> 
+	<script type="text/javascript" src="static/plugin/bootstrapTable/bootstrap-table-export.js"></script> 
+	<!-- <script type="text/javascript" src="static/plugin/bootstrap-editable/js/bootstrap-editable.js"></script> -->
+	<script type="text/javascript" src="static/plugin/bootstrap-editable/bootstrap-table-editable.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrapTable/tableExport.js"></script> 
+	
+	<script type="text/javascript" src="static/plugin/jstree/jstree.min.js"></script>
+	<script type="text/javascript" src="static/plugin/jqueryValidate/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="static/plugin/jqueryValidate/messages_zh.min.js"></script>
+	<script type="text/javascript" src="static/js/config.js"></script>
+	<script type="text/javascript" src="static/js/taskPerList.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#category").select2({
+				width: '195px',
+				minimumResultsForSearch: -1,
+				data: [{id: '请选择权限类型', text: '请选择权限类型'},{id: '1', text: '收文'},{id: '2', text: '发文'},{id: '3', text: '签报'},{id: '4', text: '协同'}]
+			});
+			$("#category").trigger("change");
+		});
+		function select(){
+			var row = $("#taskPer").bootstrapTable('getSelections');
+			var json = {};
+			var rowLength = row.length;
+			if(rowLength > 1){
+				layui.use('layer', function(){
+					 var layer = layui.layer;
+					 layer.msg("请选择一条权限模板");
+				});
+				return false;
+			}else if(rowLength == 1){
+				var item = row[0];
+				json.name = item.name;
+				json.category = item.category;
+				json.describe = item.describe;
+				json.operation = item.operation;
+				json.tableOperation = item.tableOperation;
+				json.ruleArgs = item.ruleArgs;
+				return json;
+			}else if(rowLength < 1){
+				layui.use('layer', function(){
+					 var layer = layui.layer;
+					 layer.msg("请选择一条权限模板");
+				});
+				return false;
+			}
+		}
+	</script>
+</head>
+<body>
+	
+	<!-- 查询条件 -->
+	<div class="row">
+		<div class="col-sm-12">
+			<form id="searchForm"  action="taskPermission" method="post" class="form-inline">
+				<!-- <input id="pageNo" name="pageNo" type="hidden" value=""/>
+				<input id="pageSize" name="pageSize" type="hidden" value=""/> -->
+				<!-- <input id="ownerCode" name="ownerCode" type="hidden" value="" /> -->
+				<!-- <input id="orderBy" name="orderBy" type="hidden" value="" /> -->
+				<!-- <table:sortColumn id="orderBy" name="orderBy" value="${page.orderBy}" callback="sortOrRefresh();"/> -->
+				<!-- 支持排序 -->
+				<!-- <div class="form-group">
+					<span>权限名称：</span><input name="name" htmlEscape="false" maxlength="64"  class=" form-control input-sm"/>
+				</div> -->
+				<div class="form-group">
+					<span>权限类型：</span>
+					<select name="category" id="category" class="form-control required">
+						<!-- <options items="${fns:getDictListEdit('oa_task_permission_category',taskPermission.id)}" itemLabel="label" itemValue="value" htmlEscape="false"/> -->
+					</select>
+				</div>
+				<div class="form-group pull-right">
+					<a id="search" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 查询</a>
+					<a id="reset" class="btn btn-primary btn-rounded  btn-bordered btn-sm" ><i class="fa fa-refresh"></i> 重置</a>
+				</div>
+			</form>
+			<br/>
+		</div>
+	</div> 
+	
+	<table id="taskPer"   data-toolbar="#toolbar" data-id-field="id"></table>
+	
+	<!-- context menu -->
+    <ul id="context-menu" class="dropdown-menu" style="display:none">
+</body>
+</html>

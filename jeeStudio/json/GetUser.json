@@ -1,0 +1,12 @@
+{
+	"code": 0,
+	"data": {
+		"UserNo": "develop",
+		"UserName": "开发维护",
+		"UserName_EN": "develop",
+		"Mobile": null,
+		"Email": null,
+		"DepartmentID": null,
+		"noticeCount": false
+	}
+}

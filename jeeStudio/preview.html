@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			.details-body {
+				margin: 0 auto;
+				width: 1024px;
+				border-color: #e7eaec;
+				border-width: 3px 1px 1px 1px;
+				border-style: solid;
+				background: #ffffff;
+			}
+			
+			.details-h {
+				border-bottom: 1px solid #e7eaec;
+				padding: 0px 20px;
+			}
+			
+			.details-h h3 {
+				margin: 16px 0px 9px;
+				font-size: 26px;
+				color: #333333;
+				font-weight: normal;
+				line-height: 36px;
+			}
+			
+			.details-h h5 {
+				font-size: 14px;
+				color: #676a6c;
+				font-weight: normal;
+			}
+			
+			.new-content {
+				padding: 0px 10px 30px;
+			}
+			
+			.new-content p {
+				font-size: 14px;
+				color: #333333;
+				line-height: 26px;
+				text-indent: 30px;
+			}
+			
+			.footer {
+				background: #fff;
+				font-size: 12px;
+				color: #4a4a4a;
+				text-align: center;
+				height: 38px;
+				line-height: 37px;
+				border-top: 1px solid #e8ebed;
+				position: fixed;
+				bottom: 0px;
+				left: 0px;
+				width: 100%;
+			}
+		</style>
+		<script src="js/layui/layui.js"></script>
+		<script type="text/javascript" src="static/plugin/jquery/jquery-1.12.4.min.js"></script>
+
+		<script type="text/javascript" src="static/util/helper.js"></script>
+		<script type="text/javascript" src="static/util/layer-util.js"></script>
+	</head>
+
+	<body>
+		<div class="details-body">
+			<div class="details-h" align="center">
+				<h3 id="s01"></h3>
+				<h5>
+            		发布人：<span id="s11"></span>&nbsp;&nbsp;
+            		发布日期：<span id="d03"></span>&nbsp;&nbsp;
+                </h5>
+			</div>
+			<div class="new-content" id="s14">
+			</div>
+		</div>
+		<div class="footer">Copyright © 版权所有</div>
+
+		<script>
+			var params = myHelper.getAllUrlParam();
+			
+			var id = params.id;
+			var formNo = params.formNo;
+
+			layui.config({
+				base: 'js/src/' //指定 layuiAdmin 项目路径，本地开发用 src，线上用 dist 
+					,
+				version: new Date().getTime()
+
+			}).use(['index', 'admin'], function() {
+				var admin = layui.admin,
+					router = layui.router(),
+					search = router.search;
+
+				LayerUtil.ajax({
+					url: admin.basePath + '/dynamic/zform/getZform?formNo='+formNo+'&id=' + id,
+					type: 'get',
+					success: function(res) {
+						var data = res.data.data;
+						$("#s01").text(data.s01);
+						$("#s11").text(data.s11);
+						$("#d03").text(data.d03);
+						$("#s14").html(data.s14);
+					}	
+				})
+
+			});
+		</script>
+
+	</body>
+
+</html>

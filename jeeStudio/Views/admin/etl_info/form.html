@@ -1,0 +1,81 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal" style="overflow: auto;">
+		<input name="id" type="hidden" id="id"/>
+			<input name="formNo" type="hidden" id="formNo"/>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>ETL名称</label>
+	  		<fieldset class="set">
+				<input name="s01" component-type="input" type="text"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>执行频率</label>
+	  		<fieldset class="set">
+	  			<select name="s02" component-type="select" component-id="etl_internal" class="form-control ">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>异常状态</label>
+	  		<fieldset class="set">
+				<input name="status" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>排序</label>
+	  		<fieldset class="set">
+				<input name="sort" component-type="input" type="text"    class="form-control digits required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>脚本文件</label>
+	  		<fieldset class="set">
+	  			<div name="s03" component-type="upload" class="form-control " style="padding: 1px 12px;" component-uploadpath="/system/sysFile/fileUploadBatchProgress"></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>备注信息</label>
+	  		<fieldset class="set">
+				<textarea name="remarks" component-type="textarea" rows="3"    class="form-control  "></textarea>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>主机</label>
+	  		<fieldset class="set">
+				<input name="s05" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>数据库</label>
+	  		<fieldset class="set">
+				<input name="s06" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>模式</label>
+	  		<fieldset class="set">
+				<input name="s07" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>端口</label>
+	  		<fieldset class="set">
+				<input name="s08" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>用户名</label>
+	  		<fieldset class="set">
+				<input name="s09" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>密码</label>
+	  		<fieldset class="set">
+				<input name="s10" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	</form>
+</div>
+

@@ -1,0 +1,83 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal" style="overflow: auto;">
+		<input name="id" type="hidden" id="id"/>
+		<input name="hashKey" type="hidden" id="hashKey"/>
+		<input name="formNo" type="hidden" id="formNo"/>
+		<input component-type="input" type="hidden" id="act.taskId" name="act.taskId" />
+		<input component-type="input" type="hidden" id="act.taskName" name="act.taskName" />
+		<input component-type="input" type="hidden" id="act.taskDefKey" name="act.taskDefKey" />
+		<input component-type="input" type="hidden" id="procInsId" name="procInsId" />
+		<input component-type="input" type="hidden" id="act.procDefId" name="act.procDefId" />
+		<input component-type="input" type="hidden" id="flag" name="act.flag" />
+		<input component-type="input" type="hidden" id="tempNodeKey" name="tempNodeKey" />
+		<input component-type="input" type="hidden" id="tempLoginName" name="tempLoginName" />
+		<input component-type="input" type="hidden" id="procDefKey" name="procDefKey">
+		<input component-type="input" type="hidden" id="ruleArgsJson" name='ruleArgsJson' />
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<a class='qu-kuai-lian-form' data-name='s01'><i class='fa fa-link'></i></a>
+	  		<label>名称</label>
+	  		<fieldset class="set">
+				<input name="s01" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>行政区</label>
+	  		<fieldset class="set">
+	  			<div name="area01.id" component-type="treeSelect" actionUrl="/sys/tagTree/areaTreeAsync?id=0" sync="true" check="false" chooseParent="true" class="tag-div "></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>注册日期</label>
+	  		<fieldset class="set">
+				<input name="d01" component-type="datePicker" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate form-control " type="text" value="" />
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>负责人</label>
+	  		<fieldset class="set">
+	  			<div name="user01.id" component-type="treeSelect" actionUrl="/sys/tagTree/userTree" sync="false" check="false" chooseParent="false" class="tag-div "></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>是否有效</label>
+	  		<fieldset class="set">
+	  			<select name="s03" component-type="select" component-id="yes_no" class="form-control ">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>备注信息</label>
+	  		<fieldset class="set">
+				<textarea name="remarks" component-type="textarea" rows="3"    class="form-control  "></textarea>
+	  		</fieldset>
+	  	</div>
+		<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<div style="border: 1px solid #e6e6e6;margin-top:10px"></div>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>审批意见</label>
+	  		<fieldset class="set">
+				<textarea name="act.comment" component-type="textarea" rows="3" class="form-control"></textarea>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<a class='qu-kuai-lian-form' data-name='log'><i class='fa fa-link'></i></a>
+	  		<label>流程日志</label>
+	  		<fieldset class="set">
+	  			<div class="form-control" name="act.log">
+	  				<div>
+	  					<a id="showProcImgDiv" class="btn btn-white btn-sm">流程图</a>
+						<a id="showProcLogDiv" class="btn btn-white btn-sm">流程日志</a>
+	  				</div>
+	  				<div>
+		  				<div id="procImgDiv" style="display: none;"></div>
+						<div id="procLogDiv" style="display: none;"></div>
+		  			</div>
+	  			</div>
+	  		</fieldset>
+	  	</div>
+	</form>
+	<div id="act-modal"></div>
+</div>
+

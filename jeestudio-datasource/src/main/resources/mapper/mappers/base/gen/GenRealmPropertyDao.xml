@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.gen.GenRealmPropertyDao">
+    <select id="realmData" resultType="GenTableColumnView">
+        SELECT
+        a.name         AS "name",
+        a.show_type    AS "showType",
+        a.is_oneline   AS "isOneLine",
+        a.is_null      AS "isNull",
+        a.comments     AS "comments",
+        a.java_field   AS "javaField",
+        a.min_length   AS "minLength",
+        a.max_length   AS "maxLength",
+        a.min_value    AS "minValue",
+        a.max_value    AS "maxValue",
+        a.jdbc_type    AS "jdbcType",
+        a.java_type    AS "javaType",
+        a.query_type   AS "queryType",
+        a.validateType AS "validateType",
+        a.is_form      AS "isForm",
+        a.is_list      AS "isList",
+        a.is_query     AS "isQuery",
+        a.is_readonly AS "isReadonly",
+        a.dict_type AS "dictType",
+        a.tableName    AS "tableName",
+        a.fieldLabels  AS "fieldLabels",
+        a.fieldKeys    AS "fieldKeys",
+        a.searchLabel  AS "searchLabel",
+        a.searchKey    AS "searchKey"
+        FROM gen_realm_property a
+        LEFT JOIN gen_realm b ON b.name = #{types}
+        WHERE a.dict_type IS NULL
+        <bind name="name" value="'%' + name + '%'" />
+        AND a.name LIKE #{name}
+    </select>
+
+    <select id="realmDataDict" resultType="GenTableColumnView">
+        SELECT
+        a.name         AS "name",
+        a.show_type    AS "showType",
+        a.is_oneline   AS "isOneLine",
+        a.is_null      AS "isNull",
+        a.comments     AS "comments",
+        a.java_field   AS "javaField",
+        a.min_length   AS "minLength",
+        a.max_length   AS "maxLength",
+        a.min_value    AS "minValue",
+        a.max_value    AS "maxValue",
+        a.jdbc_type    AS "jdbcType",
+        a.java_type    AS "javaType",
+        a.query_type   AS "queryType",
+        a.validateType AS "validateType",
+        a.is_form      AS "isForm",
+        a.is_list      AS "isList",
+        a.is_query     AS "isQuery",
+        a.is_readonly AS "isReadonly",
+        a.dict_type AS "dictType",
+        a.tableName    AS "tableName",
+        a.fieldLabels  AS "fieldLabels",
+        a.fieldKeys    AS "fieldKeys",
+        a.searchLabel  AS "searchLabel",
+        a.searchKey    AS "searchKey"
+        FROM gen_realm_property a
+        LEFT JOIN gen_realm b ON b.name = #{types}
+        WHERE a.dict_type IS NOT NULL
+        <bind name="name" value="'%' + name + '%'" />
+        AND a.name LIKE #{name}
+    </select>
+
+    <sql id="genTableColumnForView">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.del_flag AS "delFlag",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.name AS "name",
+		a.comments AS "comments",
+		a.comments_en AS "commentsEn",
+		a.jdbc_type AS "jdbcType",
+		a.show_type AS "showType",
+		a.java_type AS "javaType",
+		a.dict_type AS "dictType",
+		a.is_list AS "isList",
+		a.is_query AS "isQuery",
+		a.is_form AS "isForm",
+		'1' AS "isEdit",
+		a.query_type AS "queryType",
+		a.is_readonly AS "isReadonly",
+		a.is_oneline AS "isOneLine",
+		a.is_null AS "isNull",
+		a.validatetype AS "validateType",
+		a.min_value AS "minValue",
+		a.max_value AS "maxValue",
+		a.min_length AS "minLength",
+		a.max_length AS "maxLength",
+		a.default_value AS "defaultValue",
+		a.date_type AS "dateType",
+		a.table_name AS "tableName",
+		a.java_description AS "fieldLabels",
+		a.java_name AS "fieldKeys",
+		a.search_tag AS "searchLabel",
+		a.search_key AS "searchKey",
+		a.remarks AS "remarks",
+		a.java_field AS "javaField"
+	</sql>
+
+    <select id="getByName" resultType="GenTableColumnView">
+        SELECT
+        <include refid="genTableColumnForView"/>
+        FROM gen_realm_property a
+        WHERE a.comments = #{name}
+    </select>
+
+</mapper>

@@ -1,0 +1,231 @@
+.table-box table tr td{
+	height: auto;
+}
+.fz13 td,.fz13{
+	font-size: 13px !important;
+}
+.fz14 td,.fz14{
+	font-size: 14px !important;
+}
+.fz12 td,.fz12{
+	font-size: 12px !important;
+}
+.fz10 td,.fz10{
+	font-size: 10px !important;
+}
+.fz9 td,.fz9{
+	font-size: 9px !important;
+}
+.pd5{
+	padding: 5px;
+}
+.biao{
+	font-size: 12px;
+}
+.tl,.text-left{
+	text-align: left !important;
+}
+.text-right{
+	text-align: right !important;
+}
+.text-center{
+	text-align: center !important;
+}
+thead.v-hidden{
+	visibility: hidden;
+}
+thead.v-hidden td{
+	height: 0px !important;
+	border: 0px !important;
+}
+.no-head-border td{
+	border-width: 0px 0px 1px 0px !important;
+}
+.no-foot-border td{
+	border-width: 1px 0px 0px 0px !important;
+}
+td textarea,td input{
+	width: 95%;
+	height: 95%;
+	margin: 0px;
+	padding: 0px;
+	resize: none;
+	vertical-align: middle;
+	border: 0px;
+	outline-width: 0px;
+}
+.td40 td{
+	height: 40px !important;
+}
+.inline-block{
+	display: inline-block;
+	display: inline\9;
+}
+.w400{
+	width: 380px;
+}
+tr.active,tr.active textarea,tr.active input{
+	background-color: #f5f5f5;
+}
+td input.Wdate{
+	display: inline-block;
+	width: 80px;
+	border-bottom: 1px solid #333;
+	height: 80%;
+	font-family: "宋体";
+}
+.button-div{
+    margin: auto;
+    max-width: 285mm;
+    position: relative;
+    left: 0;
+    right: 0;
+    font-family: "宋体";
+    padding-bottom: 30px;
+}
+
+
+.listPoint .title-box .title{
+	font-family: "黑体";
+	font-size: 18px;
+	margin-bottom: 15px;
+	margin-top: 15px;
+}
+.listPoint tbody td:hover{
+	/*cursor: pointer;*/
+	position: relative;
+}
+.listPoint tbody td{
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.listPoint table thead tr td{
+	font-size: 12px;
+}
+.listPoint table tbody tr td{
+	font-size: 10px;
+}
+
+input::-ms-clear{
+	display:none;
+}
+
+.star{
+	color: red;
+	margin-right: 3px;
+}
+
+
+.table-box table tr td{
+	text-align: left;
+	padding-left: 10px;
+	position: relative;
+}
+.table-box table tr td label{
+	vertical-align: middle;
+	font-weight: normal;
+	margin: 0px;
+	margin-left: 3px;
+	margin-right: 5px;
+}
+td textarea, td input {
+    width: 95%;
+    height: 95%;
+    margin: 0px;
+    padding: 0px;
+    resize: none;
+    vertical-align: middle;
+    border: 0px;
+    outline-width: 0px;
+}
+td textarea{
+	height: 80px;
+}
+td input.is-line{
+	width: 80px;
+	height: 22px !important;
+	border-bottom: 1px solid #666;
+	display: inline-block;
+	margin-top: 5px;
+}
+body{
+	background: #fff !important;
+}
+.dtable{
+	display: table;
+	width: 100%;
+}
+.table-cell{
+	display: table-cell !important;
+}
+label.table-cell{
+	text-align: right;
+}
+.serve li{
+	display: inline-block;
+	display: inline\9;
+	width: 32%;
+	margin: 3px 0px;
+	
+}
+
+
+.box-vertical{
+	max-width: 1000px;
+}
+.fj{
+	font-size: 15px;
+	overflow: auto;
+}
+.float-left{
+	float: left;
+}
+.float-right{
+	float: right;
+}
+.bold{
+	font-weight: bold;
+}
+.mt10{
+	margin-top: 10px;
+}
+.mb10{
+	margin-bottom: 10px;
+}
+.pl0{
+	padding-left: 10px;
+}
+.pr10{
+	padding-right: 10px;
+}
+
+table tr:first-child td{
+	border-top: 3px solid #000;
+}
+body{
+	font-family: '宋体' !important;
+}
+.tdptpb4 td{
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+
+.table-no-left-and-right tr td:first-child,.table-no-left-and-right tr td:last-child{
+	border-left: 0px !important;
+	border-right: 0px;
+}
+
+
+
+.fz10 td,.fz10{
+	font-size: 10px !important;
+}
+.height-22 .td40 td{
+	height: 20px !important;
+}
+.PageNext{page-break-after: always;} 
+
+
+

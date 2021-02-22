@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.act.TaskPermissionDao">
+    
+	<sql id="taskPermissionColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.owner_code AS "ownerCode",
+		a.name AS "name",
+		a.types AS "type",
+		a.category AS "category",
+		a.is_inuse AS "isInuse",
+		a.position AS "position",
+		a.describe_ AS "describe",
+		a.operation AS "operation",
+		a.table_operation AS "tableOperation",
+		a.extend_operation AS "extendOperation",
+		a.rule_args AS "ruleArgs"
+	</sql>
+	
+	<sql id="taskPermissionJoins">
+	</sql>
+	
+	<select id="get" resultType="TaskPermission" >
+		SELECT 
+			<include refid="taskPermissionColumns"/>
+		FROM oa_task_permission a
+		<include refid="taskPermissionJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="TaskPermission" >
+		SELECT 
+			<include refid="taskPermissionColumns"/>
+		FROM oa_task_permission a
+		<include refid="taskPermissionJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+			<if test="name != null and name != ''">
+				<bind name="nameLike" value="'%' + name + '%'" />
+				AND a.name LIKE '${nameLike}'
+			</if>
+			<if test="type != null and type != ''">
+				AND a.types = #{type}
+			</if>
+			<if test="category != null and category != ''">
+				AND a.category = #{category}
+			</if>
+			<if test="isInuse != null and isInuse != ''">
+				AND a.is_inuse = #{isInuse}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TaskPermission" >
+		SELECT 
+			<include refid="taskPermissionColumns"/>
+		FROM oa_task_permission a
+		<include refid="taskPermissionJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO oa_task_permission(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			owner_code,
+			name,
+			types,
+			category,
+			is_inuse,
+			position,
+			describe_,
+			operation,
+			table_operation,
+			extend_operation,
+			rule_args
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{ownerCode},
+			#{name},
+			#{type},
+			#{category},
+			#{isInuse},
+			#{position},
+			#{describe},
+			#{operation},
+			#{tableOperation},
+			#{extendOperation},
+			#{ruleArgs}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE oa_task_permission SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			owner_code = #{ownerCode},
+			name = #{name},
+			types = #{type},
+			category = #{category},
+			is_inuse = #{isInuse},
+			position = #{position},
+			describe_ = #{describe},
+			operation = #{operation},
+			table_operation = #{tableOperation},
+			extend_operation = #{extendOperation},
+			rule_args = #{ruleArgs}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM oa_task_permission
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteByLogic">
+		UPDATE oa_task_permission SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="findUniqueByProperty" resultType="TaskPermission" statementType="STATEMENT">
+		select * FROM oa_task_permission  where ${propertyName} = '${value}'
+	</select>
+	
+	<select id="findListByIdList" resultType="TaskPermission">
+		SELECT 
+			<include refid="taskPermissionColumns"/>
+		FROM oa_task_permission a
+		<include refid="taskPermissionJoins"/>
+		<where>
+			a.del_flag = '0'
+			AND a.id IN 
+			<foreach collection="taskSettingVersionList" item="taskSettingVersion" open="(" separator="," close=")">
+				#{taskSettingVersion.permission}
+			</foreach>
+		</where>
+	</select>
+	
+	<select id="findListByPermission" resultType="TaskPermission">
+		SELECT 
+			<include refid="taskPermissionColumns"/>
+		FROM oa_task_permission a
+		<include refid="taskPermissionJoins"/>
+		<where>
+			a.del_flag = '0'
+			AND a.category = #{category}
+			AND a.types = #{types}
+		</where>
+	</select>
+
+	<select id="findByTaskPermissionId" resultType="TaskPermission">
+		SELECT 
+			<include refid="taskPermissionColumns"/>
+		FROM oa_task_permission a
+		<include refid="taskPermissionJoins"/>
+		WHERE a.id = #{permission} AND a.types = #{types}
+	</select>
+</mapper>

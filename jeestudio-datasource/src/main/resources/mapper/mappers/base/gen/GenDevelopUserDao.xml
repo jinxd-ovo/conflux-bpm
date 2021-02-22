@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.gen.GenDevelopUserDao">
+    
+	<sql id="genDevelopUserColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.owner_code AS "ownerCode",
+		a.email AS "email",
+		a.mac1 AS "mac1",
+		a.mac2 AS "mac2",
+		a.mac3 AS "mac3",
+		a.mac4 AS "mac4",
+		a.mac5 AS "mac5",
+		a.ok_num AS "okNum",
+		a.ok_date AS "okDate",
+		a.visit_log AS "visitLog"
+	</sql>
+	
+	<sql id="genDevelopUserJoins">
+	</sql>
+
+	<select id="get" resultType="GenDevelopUser" >
+		SELECT 
+			<include refid="genDevelopUserColumns"/>
+		FROM gen_develop_user a
+		<include refid="genDevelopUserJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="GenDevelopUser" >
+		SELECT 
+			<include refid="genDevelopUserColumns"/>
+		FROM gen_develop_user a
+		<include refid="genDevelopUserJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+			<if test="ownerCode != null and ownerCode != ''">
+				<bind name="ownerCodeLike" value="ownerCode + '%'" />
+				AND a.owner_code LIKE '${ownerCodeLike}'
+			</if>
+			<if test="email != null and email != ''">
+				<bind name="emailLike" value="'%' + email + '%'" />
+				AND a.email LIKE '${emailLike}'
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="GenDevelopUser" >
+		SELECT 
+			<include refid="genDevelopUserColumns"/>
+		FROM gen_develop_user a
+		<include refid="genDevelopUserJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO gen_develop_user(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			owner_code,
+			email,
+			mac1,
+			mac2,
+			mac3,
+			mac4,
+			mac5,
+			ok_num,
+			ok_date,
+			visit_log
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{ownerCode},
+			#{email},
+			#{mac1},
+			#{mac2},
+			#{mac3},
+			#{mac4},
+			#{mac5},
+			#{okNum},
+			#{okDate},
+			#{visitLog}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE gen_develop_user SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			owner_code = #{ownerCode},
+			email = #{email},
+			mac1 = #{mac1},
+			mac2 = #{mac2},
+			mac3 = #{mac3},
+			mac4 = #{mac4},
+			mac5 = #{mac5},
+			ok_num = #{okNum},
+			ok_date = #{okDate},
+			visit_log = #{visitLog}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM gen_develop_user
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteByLogic">
+		UPDATE gen_develop_user SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="findUniqueByProperty" resultType="GenDevelopUser" statementType="STATEMENT">
+		SELECT * FROM gen_develop_user WHERE ${propertyName} = '${value}'
+	</select>
+	
+	<select id="getGenUserByEmail" resultType="GenDevelopUser">
+		SELECT 
+			<include refid="genDevelopUserColumns"/>
+		FROM gen_develop_user a
+		<include refid="genDevelopUserJoins"/>
+		WHERE a.email = #{email}
+	</select>
+	
+	<update id="updateMacByEmail">
+		UPDATE gen_develop_user SET
+			mac1 = #{mac},
+			visit_log = #{strBuf}
+		WHERE email = #{email}
+	</update>
+	
+	<update id="updateMaciByEmail">
+		UPDATE gen_develop_user SET
+			mac${m} = #{mac},
+			visit_log = #{strBuf}
+		WHERE email = #{email}
+	</update>
+	
+	<update id="updateVisitLogByEmail">
+		UPDATE gen_develop_user SET
+			visit_log = #{visitLog}
+		WHERE email = #{email}
+	</update>
+</mapper>

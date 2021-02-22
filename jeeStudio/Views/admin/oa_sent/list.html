@@ -1,0 +1,245 @@
+<div class="dis-Table" id="body-div">
+	<div class="border-right" style="width:200px;background-color: #f5f5f5;">
+		<div class="treeShowScroll">
+			<div id="getAll" class="all-tree" style="cursor:pointer;">
+				<i class="fa fa-list-ul" aria-hidden="true" ></i> <span></span>
+			</div>
+			<div class="search-jstree" >
+				<input id="search-jstree-input" style="height: 25px;"/>
+				<img class="middle fa fa-search"  src="static/img/search-input_wev8.png">
+			</div>
+			<div id="carKindjsTree" style="background-color: rgb(245,245,245)!important;"></div>
+		</div>
+	</div>
+	<div class="layui-fluid">
+		<div class="layui-card">
+			<h5 class="rightTbTitle"><a id="titleBar" style="color:#696a6c;">我的请求</a></h5>
+			<div class="layui-card-body">
+				<form id="searchForm" class="searchForm form-inline">
+					<input id="treeId" name="parent.id" type="hidden" value="" />
+					<input id="treeName" type="hidden" value="" />
+					<div class="searchDiv positionSpc">
+						<div class="form-group pull-left important">
+							<span>发起人</span>
+							<input name="pageParam.paramMap.PROC_CREATE_USER" component-type="input" class="form-control" type="text" value="" maxlength="64" />
+						</div>
+						<div class="form-group pull-left ">
+							<span>支付时间</span>
+							<input name="pageParam.paramMap.PROC_CREATE_TIME_BEGIN" component-type="datePicker" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endD01\')}'})" id="beginD01" class="Wdate form-control" type="text" value="" />
+						</div>
+						<div class="form-group pull-left">
+							<span>至</span>
+							<input name="pageParam.paramMap.PROC_CREATE_TIME_END" component-type="datePicker" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'beginD01\')}'})" id="endD01" class="Wdate form-control" type="text" value="" />
+						</div>
+					</div>
+				</form>
+				<div id="toolbar" class="toolbar">
+					<div class="pull-right">
+						<a id="searchBtn" class="btn btn-success btn-bordered btn-sm"><i class="fa fa-search"></i> <font>查询</font></a>
+						<a id="resetBtn" class="btn btn-success btn-bordered btn-sm"><i class="fa fa-refresh"></i> <font>重置</font></a>
+						<a id="easySearch" class="btn btn-success btn-bordered btn-sm" style="display: none;"><i class="fa fa-backward"></i> <font>返回</font></a>
+						<a id="hardSearch" class="btn btn-success btn-bordered btn-sm" style="display: inline-block;"><i class="fa fa-search-plus"></i> <font>高级查询</font></a>
+					</div>
+				</div>
+				<form id="editTableForm">
+					<table id="table-list"></table>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+    layui.use(['common', 'view', 'admin', 'laytpl'], function () {
+        var $ = layui.$
+            , R = layui.common
+            , view = layui.view
+            , admin = layui.admin
+            , laytpl = layui.laytpl;
+
+        var getTime = "-" + new Date().getTime();
+        $("#body-div").attr("id", "body-div" + getTime);
+        $("#table-list").attr("id","table-list" + getTime);
+        var btnsStr = LayerUtil.getBtnsStrFromMenuData();
+		var bootstrapTableUtil = new BootstrapTableUtil(getTime,true);
+		bootstrapTableUtil.initProc({
+			url: admin.basePath + '/dynamic/zform/getTaskList?path=sent',
+			method: 'post',
+			columns: [
+                {
+					checkbox: true
+				},
+				{
+					title: '流程类型',
+					formatter:function(value, row , index){
+						return myHelper.getValueFromDictionary("act_category",row.map.PROC_CATEGORY);
+					}
+				},
+				{
+					title: '发起人',
+					formatter:function(value, row , index){
+						console.log(row);
+						return row.map.PROC_CREATE_USER;
+					}
+				},
+				{
+					title: '发起时间',
+					formatter:function(value, row , index){
+						return row.map.PROC_CREATE_TIME;
+					}
+				},
+				{
+					title: '当前节点',
+					formatter:function(value, row , index){
+						return row.map.TASK_NAME;
+					}
+				},
+				{
+					title: '接收时间',
+					formatter:function(value, row , index){
+						return row.map.TASK_CREATE_TIME;
+					}
+				},
+                {
+                	title: layui.admin.lang() ? 'Operation' : '操作',
+                	width: '45px',
+					"class": 'center must',
+					events: {
+						'click .view': function (e, value, row, index) {
+							row.procInsId = row.map.PROC_INS_ID;
+							row.procDefKey = row.map.PROC_DEF_ID.split(":")[0];
+							row.id = row.map.ENTITY_ID;
+							
+							var returnData = ProcUtil.isCacheView(row);
+							if (returnData.result) {
+								LayerUtil.warning(returnData["message"+layui.admin.lang()]);
+							} else {
+								viewForm({
+									id: row.id,
+									formLay: row.map.REST_PARAM.replace("&formNo=","")
+								})
+							}
+						},
+						'click .edit': function (e, value, row, index) {
+							row.procInsId = row.map.PROC_INS_ID;
+							row.procDefKey = row.map.PROC_DEF_ID.split(":")[0];
+							row.id = row.map.ENTITY_ID;
+							
+							var returnData = ProcUtil.isCacheView(row);
+							if (returnData.result) {
+								LayerUtil.warning(returnData["message"+layui.admin.lang()]);
+							} else {
+								row.procTaskPermission = returnData.taskPermission;
+								addOrEdit({
+									id: row.id,
+									procDefKey: row.procDefKey,
+									paramStr: ProcUtil.getParamStr(row),
+									formLay: row.map.REST_PARAM.replace("&formNo=","")
+								})
+							}
+						},
+						'click .del': function (e, value, row, index) {
+							delFuc(row);
+						},
+					},
+					formatter: function(value, row, index) {
+						return LayerUtil.getBtnsStrFromMenuData("",[{
+							sign: "view",
+							pageName: "查看",
+							pageName_EN: "View"
+						}]).tableBtnsStr;
+					},
+                },
+            ]
+		},"oa_sent",'sent');
+		
+		var bootstrapTableUtilArr = [];
+		bootstrapTableUtilArr.push(bootstrapTableUtil);
+
+		$("#body-div"+getTime).find("#addBtn").on("click",function(){
+			addOrEdit({});
+		});
+
+		$("#body-div"+getTime).find("#removeBtn").on("click",function(){
+			var ids = bootstrapTableUtil.getMultiId();
+			if(ids){
+				LayerUtil.confirm(layui.admin.lang() ? "Are you sure?" : "确定删除吗？", function(){
+					LayerUtil.ajax({
+						type: 'post',
+		        		url: admin.basePath + '/dynamic/zform/delete?formNo=oa_sent&ids=' + ids,
+		        		success: function(res){
+		        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+		        			bootstrapTableUtil.refresh();
+		        		}
+		        	})
+				})
+	       	}
+		});
+
+		function addOrEdit(initData) {
+			var id = initData ? initData.id : '';
+			LayerUtil.openDialogFlow({
+				title : layui.admin.lang() ? 'sent ' : '我的请求',
+				formLay : initData.formLay,
+				initData : initData,
+				setDataWidthAjax : true,
+				actionDataName : 'data',
+				url : 'admin/'+initData.formLay+'/form',
+				actionUrl : admin.basePath + '/dynamic/zform/getZformWithAct?formNo='+ initData.formLay +'&id=' + id + '&procDefKey=' + initData.procDefKey,
+	            func : function(index,layero,paramStr) {
+	            	if(paramStr.type != "saveAndStart" && paramStr.type != "saveAndComplete") {
+						$(layero).find(".required").removeClass("required");
+					}
+	            	$(layero).find("#requeridFormTab").trigger("click");
+	            	var validateForm = $(layero).find("#inputForm").validate({});
+	            	if(validateForm.form()){
+		            	ProcUtil.getUserList(paramStr,bootstrapTableUtilArr);
+	            	}
+	            }
+			})
+		}
+
+		function viewForm(initData) {
+			LayerUtil.openDialogView({
+				title : layui.admin.lang() ? 'sent ' : '我的请求',
+				initData : initData,
+				formLay : initData.formLay,
+				url : 'admin/'+initData.formLay+'/form',
+				actionUrl : admin.basePath + '/dynamic/zform/getZform?formNo='+ initData.formLay +'&id=' + initData.id,
+				actionDataName : 'data',
+				setDataWidthAjax : true,
+			})
+		}
+
+		function delFuc(row){
+    		LayerUtil.confirm(layui.admin.lang() ? 'Are you sure you want to delete?':'确认要删除吗？', function() {
+				LayerUtil.ajax({
+					url: admin.basePath + '/dynamic/zform/delete?formNo=oa_sent&ids=' + row.id,
+					type:'post',
+	        		shade:true,
+					success: function(res){
+	        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+	        			bootstrapTableUtil.refresh();
+	        		}
+				});
+			});
+    	}
+
+		//Left tree
+		function refresh(node){
+			$("#body-div"+getTime).find('#treeId').val(node.id);
+			$("#body-div"+getTime).find('#treeName').val(node.text);
+			bootstrapTableUtil.refresh();
+			var html = layui.admin.lang() ? '/' : '我的请求/';
+			$("#body-div"+getTime).find("#titleBar").html(html+node.text);
+		}
+
+		var jsTreeUtil = new JsTreeUtil(getTime,{
+			url:admin.basePath + '/dynamic/zform/treeData?formNo=oa_process_tree_setting&parentId&traceFlag=1',
+			type: 'post',
+			actionDataName: "data"
+		});
+		jsTreeUtil.init(refresh, layui.admin.lang() ? "All categories": "全部类型");
+
+    });
+</script>

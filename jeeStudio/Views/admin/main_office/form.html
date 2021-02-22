@@ -1,0 +1,37 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal" style="overflow: auto;">
+		<input name="id" type="hidden" id="id"/>
+			<input name="formNo" type="hidden" id="formNo"/>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>上级机构</label>
+	  		<fieldset class="set">
+				<div name="parent.id" component-type="treeSelect" actionUrl="/dynamic/zform/treeData?parentId=0&traceFlag=1&formNo=main_office" sync="false" check="false" chooseParent="true" class="tag-div "></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>机构名称</label>
+	  		<fieldset class="set">
+				<input name="s01" component-type="input" type="text"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>机构简称</label>
+	  		<fieldset class="set">
+				<input name="s04" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>机构编码</label>
+	  		<fieldset class="set">
+				<input name="s03" component-type="input" type="text"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>排序</label>
+	  		<fieldset class="set">
+				<input name="sort" component-type="input" type="text"    class="form-control digits required"/>
+	  		</fieldset>
+	  	</div>
+	</form>
+</div>
+

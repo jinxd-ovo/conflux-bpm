@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.system.DictDao">
+
+    <resultMap id="dictResult" type="Dict">
+   		<result property="id" column="id" />
+		<result property="code" column="code" />
+		<result property="sort" column="sort" />
+		<result property="parentIds" column="parentIds" />
+		<result property="ownerCode" column="ownerCode" />
+		<result property="name" column="name" />
+		<result property="nameEn" column="name_EN" />
+		<result property="parentCode" column="parentCode" />
+		<result property="editFlag" column="editFlag" />
+		<result property="code1" column="code1" />
+		<result property="code2" column="code2" />
+		<association property="hasChildren" column="id" select="hasChildren" />
+    </resultMap>
+
+	<resultMap id="dictTree" type="DictResult">
+		<result property="dictionaryID" column="id" />
+		<result property="member" column="code" />
+		<result property="memberName" column="name" />
+		<result property="memberNameEn" column="nameEn" />
+		<result property="parentType" column="parentCode" />
+		<result property="sort" column="sort" />
+		<association property="hasChildren" column="code" select="hasChildrenTree" />
+	</resultMap>
+    
+	<sql id="dictColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.owner_code AS "ownerCode",
+		a.parent_id AS "parent.id",
+		a.parent_ids AS "parentIds",
+		a.code AS "code",
+		a.name AS "name",
+		a.name_en AS "nameEn",
+		a.sort AS "sort",
+		a.parent_code AS "parentCode",
+		a.edit_flag AS "editFlag",
+		a.remarks AS "remarks",
+		a.code1 AS "code1",
+		a.code2 AS "code2"
+	</sql>
+
+	<sql id="dictJoins">
+		
+	</sql>
+	
+	<select id="get" resultType="Dict">
+		SELECT 
+			<include refid="dictColumns"/>
+		FROM sys_dictionary a
+		<include refid="dictJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Dict">
+		SELECT 
+			<include refid="dictColumns"/>
+		FROM sys_dictionary a
+		<include refid="dictJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+			<if test="parent != null and parent.id != null and parent.id != ''">
+				<if test="parent == '0'">
+				AND (a.parent_id IS NULL OR a.parent_id = '')
+				</if>
+				<if test="parent != '0'">
+				AND a.parent_id = #{parent.id}
+				</if>
+			</if>
+			<if test="parentIds != null and parentIds != ''">
+				<bind name="parentIdsLike" value="'%' + parentIds + '%'" />
+				AND a.parent_ids LIKE '${parentIdsLike}'
+			</if>
+		</where>
+		ORDER BY a.sort ASC
+	</select>
+
+	<select id="findDictTree" resultMap="dictTree">
+		SELECT
+		<include refid="dictColumns"/>
+		FROM sys_dictionary a
+		<include refid="dictJoins"/>
+		<where>
+			a.del_flag = '0'
+			<if test="parentId != null and parentId != ''">
+				<if test="parentId == '0'.toString()">
+					AND (a.parent_code IS NULL OR a.parent_code = '')
+				</if>
+				<if test="parentId != '0'.toString()">
+					AND a.parent_code = #{parentId}
+				</if>
+			</if>
+			<if test="parentId == null or parentId == ''">
+				AND (a.parent_code IS NULL OR a.parent_code = '')
+			</if>
+			<if test="editFlag != null and editFlag != ''">
+				AND a.edit_flag = #{editFlag}
+			</if>
+		</where>
+		ORDER BY a.sort ASC
+	</select>
+	
+	<select id="findAllList" resultType="Dict">
+		SELECT 
+			<include refid="dictColumns"/>
+		FROM sys_dictionary a
+		<include refid="dictJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND a.view_flag = '1'
+		</where>
+		ORDER BY a.sort ASC
+	</select>
+	
+	<select id="getChildren" parameterType="String" resultMap="dictResult">
+		SELECT
+		<include refid="dictColumns"/>
+		FROM sys_dictionary a
+		<include refid="dictJoins"/>
+		<where>
+			a.del_flag = '0'
+			AND a.parent_id = #{parentId}
+		</where>
+		ORDER BY a.sort ASC
+    </select>
+
+    <select id="hasChildren" parameterType="String" resultType="Boolean">
+        select case when exists(select 1 from sys_dictionary where parent_id = #{id}) then 1 else 0 end from sys_dual
+    </select>
+
+	<select id="hasChildrenTree" parameterType="String" resultType="Boolean">
+        select case when exists(select 1 from sys_dictionary where parent_code = #{code}) then 1 else 0 end from sys_dual
+    </select>
+    
+	<select id="findByParentIdsLike" resultType="Dict">
+		SELECT
+			a.id,
+			a.parent_id AS "parent.id",
+			a.parent_ids
+		FROM sys_dictionary a
+		<include refid="dictJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND a.parent_ids LIKE #{parentIds}
+		</where>
+		ORDER BY a.sort ASC
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sys_dictionary(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			owner_code,
+			parent_id,
+			parent_ids,
+			code,
+			name,
+			name_en,
+			sort,
+			parent_code,
+			edit_flag,
+			remarks,
+			code1,
+			code2
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{ownerCode},
+			#{parent.id},
+			#{parentIds},
+			#{code},
+			#{name},
+			#{nameEn},
+			#{sort},
+			#{parentCode},
+			#{editFlag},
+			#{remarks},
+			#{code1},
+			#{code2}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sys_dictionary SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			owner_code = #{ownerCode},
+			parent_id = #{parent.id},
+			parent_ids = #{parentIds},
+			code = #{code},
+			name = #{name},
+			name_en = #{nameEn},
+			sort = #{sort},
+			parent_code = #{parentCode},
+			edit_flag = #{editFlag},
+			remarks = #{remarks},
+			code1 = #{code1},
+			code2 = #{code2}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateParentIds">
+		UPDATE sys_dictionary SET 
+			parent_id = #{parent.id}, 
+			parent_ids = #{parentIds}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		<bind name="idLike" value="'%,' + id + ',%'" />
+		DELETE FROM sys_dictionary
+		WHERE id = #{id} OR parent_ids LIKE '${idLike}'
+	</update>
+	
+	<update id="deleteByLogic">
+		<bind name="idLike" value="'%,' + id + ',%'" />
+		UPDATE sys_dictionary SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id} OR parent_ids LIKE '${idLike}'
+	</update>
+
+	<delete id="deleteCascade">
+		DELETE FROM sys_dictionary
+		WHERE code = #{code} OR parent_code = #{code}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,141 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal">
+		<input name="id" type="hidden" id="id"/>
+		<input name="formNo" type="hidden" id="formNo"/>
+		  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>归属机构</label>
+	  		<fieldset class="set">
+				<div name="parent.id" component-type="treeSelect" actionUrl="/dynamic/zform/treeData?parentId=0&traceFlag=1&formNo=sys_office" sync="false" check="false" chooseParent="true" class="tag-div required"></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>登录名</label>
+	  		<fieldset class="set">
+				<input name="s01" component-type="input" type="text"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>新密码</label>
+	  		<fieldset class="set">
+				<input id="newPsd" name="newPsd" component-type="input" type="password"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>密码确认</label>
+	  		<fieldset class="set">
+				<input id="newPsdAgain" name="newPsdAgain" component-type="input" type="password"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>密码有效日期</label>
+	  		<fieldset class="set">
+				<input name="d11" component-type="datePicker" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="Wdate form-control " type="text" value="" />
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>用户编号</label>
+	  		<fieldset class="set">
+				<input name="s02" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>姓名</label>
+	  		<fieldset class="set">
+				<input name="s04" component-type="input" type="text"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>手机</label>
+	  		<fieldset class="set">
+				<input name="s05" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>电话</label>
+	  		<fieldset class="set">
+				<input name="s07" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>邮箱</label>
+	  		<fieldset class="set">
+				<input name="s09" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>密级</label>
+	  		<fieldset class="set">
+	  			<select name="s06" component-type="select" component-id="sys_sec_level" class="form-control ">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>职务</label>
+	  		<fieldset class="set">
+	  			<div name="g01.id" component-type="grid" class="tag-div " tableName="sys_level" searchKey="name" fieldKeys="s02,remarks" fieldLabels="名称,备注" searchLabel="名称" javaField="g01.id|s01"></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>主岗</label>
+	  		<fieldset class="set">
+	  			<div name="g02.id" component-type="grid" class="tag-div " tableName="sys_post" searchKey="name" fieldKeys="s01,remarks" fieldLabels="名称,备注" searchLabel="名称" javaField="g02.id|s01"></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>副岗</label>
+	  		<fieldset class="set">
+	  			<div name="g03.id" component-type="grid" class="tag-div " tableName="sys_post" searchKey="name" fieldKeys="s01,remarks" fieldLabels="名称,备注" searchLabel="名称" javaField="g03.id|s01"></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>是否允许登录</label>
+	  		<fieldset class="set">
+	  			<select name="s10" component-type="select" component-id="yes_no" class="form-control required">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>仅域控登录</label>
+	  		<fieldset class="set">
+	  			<select name="s13" component-type="select" component-id="yes_no" class="form-control ">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>状态</label>
+	  		<fieldset class="set">
+	  			<select name="s08" component-type="select" component-id="sys_useable" class="form-control required">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>排序</label>
+	  		<fieldset class="set">
+				<input name="sort" component-type="input" type="text"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>备注信息</label>
+	  		<fieldset class="set">
+				<textarea name="remarks" component-type="textarea" rows="3"    class="form-control  "></textarea>
+	  		</fieldset>
+	  	</div>
+	</form>
+</div>
+
+<script>
+	window.formFuction = function(res, layero, data){
+		if(data == "view"){
+			$("#newPsd").closest("div.adapt").hide();
+			$("#newPsdAgain").closest("div.adapt").hide();
+		}
+		if(layui.admin.lang()){
+			$("#newPsd").closest("div.adapt").find("label").eq(0).text("New password");
+			$("#newPsdAgain").closest("div.adapt").find("label").eq(0).text("Confirm Password");
+		}
+	}
+</script>

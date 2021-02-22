@@ -1,0 +1,60 @@
+{
+	"code": 0,
+	"msg": "操作成功！",
+	"temp_token": "temp_token",
+	"long_token": "long_token",
+	"data": [
+        {
+            "id":"1",
+            "text":"一级单位",
+            "children":[
+                {
+                    "id":"75b2312a9155459facbddae6ef02750d",
+                    "text":"本级",
+                    "children":[
+                        {
+                            "id":"4fba3bb1efb04e05896ba1600275fa42",
+                            "text":"办公室"
+                        },
+                        {
+                            "id":"503261905f294566b665340ff6ca94e6",
+                            "text":"财务处"
+                        },
+                        {
+                            "id":"dbfa181017c1430fbdd5a3f22d99c8eb",
+                            "text":"人事处"
+                        },
+                        {
+                            "id":"9b154ac643394bcbad6744956b975906",
+                            "text":"文印室"
+                        }
+                    ]
+                },
+                {
+                    "id":"2eb84a76f5ed47329c7ab645e0d06912",
+                    "text":"二级单位A",
+                    "children":[
+                        {
+                            "id":"5ede7f8e2bb44c5dac63290e60382193",
+                            "text":"办公室"
+                        }
+                    ]
+                },
+                {
+                    "id":"cd0e762953a747e6ad10769407e45d78",
+                    "text":"二级单位B",
+                    "children":[
+                        {
+                            "id":"12ea55addd3f42279c7276ff3b1c2836",
+                            "text":"办公室"
+                        },
+                        {
+                            "id":"3c7ccd6a6aa44217b5c94d702eb73c32",
+                            "text":"人事部"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

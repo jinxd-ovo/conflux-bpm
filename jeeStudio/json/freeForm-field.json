@@ -1,0 +1,63 @@
+{
+	"code": 0,
+	"msg": "操作成功！",
+	"temp_token": "temp_token",
+	"long_token": "long_token",
+	"data": [
+		{
+			"comments": "领域下拉选项",
+			"name": "s14",
+			"isReadonly": "0",
+			"defaultValue": "",
+			"javaType": "String",
+			"jdbcType": "varchar(64)",
+			"dictType": "123",
+			"isOneLine": "0",
+			"isNull": "1",
+			"javaField": "s",
+			"showType": "select",
+			"friendlyJdbcType": "文本",
+			"isForm": 1,
+			"isQuery": 0,
+			"isList": "0",
+			"formSort": 0,
+			"searchSort": 0,
+			"listSort": 23,
+			"javaFieldReplace": "s14",
+			"dictList": [
+				{
+					"label": "字典1",
+					"value": 1
+				}, {
+					"label": "字典2",
+					"value": 2
+				}
+			]
+		}, {
+			"showType": "input",
+			"isOneLine": 0,
+			"isNull": 1,
+			"comments": "领域单行文本",
+			"javaField": "s",
+			"maxLength": "",
+			"minLength": "",
+			"minValue": "",
+			"maxValue": "",
+			"friendlyJdbcType": "文本",
+			"javaType": "String",
+			"jdbcType": "varchar(64)",
+			"queryType": "=",
+			"validateType": "",
+			"isForm": 1,
+			"isQuery": 1,
+			"isList": 0,
+			"formSort": 1,
+			"searchSort": 0,
+			"isReadonly": 0,
+			"defaultValue": "",
+			"name": "s01",
+			"listSort": 0,
+			"javaFieldReplace": "s01"
+		}
+	]
+}

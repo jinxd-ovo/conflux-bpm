@@ -1,0 +1,29 @@
+.box-horizontal .title-box .title {
+	font-size: 26px;
+}
+.box-horizontal table tbody tr td{
+	font-size: 13px;
+}
+.table-box table tr td{
+	line-height: 18px;
+	padding: 3px 0px;
+	text-align: center;
+	height: 32px;
+}
+.t-left{
+	text-align: left !important;
+}
+.t-right{
+	text-align: right !important;
+	padding-right: 5px !important;
+}
+.box-horizontal{
+	font-family: 'SimHei' !important;
+}
+#table{
+	border-color: #e7eaec;
+    color: #676a6c;
+}
+.box-horizontal table thead tr td,.box-horizontal table tbody tr td,.box-horizontal .foot,.box-horizontal .title-box ul li{
+    font-size: 16px;
+}

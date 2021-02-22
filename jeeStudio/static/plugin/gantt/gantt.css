@@ -1,0 +1,518 @@
+/* -------------------------------------- GRIDIFY -----------------------------------*/
+
+.gantt-div .gdfTable {
+	table-layout: fixed;
+	border-collapse: separate;
+	border-spacing: 0;
+}
+
+.gantt-div .gdfTable td,
+.gantt-div .gdfTable th {
+	vertical-align: middle;
+	overflow: hidden;
+	text-overflow: clip;
+	white-space: nowrap;
+	font-size: 14px;
+    background: #fff;
+}
+
+.gantt-div .gdfCell {
+	overflow: hidden;
+	padding: 4px 2px
+}
+
+.gantt-div .gdfCell.noClip {
+	overflow: visible;
+}
+
+.gantt-div .gdfColHeader {
+	min-width: 5px;
+	height: 30px;
+}
+
+.gantt-div .gdfCell,
+.gantt-div .gdfColHeader {
+	border-bottom: 1px solid #B7E0FE;
+	border-right: 1px solid #B7E0FE;
+}
+
+.gantt-div .gdfCellInput {
+	border: 0 none;
+	font-size: 12px;
+	height: 20px;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	background-color: #d4fbe8;
+}
+
+.gantt-div .gdfCellWrap {
+	border: 0 none;
+	font-size: 12px;
+	height: 17px;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	overflow: hidden;
+	background-color: #ffcccc;
+}
+
+.gantt-div .gdfHResizing {
+	cursor: w-resize;
+}
+
+
+/* -------------------------------------- SPLITTER -----------------------------------*/
+
+.gantt-div .splitterContainer {
+	width: 100%;
+	height: 100%;
+}
+
+.gantt-div .splitBox1 {
+	overflow-x: scroll;
+	overflow-y: hidden;
+}
+
+.gantt-div .splitBox2 {
+	overflow-x: scroll;
+	overflow-y: auto;
+}
+
+.gantt-div .splitElement {
+	outline-style: none;
+	position: absolute;
+	height: 100%;
+}
+.gantt-div .splitElement::-webkit-scrollbar{
+	height: 10px;
+}
+
+.gantt-div .vSplitBar {
+	width: 5px;
+	background-color: #aaa;
+	cursor: w-resize;
+	text-align: center;
+	color: white;
+}
+
+.gantt-div .fixHead {
+	position: absolute;
+	z-index: 2000;
+	top: 0;
+}
+
+
+/* -------------------------------------- GANTT -----------------------------------*/
+
+.gantt-div .ganttTable {
+	table-layout: fixed;
+}
+
+.gantt-div .ganttTable td,
+.gantt-div .ganttTable th {
+	overflow: hidden;
+	text-overflow: clip;
+	white-space: nowrap;
+}
+
+.gantt-div .ganttHead1,
+.gantt-div .ganttHead2 {
+	height: 20px;
+}
+
+.gantt-div .ganttHead1 th,
+.gantt-div .ganttHead2 th {
+	border-left: 1px solid white;
+	padding: 0;
+	margin: 0;
+}
+
+.gantt-div .ganttToday {
+	position: absolute;
+	top: 0;
+	width: 1px;
+	height: 100%;
+	border-left: 2px dotted #13AFA5;
+}
+
+.gantt-div .ganttHighLight {
+	position: absolute;
+	width: 100%;
+	height: 28px;
+	background-color: yellow;
+	opacity: .4;
+}
+
+.gantt-div .ganttButtonBar {
+	position: relative;
+	padding: 10px 0px;
+}
+
+.gantt-div .ganttButtonBar .buttons,
+.gantt-div .ganttButtonBar h1 {
+	display: inline-block;
+	margin: 0px 0 0 10px;
+}
+
+.gantt-div .ganttButtonBar .button span.teamworkIcon {
+	font-size: 150%
+}
+
+.gantt-div .ganttButtonSeparator {
+	border-left: 1px solid gray;
+	padding-right: 10px;
+	margin-left: 10px;
+	font-size: 130%;
+    vertical-align: middle;
+}
+
+.gantt-div .ganttLines {
+	position: absolute;
+	width: 100%;
+	height: 1px;
+	border-top: 1px solid #eee;
+	z-index: 1;
+}
+
+.gantt-div .ganttLinks {
+	z-index: 10;
+}
+
+.gantt-div .end {
+	border-right: 1px dotted #666
+}
+
+.gantt-div .holyH {
+	background-color: #9CB7AA;
+}
+
+.gantt-div .holy {
+	background-color: #FFF5E6;
+}
+
+
+/* -------------------------------------- TASK -----------------------------------*/
+
+.gantt-div .taskBoxDiv {
+	position: absolute;
+	height: 25px;
+	margin-top: 3px;
+	z-index: 100;
+}
+
+.gantt-div .taskBoxDiv .layout {
+	height: 100%;
+	color: #DB2727;
+	border-radius: 2px;
+	background: #eee;
+	/* Old browsers */
+	border: 1px solid #bbb;
+}
+
+.gantt-div .taskBoxDiv .taskStatus {
+	left: 5px;
+	top: 10px;
+	position: absolute;
+	width: 10px;
+	height: 10px;
+}
+
+.gantt-div .taskBoxDiv .layout .milestone {
+	top: 0px;
+	position: absolute;
+	width: 18px;
+	background: url(static/plugin/gantt/res/milestone.png) no-repeat;
+	height: 18px;
+	display: none;
+}
+
+.gantt-div .taskBoxDiv .layout .milestone.end {
+	right: 0;
+}
+
+.gantt-div .taskBoxDiv .layout .milestone.active {
+	display: block;
+}
+
+.gantt-div .taskBoxDiv.hasChild .layout {
+	border-top: 2px solid black;
+}
+
+.gantt-div .taskBoxDiv .taskProgress {
+	height: 5px;
+	position: absolute;
+}
+
+.gantt-div .taskBoxDiv .layout.extDep {
+	background-image: url(static/plugin/gantt/res/hasExternalDeps.png);
+}
+
+.gantt-div .taskLabel {
+	position: absolute;
+	height: 28px;
+	color: black;
+	text-align: right;
+	padding-right: 5px;
+	overflow: hidden;
+	left: -200px;
+	width: 195px;
+	white-space: nowrap;
+}
+
+.gantt-div .taskDepLine {
+	border: 1px solid #9999ff;
+	overflow: hidden;
+	position: absolute;
+}
+
+.gantt-div .taskEditRow,
+.gantt-div .emptyRow {
+	height: 30px;
+}
+
+.gantt-div .taskEditRow input {
+	border: 0 none;
+	font-size: 14px;
+	height: 20px;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	font-family: Arial, sans-serif
+}
+
+.gantt-div .taskEditRow.rowSelected td,
+.gantt-div .taskEditRow.rowSelected input {
+	background-color: #FFFF99;
+}
+
+.gantt-div input[readonly] {
+	color: #c0c0c0;
+}
+
+.gantt-div .taskStatusBox {
+	position: absolute;
+	width: 100px;
+	height: 24px;
+	border: 1px solid #a0a0a0;
+	background-color: #fff;
+	margin-top: -21px;
+	margin-left: -2px;
+	padding: 3px;
+	z-index: 100;
+}
+
+.gantt-div .taskStatus {
+	width: 15px;
+	height: 15px;
+	display: inline-block;
+	text-indent: 0;
+	position: relative;
+}
+
+.gantt-div .taskStatus[status=STATUS_ACTIVE] {
+	background-color: #3BBF67;
+}
+
+.gantt-div .taskStatus[status=STATUS_DONE] {
+	background-color: #0099FF;
+}
+
+.gantt-div .taskStatus[status=STATUS_FAILED] {
+	background-color: #660066;
+}
+
+.gantt-div .taskStatus[status=STATUS_SUSPENDED] {
+	background-color: #fbb11e;
+}
+
+.gantt-div .taskStatus[status=STATUS_UNDEFINED] {
+	background-color: #ffffff;
+}
+
+.gantt-div .taskStatus.selected {
+	border: #666 2px solid;
+}
+
+.gantt-div .ganttTaskEditor {
+	padding: 10px
+}
+
+.gantt-div .unselectable {
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.gantt-div .exp-controller {
+	display: none;
+}
+
+.gantt-div .expcoll {
+	display: inline-block;
+	cursor: pointer;
+	margin-left: -10px;
+	margin-right: 2px;
+	width: 16px;
+	height: 16px;
+	background-image: url(res/toggle-expand.png);
+	position: relative;
+	top: 2px;
+}
+
+.gantt-div .expcoll.exp {
+	background-image: url(res/toggle_collapse.png);
+}
+
+.gantt-div .ui-resizable-helper {
+	border: 1px dotted #00F;
+}
+
+.gantt-div .ui-resizable-e,
+.gantt-div .ui-resizable-w {
+	width: 5px;
+}
+
+.gantt-div .ui-draggable {
+	cursor: move;
+}
+
+
+/*--------------------------------------------------- SVG --------------------------------------------------*/
+
+.gantt-div .ganttSVGBox {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	background-color: transparent;
+	width: 100%;
+}
+
+.gantt-div .taskBoxSVG {
+	overflow: visible;
+}
+
+.gantt-div .taskBoxSVG .taskLayout {
+	stroke-width: 1px;
+	stroke: #bbb;
+	/*fill:url('#taskGrad'); do not work on firefox*/
+}
+
+.gantt-div .taskLinkPathSVG {
+	stroke: #9999ff;
+	stroke-width: 3px;
+	fill: none;
+	cursor: pointer;
+}
+
+.gantt-div .ganttLinesSVG {
+	stroke: #eee;
+	stroke-width: 1;
+}
+
+.gantt-div .ganttTodaySVG {
+	stroke-width: 2px;
+	stroke: #13AFA5;
+	stroke-linecap: "round";
+	stroke-dasharray: 2, 2;
+}
+
+.gantt-div .taskStatusSVG[status=STATUS_ACTIVE] {
+	fill: #3BBF67;
+}
+
+.gantt-div .taskStatusSVG[status=STATUS_DONE] {
+	fill: #0099FF;
+}
+
+.gantt-div .taskStatusSVG[status=STATUS_FAILED] {
+	fill: #660066;
+}
+
+.gantt-div .taskStatusSVG[status=STATUS_SUSPENDED] {
+	fill: #fbb11e;
+}
+
+.gantt-div .taskStatusSVG[status=STATUS_UNDEFINED] {
+	fill: #ffffff;
+}
+
+.gantt-div .deSVG.deSVGdrag {
+	cursor: move;
+}
+
+.gantt-div .deSVG.deSVGhand {
+	cursor: ew-resize;
+}
+
+.gantt-div .linkHandleSVG {
+	display: none;
+	stroke: #888;
+	stroke-width: 2px;
+	fill: #eee;
+	cursor: pointer;
+}
+
+.gantt-div .linkLineSVG {
+	stroke-width: 5px;
+	stroke: #9999ff;
+	stroke-linecap: "round";
+	opacity: .5;
+	/*stroke-dasharray:5,5;*/
+}
+
+.gantt-div .linkOnProgress .deSVG.taskBoxSVG {
+	cursor: cell;
+}
+
+.gantt-div .taskBoxSVG.linkOver .taskLayout {
+	stroke-width: 5px;
+	stroke: #9999ff;
+	opacity: .5;
+}
+
+.gantt-div .taskLabelSVG {
+	stroke: none;
+	fill: #999;
+	font-size: 12px;
+}
+
+.gantt-div .critical .taskLinkPathSVG {
+	stroke: red;
+}
+
+.gantt-div .taskBoxSVG.critical .taskLayout {
+	stroke: red;
+}
+
+.gantt-div .focused .taskLinkPathSVG {
+	stroke-width: 5px;
+	stroke: #4286ff;
+}
+
+.gantt-div .taskBoxSVG.focused .taskLayout {
+	stroke-width: 3px;
+	stroke: #4286ff;
+}
+
+.gantt-div .gdfTable thead th{
+	background-color: rgb(248,248,248);
+	text-align: center;
+    font-size: 13px;
+    border-bottom: 2px solid #B7E0FE;
+}
+.gantt-div .ganttHead1 th,
+.gantt-div .ganttHead2 th {
+	border-left: 1px solid white;
+	padding: 0;
+	margin: 0;
+	background-color: rgb(248,248,248);
+	text-align: center;
+    font-size: 13px;
+}
+.gantt-div .ganttHead2 th {
+    border-bottom: 2px solid #B7E0FE;
+}

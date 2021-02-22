@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.system.SysFileDao">
+    
+	<sql id="sysFileColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.owner_code AS "ownerCode",
+		a.group_id_ AS "groupId",
+		a.name_ AS "name",
+		a.ext_ AS "ext",
+		a.type_ AS "type",
+		a.size_ AS "size",
+		a.path_ AS "path",
+		a.pdf_path_ AS "pdfPath",
+		a.thumb_path_ AS "thumbPath",
+		a.upload_time_ AS "uploadTime",
+		a.upload_user_id_ AS "uploadUser.id",
+		su.name AS "uploadUser.name",
+		a.sort_ AS "sort",
+		a.desc_ AS "desc",
+		a.duration_ AS "duration",
+		a.sec_flag_ AS "secFlag",
+		a.visit_count_ AS "visitCount",
+		a.to_pdf_ AS "toPdf",
+		a.secret_level AS "secretLevel"
+	</sql>
+	
+	<sql id="sysFileJoins">
+		left join sys_user su on su.id = a.upload_user_id_
+	</sql>
+	
+	<resultMap type="SysFile" id="SysFileResult" autoMapping="true">
+    </resultMap>
+    
+	<select id="get" resultMap="SysFileResult" >
+		SELECT 
+			<include refid="sysFileColumns"/>
+		FROM sys_file_ a
+		<include refid="sysFileJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultMap="SysFileResult" >
+		SELECT 
+			<include refid="sysFileColumns"/>
+		FROM sys_file_ a
+		<include refid="sysFileJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+			<if test="ownerCode != null and ownerCode != ''">
+				<bind name="ownerCodeLike" value="ownerCode + '%'" />
+				AND a.owner_code LIKE '${ownerCodeLike}'
+			</if>
+			<if test="groupId != null and groupId != ''">
+				AND a.group_id_ = #{groupId}
+			</if>
+			<if test="name != null and name != ''">
+				<bind name="nameLike" value="'%' + name + '%'" />
+				AND a.name_ LIKE '${nameLike}'
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type_ = #{type}
+			</if>
+			<if test="beginUploadTime != null and endUploadTime != null and beginUploadTime != '' and endUploadTime != ''">
+				AND a.upload_time_ BETWEEN #{beginUploadTime} AND #{endUploadTime}
+			</if>
+			<if test="uploadUser != null and uploadUser.id != null and uploadUser.id != ''">
+				AND a.upload_user_id_ = #{uploadUser.id}
+			</if>
+			<if test="secFlag != null and secFlag != ''">
+				AND a.sec_flag_ = #{secFlag}
+			</if>
+			<if test="toPdf != null and toPdf != ''">
+				AND a.to_pdf_ = #{toPdf}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.sort_, a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findListAndContent" resultMap="SysFileResult" >
+		SELECT
+		<include refid="sysFileColumns"/>
+		,a.content_ AS "content"
+		FROM sys_file_ a
+		<include refid="sysFileJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+			<if test="ownerCode != null and ownerCode != ''">
+				<bind name="ownerCodeLike" value="ownerCode + '%'" />
+				AND a.owner_code LIKE '${ownerCodeLike}'
+			</if>
+			<if test="groupId != null and groupId != ''">
+				AND a.group_id_ = #{groupId}
+			</if>
+			<if test="name != null and name != ''">
+				<bind name="nameLike" value="'%' + name + '%'" />
+				AND a.name_ LIKE '${nameLike}'
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type_ = #{type}
+			</if>
+			<if test="beginUploadTime != null and endUploadTime != null and beginUploadTime != '' and endUploadTime != ''">
+				AND a.upload_time_ BETWEEN #{beginUploadTime} AND #{endUploadTime}
+			</if>
+			<if test="uploadUser != null and uploadUser.id != null and uploadUser.id != ''">
+				AND a.upload_user_id_ = #{uploadUser.id}
+			</if>
+			<if test="secFlag != null and secFlag != ''">
+				AND a.sec_flag_ = #{secFlag}
+			</if>
+			<if test="toPdf != null and toPdf != ''">
+				AND a.to_pdf_ = #{toPdf}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.sort_, a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultMap="SysFileResult" >
+		SELECT 
+			<include refid="sysFileColumns"/>
+		FROM sys_file_ a
+		<include refid="sysFileJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sys_file_(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			owner_code,
+			group_id_,
+			name_,
+			ext_,
+			type_,
+			size_,
+			path_,
+			pdf_path_,
+			thumb_path_,
+			upload_time_,
+			upload_user_id_,
+			sort_,
+			desc_,
+			duration_,
+			sec_flag_,
+			visit_count_,
+			to_pdf_,
+			secret_level
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{ownerCode},
+			#{groupId},
+			#{name},
+			#{ext},
+			#{type},
+			#{size},
+			#{path},
+			#{pdfPath},
+			#{thumbPath},
+			#{uploadTime},
+			#{uploadUser.id},
+			#{sort},
+			#{desc},
+			#{duration},
+			#{secFlag},
+			#{visitCount},
+			#{toPdf},
+			#{secretLevel}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sys_file_ SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			owner_code = #{ownerCode},
+			group_id_ = #{groupId},
+			name_ = #{name},
+			ext_ = #{ext},
+			type_ = #{type},
+			size_ = #{size},
+			path_ = #{path},
+			pdf_path_ = #{pdfPath},
+			thumb_path_ = #{thumbPath},
+			upload_time_ = #{uploadTime},
+			upload_user_id_ = #{uploadUser.id},
+			sort_ = #{sort},
+			desc_ = #{desc},
+			duration_ = #{duration},
+			sec_flag_ = #{secFlag},
+			visit_count_ = #{visitCount},
+			to_pdf_ = #{toPdf},
+			secret_level = #{secretLevel}
+		WHERE id = #{id}
+	</update>
+
+	<update id="saveSecretLevel">
+		UPDATE sys_file_ SET
+			secret_level = #{secretLevel}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sys_file_
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteByLogic">
+		UPDATE sys_file_ SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="findUniqueByProperty" resultType="SysFile" statementType="STATEMENT">
+		SELECT * FROM sys_file_ WHERE ${propertyName} = '${value}'
+	</select>
+
+</mapper>

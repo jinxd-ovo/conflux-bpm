@@ -1,0 +1,46 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal">
+		<div class="col-md-6 col-sm-6 adapt">
+			<label>机构选择</label>
+			<fieldset class="set">
+				<div name="office" component-type="treeSelectOffice" actionUrl="/system/office/viewData" sync="false" check="false" chooseParent="true" class="tag-div">
+					<input name="office.id" type="hidden">
+					<input name="office.name" readonly="readonly" class="form-control" type="text" value="">
+					<a class="tag-div-button"><i class="fa fa-search"></i></a>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col-md-6 col-sm-6 adapt">
+			<label>表单路径</label>
+			<fieldset class="set">
+				<input name="metaInfo.scope" component-type="input" class="form-control" type="text" value="" maxlength="50">
+			</fieldset>
+		</div>
+	</form>
+</div>
+
+<script>
+	window.processCenter = {};
+	window.processCenter.dosubmit = function(layIndex,_id){//layIndex 弹窗index _id数据id
+		var data = {
+			modelId: _id,
+			scope: $('input[name="metaInfo.scope"]').val(),
+			officeId: $('input[name="office.id"]').val()
+		}
+		//console.log(JSON.stringify(data))
+		//保存
+		LayerUtil.ajax({
+			//url: admin.basePath + '/true.json',
+			type:'get',
+			url: layui.admin.basePath + '/service/model/update',
+			async: false,
+			shade:true,
+			data: data,
+			success: function(result){
+				LayerUtil.success(result[LayerUtil.getMsgLang()]);
+				layui.layer.close(layIndex);
+			}
+		})
+		return true;
+	}
+</script>

@@ -1,0 +1,273 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal" style="overflow: auto;">
+		<input name="id" type="hidden" id="id"/>
+		<input name="hashKey" type="hidden" id="hashKey"/>
+		<input name="formNo" type="hidden" id="formNo"/>
+		<input component-type="input" type="hidden" id="act.taskId" name="act.taskId" />
+		<input component-type="input" type="hidden" id="act.taskName" name="act.taskName" />
+		<input component-type="input" type="hidden" id="act.taskDefKey" name="act.taskDefKey" />
+		<input component-type="input" type="hidden" id="procInsId" name="procInsId" />
+		<input component-type="input" type="hidden" id="act.procDefId" name="act.procDefId" />
+		<input component-type="input" type="hidden" id="flag" name="act.flag" />
+		<input component-type="input" type="hidden" id="tempNodeKey" name="tempNodeKey" />
+		<input component-type="input" type="hidden" id="tempLoginName" name="tempLoginName" />
+		<input component-type="input" type="hidden" id="procDefKey" name="procDefKey">
+		<input component-type="input" type="hidden" id="ruleArgsJson" name='ruleArgsJson' />
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>名称</label>
+	  		<fieldset class="set">
+				<input name="s01" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>行政区</label>
+	  		<fieldset class="set">
+	  			<div name="area01.id" component-type="treeSelect" actionUrl="/sys/tagTree/areaTreeAsync?id=0" sync="true" check="false" chooseParent="true" class="tag-div "></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>注册日期</label>
+	  		<fieldset class="set">
+				<input name="d01" component-type="datePicker" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate form-control " type="text" value="" />
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>备注信息</label>
+	  		<fieldset class="set">
+				<textarea name="remarks" component-type="textarea" rows="3"    class="form-control  "></textarea>
+	  		</fieldset>
+	  	</div>
+		<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<div style="border: 1px solid #e6e6e6;margin-top:10px"></div>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>审批意见</label>
+	  		<fieldset class="set">
+				<textarea name="act.comment" component-type="textarea" rows="3" class="form-control"></textarea>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>流程日志</label>
+	  		<fieldset class="set">
+	  			<div class="form-control" name="act.log">
+	  				<div>
+	  					<a id="showProcImgDiv" class="btn btn-white btn-sm">流程图</a>
+						<a id="showProcLogDiv" class="btn btn-white btn-sm">流程日志</a>
+	  				</div>
+	  				<div>
+		  				<div id="procImgDiv" style="display: none;"></div>
+						<div id="procLogDiv" style="display: none;"></div>
+		  			</div>
+	  			</div>
+	  		</fieldset>
+	  	</div>
+	</form>
+	<div id="act-modal"></div>
+	<div id="body-div">
+		<div class="layui-tab layui-tab-brief">
+			<div id="toolbarChild"><button id="addBtn" class="btn btn-sm btn-success"><i class="glyphicon "></i> 添加</button></div>
+			<ul class="layui-tab-title">
+				<li class="layui-this" data-url="demo_child1">测试子表</li>
+			</ul>
+			<div class="layui-tab-content">
+				<div class="layui-tab-item layui-show">
+					<table id="table-list-demo_child1"></table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	//表单页自执行方法
+	window.formFuction = function(res,layero){
+        var getTime = "-" + new Date().getTime();
+		//这段必须写，防止id重复
+        $(layero).find("#body-div").attr("id", "body-div" + getTime);
+
+		var bootstrapTableUtilArr = [];
+		pushArr();
+		function pushArr(){
+			var bootstrapTableUtil_demo_child1 = new BootstrapTableUtil("-demo_child1",false,getTime);
+			bootstrapTableUtil_demo_child1.init({
+				url: layui.admin.basePath + '/dynamic/zform/dataChildren?formNo=demo_child1&path=path&traceFlag=&parentId=' + $(layero).find("#id").val(),
+				method: 'post',
+				columns: [
+					{
+						checkbox: false
+					}
+					,{
+						field: 's01',
+						title: '名称',
+						sortable: true
+						
+						,formatter:function(value, row , index){
+							if(!value){
+								value = "";
+							}
+							return "<a href='javascript:;' class='view'>"+value+"</a>";
+						},
+						events: {
+							'click .view': function (e, value, row, index) {
+								viewForm({
+									id: row.id
+								})
+							}
+						}
+					}
+					,{
+						field: 's02',
+						title: '地址',
+						sortable: true
+						
+					}
+					,{
+						field: 'sort',
+						title: '排序',
+						sortable: true
+						
+					}
+					,{
+					title: layui.admin.lang() ? 'Operation' : '操作',
+                	width: '45px',
+					"class": 'center must',
+					events: {
+						'click .edit': function (e, value, row, index) {
+							addOrEdit({
+								id: row.id,
+								parent:{
+									id: $(layero).find("#id").val()
+								}
+							})
+						},
+						'click .del': function (e, value, row, index) {
+							delFuc(row);
+						},
+						'click .view': function (e, value, row, index) {
+							viewForm({id: row.id})
+						},
+					},
+					formatter: function(value, row, index) {
+						return  '<div class="show-btn-group">'+
+							'<i class="fa fa-cog" aria-hidden="true"></i>'+
+							'<div class="hide-btn-group" style="width: 240px;">'+
+								'<a class="btn view" dealname="查看">查看</a>'+
+								'<a class="btn edit" dealname="编辑">编辑</a>'+
+								'<a class="btn del" dealname="删除">删除</a>'+
+							'</div>'+
+						'</div>';
+					}
+				}],
+			});
+			bootstrapTableUtilArr.push(bootstrapTableUtil_demo_child1);
+			/*
+			if($(layero).find("#id").val()!==''){
+				var str = '<button id="demo_child1Import" class="btn btn-sm btn-success"> 导入</button>';
+				$("#body-div"+getTime).find("#toolbarChild").append(str);
+				myHelper.initWebUploader('demo_child1Import', false, '/system/sysFile/fileUploadBatchProgress',false,true,$(layero).find("#id").val(),'-'+$(layero).find("#body-div"+getTime).find(".layui-this").attr("data-url"));
+			}
+			*/
+		}
+
+		$(layero).find("#addBtn").on("click",function(){
+			if(!$(layero).find("#id").val()){
+				var validateForm = $(layero).find("#inputForm").validate({});
+	        	if(validateForm.form()){
+					var data = myHelper.composeData($(layero).find("#inputForm"));
+					if (data.tempLoginName != undefined && data.tempLoginName == "") {
+						data.tempLoginName = [];
+					}
+					LayerUtil.ajax({
+						url : layui.admin.basePath + '/dynamic/zform/beforeSave',
+						type : 'post',
+						data : JSON.stringify(data),
+						shade: true,
+						success : function(res) {
+							$(layero).find("#id").val(res.insertedId);
+							$.each(bootstrapTableUtilArr, function(idx,obj) {
+								obj.destroy();
+							});
+							bootstrapTableUtilArr = [];
+							pushArr();
+							addOrEdit({
+								parent:{
+							 		id: $(layero).find("#id").val()
+								}
+						   	});
+						}
+					});
+	        	}
+			}else{
+				addOrEdit({
+					parent:{
+				 		id: $(layero).find("#id").val()
+					}
+			   	});
+			}
+		})
+
+		function addOrEdit(initData) {
+			var subTableName = $(layero).find("#body-div"+getTime).find(".layui-this").attr("data-url");
+			var subTableComments = $(layero).find("#body-div"+getTime).find(".layui-this").text();
+			var id = initData ? initData.id : '';
+			LayerUtil.openDialog({
+				title : layui.admin.lang() ? 'New ' + subTableComments : '添加' + subTableComments,
+				formLay : subTableName,
+				initData : initData,
+				setDataWidthAjax : true,
+				actionDataName : 'data',
+				url : 'admin/' + subTableName + '/form',
+				actionUrl : layui.admin.basePath + '/dynamic/zform/getZform?formNo=' + subTableName + '&id=' + id,
+	            btn : ['保存', '取消'],
+	            btn_EN : ['Save', 'Cancel'],
+	            func1 : function(index,layero) {
+					var data = myHelper.composeData($(layero).find("#inputForm"));
+	            	LayerUtil.ajax({
+                		url : layui.admin.basePath + '/dynamic/zform/save',
+                		type : 'post',
+                		data : JSON.stringify(data),
+                		success : function(res) {
+                			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+                			$.each(bootstrapTableUtilArr, function(idx,obj) {
+								obj.refresh();
+							});
+                			layui.layer.close(index)
+                		}
+                	});
+	            }
+			})
+		}
+
+		function viewForm(initData) {
+			var subTableName = $(layero).find("#body-div"+getTime).find(".layui-this").attr("data-url");
+			var subTableComments = $(layero).find("#body-div"+getTime).find(".layui-this").text();
+			LayerUtil.openDialogView({
+				title : layui.admin.lang() ? 'View ' + subTableComments : '查看' + subTableComments,
+				formLay : subTableName,
+				initData : initData,
+				url : 'admin/' + subTableName + '/form',
+				actionUrl : layui.admin.basePath + '/dynamic/zform/getZform?formNo=' + subTableName + '&id=' + initData.id,
+				actionDataName : 'data',
+				setIdAndDoByAction : true,
+			})
+		}
+
+		function delFuc(row){
+    		LayerUtil.confirm(layui.admin.lang() ? 'Are you sure you want to delete?':'确认要删除吗？', function() {
+    			var subTableName = $(layero).find("#body-div"+getTime).find(".layui-this").attr("data-url");
+				LayerUtil.ajax({
+					url: layui.admin.basePath + '/dynamic/zform/delete?formNo=' + subTableName + '&ids=' + row.id,
+					type:'post',
+	        		shade:true,
+					success: function(res){
+	        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+	        			$.each(bootstrapTableUtilArr, function(idx,obj) {
+            				obj.refresh();
+            			});
+	        		}
+				});
+			});
+    	}
+
+	}
+</script>

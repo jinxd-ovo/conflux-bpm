@@ -1,0 +1,79 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal" style="overflow: auto;">
+		<input name="id" type="hidden" id="id"/>
+		<input name="formNo" type="hidden" id="formNo"/>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>所属站点</label>
+	  		<fieldset class="set">
+	  			<div name="g03.id" component-type="grid" class="tag-div required" tableName="prt_site" searchKey="name" fieldKeys="s02,s01" fieldLabels="编码,名称" searchLabel="名称" javaField="g03.id|s01"></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>上级栏目</label>
+	  		<fieldset class="set">
+				<div name="parent.id" component-type="treeSelect" actionUrl="/dynamic/zform/treeData?parentId=0&traceFlag=1&formNo=prt_channel" sync="false" check="false" chooseParent="true" class="tag-div "></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>栏目名称</label>
+	  		<fieldset class="set">
+				<input name="s01" component-type="input" type="text" maxlength="50"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>栏目英文名称</label>
+	  		<fieldset class="set">
+				<input name="s50" component-type="input" type="text" maxlength="50"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>栏目模板</label>
+	  		<fieldset class="set">
+	  			<div name="g01.id" component-type="grid" class="tag-div required" tableName="prt_model" searchKey="name" fieldKeys="s01" fieldLabels="名称" searchLabel="名称" javaField="g01.id|s01"></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>文章模板</label>
+	  		<fieldset class="set">
+	  			<div name="g02.id" component-type="grid" class="tag-div required" tableName="prt_model" searchKey="name" fieldKeys="s01" fieldLabels="名称" searchLabel="名称" javaField="g02.id|s01"></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>文章类型</label>
+	  		<fieldset class="set">
+	  			<select name="s02" component-type="select" component-id="prt_info_types" class="form-control required">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>负责人</label>
+	  		<fieldset class="set">
+	  			<div name="users01.id" component-type="treeSelect" actionUrl="/sys/tagTree/userTree" sync="false" check="true" chooseParent="false" class="tag-div required"></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>可评论</label>
+	  		<fieldset class="set">
+	  			<select name="s03" component-type="select" component-id="yes_no" class="form-control required">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>状态</label>
+	  		<fieldset class="set">
+	  			<select name="status" component-type="select" component-id="sys_useable" class="form-control required">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>排序</label>
+	  		<fieldset class="set">
+				<input name="sort" component-type="input" type="text"    class="form-control digits required"/>
+	  		</fieldset>
+	  	</div>
+	</form>
+</div>
+

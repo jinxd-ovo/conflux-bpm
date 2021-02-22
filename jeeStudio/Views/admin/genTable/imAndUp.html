@@ -1,0 +1,304 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal">
+		<input name="id" type="hidden" id="id"/>
+		<input name="formNo" type="hidden" id="formNo"/>
+		<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>导入模板上传</label>
+	  		<fieldset class="set">
+	  			<div class="form-control " style="padding: 1px 12px;">
+	  				<div class="input-group" style="width:100%"> 
+  						<input name="importTemplateFile" type="hidden" class="">
+  						<a id="importTemplateFile" class="btn btn-white btn-sm" undefined="">
+  							<i class="fa fa-plus"></i> 添加上传模板
+  						</a> 
+  						<div id="importTemplateFileDiv" class="fileListDiv">
+  						</div>
+  					</div>
+	  			</div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>导入属性选择</label>
+	  		<fieldset class="set">
+	  			<select id="importList" name="importList" component-type="select" component-id="yes_no" class="form-control ">
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>导出模板上传</label>
+	  		<fieldset class="set">
+  				<div  class="form-control " style="padding: 1px 12px;">
+  					<div class="input-group" style="width:100%"> 
+  						<input name="exportTemplateFile" type="hidden" class="">
+  						<a id="exportTemplateFile" class="btn btn-white btn-sm" undefined="">
+  							<i class="fa fa-plus"></i> 添加导出模板
+  						</a> 
+  						<div id="exportTemplateFileDiv" class="fileListDiv">
+  						</div>
+  					</div>
+  				</div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>导出属性选择</label>
+	  		<fieldset class="set">
+	  			<select id="exportList" name="exportList" component-type="select" component-id="yes_no" class="form-control ">
+				</select>
+	  		</fieldset>
+	  	</div>
+	</form>
+</div>
+<script>
+	//表单页自执行方法
+	window.formFuction = function(res, layero, formFunctionData){
+		//wy数据获取
+		var formId = $(layero).find("#id").val();
+		
+		function selectChange(_this){
+			$select = $(_this).closest("fieldset.set").find("select");
+	    	var options = $select.find("option");
+	    	var selectOptions = [];
+	    	var otherOptions = $select.find("option");
+	    	$(_this).closest("fieldset.set").find(".select2-selection__choice").each(function (i, tag) {
+	    		otherOptions = $.grep(otherOptions,function(option){
+	    			return $(option).text() != $(tag).attr("title");
+	    		})
+	    		options.each(function (j, option) {
+	    			if($(tag).attr("title") == $(option).text()){
+	    				selectOptions.push(option);
+	    			}
+	    		});
+    		});
+	    	$select.empty();
+	    	$select.append(selectOptions.concat(otherOptions));
+		}
+		
+		if(formId){
+			LayerUtil.ajax({
+				//url: admin.basePath + '/freeForm-data2.json',
+				url: layui.admin.basePath + '/gen/genTable/editForm',
+				type: 'post',
+				async: false,
+				data: JSON.stringify({
+					id:formId
+				}),
+				success: function(result){
+					var data = [];
+					$.each(result.data.data, function(i,obj) {
+						data.push({id: obj.javaField, text: obj.javaField+" "+obj.comments});
+					});
+					var exportListOptionList = [];
+					var importListOptionList = [];
+					var exportListArr = result.data.genTable.exportList ? result.data.genTable.exportList.split(",") : [];
+					var importListArr = result.data.genTable.importList ? result.data.genTable.importList.split(",") : [];
+					var exportListArrVal = result.data.genTable.exportList ? result.data.genTable.exportList.split(",") : [];
+					var importListArrVal = result.data.genTable.importList ? result.data.genTable.importList.split(",") : [];
+					
+					$.each(data, function(idx,item) {
+						var push = true;
+						for(var i=0; i<exportListArr.length; i++){
+							if(exportListArr[i]==item.id){
+								exportListArr[i] = item;
+								push = false;
+							}
+						}
+						if(push){
+							exportListOptionList.push(item);
+						}
+					}); 
+					$.each(exportListArr, function(idx,item) {
+						if(typeof item == "string"){
+							exportListArr[idx] = {id:item,text:item}
+						}
+					}); 
+					exportListOptionList = exportListArr.concat(exportListOptionList);
+					
+					$.each(data, function(idx,item) {
+						var push = true;
+						for(var i=0; i<importListArr.length; i++){
+							if(importListArr[i]==item.id){
+								importListArr[i] = item;
+								push = false;
+							}
+						}
+						if(push){
+							importListOptionList.push(item);
+						}
+					}); 
+					$.each(importListArr, function(idx,item) {
+						if(typeof item == "string"){
+							importListArr[idx] = {id:item,text:item}
+						}
+					}); 
+					importListOptionList = importListArr.concat(importListOptionList);
+					
+					$(layero).find("#importList").select2({
+						placeholder:'请选择',
+						multiple:true,
+						tags:true,
+						data:importListOptionList
+					});
+					$(layero).find("#exportList").select2({
+						placeholder:'请选择',
+						multiple:true,
+						tags:true,
+						data:exportListOptionList,
+						sorter:function(data){
+							return data;
+						}
+					});
+					
+					if(result.data.genTable.exportList){
+						$(layero).find("#exportList").val(exportListArrVal).trigger("change");
+						$(layero).find("input[name='exportList']").val(exportListArrVal.join(","));
+					}
+					if(result.data.genTable.importList){
+						$(layero).find("#importList").val(importListArrVal).trigger("change");
+						$(layero).find("input[name='importList']").val(importListArrVal.join(","));
+					}
+					
+					$(layero).find("#exportList").closest("fieldset").find("ul.select2-selection__rendered").sortable({
+					    containment: 'parent',
+					    items: ">.select2-selection__choice",
+					    scrollSensitivity:  1,
+					    start: function() { 
+					    },
+					    update: function() { 
+							selectChange(this);
+					    }
+					});
+					$(layero).find("#exportList").closest("fieldset").on("change",function(){
+						selectChange(this);
+					})
+					$(layero).find("#importList").closest("fieldset").find("ul.select2-selection__rendered").sortable({
+					    containment: 'parent',
+					    items: ">.select2-selection__choice",
+					    scrollSensitivity:  1,
+					    start: function() { 
+					    },
+					    update: function() { 
+							selectChange(this);
+					    }
+					});
+					$(layero).find("#importList").closest("fieldset").on("change",function(){
+						selectChange(this);
+					})
+					
+					if(result.data.genTable.exportTemplateFile){
+						$(layero).find("input[name='exportTemplateFile']").val(result.data.genTable.exportTemplateFile);
+						LayerUtil.ajax({
+							url: layui.admin.basePath + '/system/sysFile/getFileList?groupId=' + result.data.genTable.exportTemplateFile,
+							async: false,
+							type: 'post',
+							success: function(result) {
+								var data = result.data.fileListMap.files;
+								var html = "";
+								if(data) {
+									for(var i = 0; i < data.length; i += 1) {
+										html += "<div>";
+										html += data[i].name;
+										html += "&emsp;";
+										if(layui.admin.lang()) {
+											html += "<a class='webUploadUpload' data-fileId='" + data[i].id + "' href='" + layui.admin.basePath + "/system/sysFile/fileDownload?fileId=" + data[i].id + "' download='" + data[i].name + "' target='_blank'>Download</a>"
+											html += "&nbsp;";
+											html += "<a class='webUploadRemove' data-fileId='" + data[i].id + "'>Delete</a>"
+										} else {
+											html += "<a class='webUploadUpload' data-fileId='" + data[i].id + "' href='" + layui.admin.basePath + "/system/sysFile/fileDownload?fileId=" + data[i].id + "' download='" + data[i].name + "' target='_blank'>下载</a>"
+											html += "&nbsp;";
+											html += "<a class='webUploadRemove' data-fileId='" + data[i].id + "'>删除</a>"
+										}
+										html += "</div>";
+									}
+								}
+								$(layero).find("#exportTemplateFileDiv").html(html);
+							}
+						})
+					}
+					if(result.data.genTable.importTemplateFile){
+						$(layero).find("input[name='importTemplateFile']").val(result.data.genTable.importTemplateFile);
+						LayerUtil.ajax({
+							url: layui.admin.basePath + '/system/sysFile/getFileList?groupId=' + result.data.genTable.importTemplateFile,
+							async: false,
+							type: 'post',
+							success: function(result) {
+								var data = result.data.fileListMap.files;
+								var html = "";
+								if(data) {
+									for(var i = 0; i < data.length; i += 1) {
+										html += "<div>";
+										html += data[i].name;
+										html += "&emsp;";
+										if(layui.admin.lang()) {
+											html += "<a class='webUploadUpload' data-fileId='" + data[i].id + "' href='" + layui.admin.basePath + "/system/sysFile/fileDownload?fileId=" + data[i].id + "' download='" + data[i].name + "' target='_blank'>Download</a>"
+											html += "&nbsp;";
+											html += "<a class='webUploadRemove' data-fileId='" + data[i].id + "'>Delete</a>"
+										} else {
+											html += "<a class='webUploadUpload' data-fileId='" + data[i].id + "' href='" + layui.admin.basePath + "/system/sysFile/fileDownload?fileId=" + data[i].id + "' download='" + data[i].name + "' target='_blank'>下载</a>"
+											html += "&nbsp;";
+											html += "<a class='webUploadRemove' data-fileId='" + data[i].id + "'>删除</a>"
+										}
+										html += "</div>";
+									}
+								}
+								$(layero).find("#importTemplateFileDiv").html(html);
+							}
+						})
+					}
+					
+					
+				}
+			});
+		}
+		
+		myHelper.initWebUploader("importTemplateFile", {
+             title: 'Excel',
+             extensions: 'xls,xlsx',
+             mimeTypes: '*',
+             errMsg:"请上传Excel文件",
+             fileNumLimit :1
+        },"/system/sysFile/fileUploadBatchProgress");
+		myHelper.initWebUploader("exportTemplateFile", {
+             title: 'Excel',
+             extensions: 'xls,xlsx',
+             mimeTypes: '*',
+             errMsg:"请上传Excel文件",
+             fileNumLimit :1
+         },"/system/sysFile/fileUploadBatchProgress");
+		
+		
+		$("#importTemplateFile").closest(".form-control").on("click",".webUploadRemove",function(){
+			var _this = this;
+			var fileId = $(_this).attr("data-fileId");
+			LayerUtil.ajax({
+				url: layui.admin.basePath + '/system/sysFile/deleteFile?fileId=' + fileId,
+				async:false,
+				type: 'get',
+				success: function(data){
+					if(data.code == 0){
+						$(_this).closest("div").remove();
+						//${input}Count--;
+					}else{
+						LayerUtil.error(data[LayerUtil.getMsgLang()]);
+					}
+				}
+			});
+		});
+		$("#exportTemplateFile").closest(".form-control").on("click",".webUploadRemove",function(){
+			var _this = this;
+			var fileId = $(_this).attr("data-fileId");
+			LayerUtil.ajax({
+				url: layui.admin.basePath + '/system/sysFile/deleteFile?fileId=' + fileId,
+				async:false,
+				type: 'get',
+				success: function(data){
+					if(data.code == 0){
+						$(_this).closest("div").remove();
+						//${input}Count--;
+					}else{
+						LayerUtil.error(data[LayerUtil.getMsgLang()]);
+					}
+				}
+			});
+		});
+	};
+</script>

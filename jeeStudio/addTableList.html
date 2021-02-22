@@ -1,0 +1,93 @@
+<html>
+<head>
+	<title>表单列表</title>
+	<meta name="decorator" content="default"/>
+	<link rel="stylesheet" href="static/plugin/awesome/4.4/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="static/plugin/iCheck/custom.css" />
+	<link rel="stylesheet" href="static/plugin/select2/select2.full.min.css" />
+	<link rel="stylesheet" href="js/layui/css/layui.css" media="all">
+	<link rel="stylesheet" href="static/plugin/bootstrap/3.3.4/css_default/bootstrap.min.css" />
+	<link rel="stylesheet" href="static/plugin/jstree/themes/default/style.css"/>
+	<link rel="stylesheet" href="static/css/taskPerlist.css"/>
+	<script type="text/javascript" src="static/plugin/jquery/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="static/plugin/iCheck/icheck.min.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="static/plugin/select2/select2.full.min.js"></script>
+	<script type="text/javascript" src="static/util/bootstrapTable-util.js"></script>
+	<script src="js/layui/layui.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrapTable/bootstrap-table.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrapTable/bootstrap-table-zh-CN.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrapTable/bootstrap-table-contextmenu.js"></script> 
+	<script type="text/javascript" src="static/plugin/bootstrapTable/bootstrap-table-export.js"></script> 
+	<!-- <script type="text/javascript" src="static/plugin/bootstrap-editable/js/bootstrap-editable.js"></script> -->
+	<script type="text/javascript" src="static/plugin/bootstrap-editable/bootstrap-table-editable.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrapTable/tableExport.js"></script> 
+	
+	<script type="text/javascript" src="static/plugin/jstree/jstree.min.js"></script>
+	<script type="text/javascript" src="static/plugin/jqueryValidate/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="static/plugin/jqueryValidate/messages_zh.min.js"></script>
+	<script type="text/javascript" src="static/js/config.js"></script>
+	<script type="text/javascript" src="static/js/addTableList.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+		});
+		function select(){
+			var rowArray = new Array();
+			var row = $("#addTable").bootstrapTable('getSelections');
+			var rowLength = row.length;
+			for(var i=0;i<rowLength;i++){
+				var json = {};
+				var item = row[i];
+				json.id = item.id;
+				json.comments = item.comments;
+				json.javaField = item.javaField;
+				json.javaFieldId = item.javaFieldId;
+				rowArray.push(json);
+			}
+			return rowArray;
+		}
+	</script>
+</head>
+<body>
+	<!-- 查询条件 -->
+	<div class="row">
+		<div class="col-sm-12">
+			<form id="searchForm" modelAttribute="genTable" action="findTableByName" method="post" class="form-inline">
+				<!-- <input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
+				<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+				<input id="ownerCode" name="ownerCode" type="hidden" value="${ownerCode}" />
+				<table:sortColumn id="orderBy" name="orderBy" value="${page.orderBy}" callback="sortOrRefresh();"/> -->
+				<div class="form-group">
+					<span>表名：</span>
+					<select id="parentTable" name="name" class="form-control select2-search" data-width="400px">
+						<option value="" selected="selected">无</option>                   
+						<!-- <option value="act_evt_log">act_evt_log  :  act_evt_log</option>
+					
+						<option value="atest">atest  :  Test flow</option>
+					
+						<option value="bill">bill  :  费用报销单</option>
+					
+						<option value="books">books  :  图书</option>
+					
+						<option value="category">category  :  商品类型</option> -->
+                        <!-- <c:forEach items="${tableList}" var="table">
+                            <option value="${table.name}">${table.nameAndComments}</option>
+                        </c:forEach> -->
+                    </select>
+					<!-- <input name="name" htmlEscape="false" maxlength="64"  class=" form-control input-sm"/> -->
+				</div>
+				<div class="form-group pull-right">
+					<a id="search" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 查询</a>
+					<a id="reset" class="btn btn-primary btn-rounded  btn-bordered btn-sm" ><i class="fa fa-refresh"></i> 重置</a>
+				</div>
+			</form>
+			<br/>
+		</div>
+	</div> 
+	
+	<table id="addTable"   data-toolbar="#toolbar" data-id-field="id"></table>
+	
+	<!-- context menu -->
+    <ul id="context-menu" class="dropdown-menu" style="display:none">
+</body>
+</html>

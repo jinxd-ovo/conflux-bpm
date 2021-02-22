@@ -1,0 +1,57 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal" style="overflow: auto;">
+		<input name="id" type="hidden" id="id"/>
+			<input name="formNo" type="hidden" id="formNo"/>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>编码</label>
+	  		<fieldset class="set">
+				<input name="s01" component-type="input" type="text" maxlength="50"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>名称</label>
+	  		<fieldset class="set">
+				<input name="s02" component-type="input" type="text" maxlength="50"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>起始值</label>
+	  		<fieldset class="set">
+				<input name="s03" component-type="input" type="text"   max="50"  class="form-control digits required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>当前值</label>
+	  		<fieldset class="set">
+				<input name="s04" component-type="input" type="text" maxlength="50"    class="form-control digits required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>当前年度</label>
+	  		<fieldset class="set">
+				<input name="s05" component-type="input" type="text" maxlength="50"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>按年循环</label>
+	  		<fieldset class="set">
+	  			<select name="s06" component-type="select" component-id="annual_cycle" class="form-control required">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>上年度值</label>
+	  		<fieldset class="set">
+				<input name="s07" component-type="input" type="text" maxlength="50"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>备注</label>
+	  		<fieldset class="set">
+				<textarea name="m01" component-type="textarea" rows="3" maxlength="500"    class="form-control  "></textarea>
+	  		</fieldset>
+	  	</div>
+	</form>
+</div>
+

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.gen.GenDataBaseDictDao">
+    
+	<select id="findTableList" resultType="GenTable">
+		<if test="dbName == 'oracle'">
+			SELECT 
+				t.TABLE_NAME AS name, 
+				c.COMMENTS AS comments
+			FROM user_tables t, user_tab_comments c 
+			WHERE t.table_name = c.table_name
+			<if test="name != null and name != ''">
+				AND t.TABLE_NAME = upper(#{name})
+			</if>
+			ORDER BY t.TABLE_NAME
+		</if>
+		<if test="dbName == 'mysql'">			
+			SELECT t.table_name AS name,t.TABLE_COMMENT AS comments 
+			FROM information_schema.`TABLES` t 
+			WHERE t.TABLE_SCHEMA = (select database())
+			<if test="name != null and name != ''">
+				AND t.TABLE_NAME = upper(#{name})
+			</if>
+			ORDER BY t.TABLE_NAME
+		</if>
+		<if test="dbName == 'dm'">
+			SELECT 
+				t.TABLE_NAME AS name, 
+				c.COMMENTS AS comments
+			FROM user_tables t, user_tab_comments c 
+			WHERE t.table_name = c.table_name
+			<if test="name != null and name != ''">
+				AND t.TABLE_NAME = upper(#{name})
+			</if>
+			ORDER BY t.TABLE_NAME
+		</if>
+		<if test="dbName == 'mssql'">
+			SELECT tbs.name AS name, 
+			ds.value AS comments       
+			FROM sys.extended_properties ds  
+			LEFT JOIN sysobjects tbs ON ds.major_id=tbs.id  
+			WHERE  ds.minor_id=0
+			<if test="name != null and name != ''">
+				AND tbs.name = upper(#{name})
+			</if>
+			ORDER BY tbs.name
+		</if>
+	</select>
+	
+	<select id="findTableColumnList" resultType="GenTableColumn">
+		<if test="dbName == 'oracle'">
+			SELECT
+				t.COLUMN_NAME AS name,
+				(CASE WHEN t.NULLABLE = 'Y' THEN '1' ELSE '0' END) AS isNull,
+				(t.COLUMN_ID * 10) AS sort,
+				c.COMMENTS AS comments,
+				decode(t.DATA_TYPE,'DATE',t.DATA_TYPE || '(' || t.DATA_LENGTH || ')',
+					'VARCHAR2', t.DATA_TYPE || '(' || t.DATA_LENGTH || ')',
+					'VARCHAR', t.DATA_TYPE || '(' || t.DATA_LENGTH || ')',
+					'NVARCHAR2', t.DATA_TYPE || '(' || t.DATA_LENGTH/2 || ')',
+					'CHAR', t.DATA_TYPE || '(' || t.DATA_LENGTH || ')',
+					'NUMBER',t.DATA_TYPE || (nvl2(t.DATA_PRECISION,nvl2(decode(t.DATA_SCALE,0,null,t.DATA_SCALE),
+						'(' || t.DATA_PRECISION || ',' || t.DATA_SCALE || ')', 
+						'(' || t.DATA_PRECISION || ')'),'(18)')),t.DATA_TYPE) AS jdbcType 
+			FROM user_tab_columns t, user_col_comments c 
+			WHERE t.TABLE_NAME = c.table_name 
+				AND t.COLUMN_NAME = c.column_name 
+			<if test="name != null and name != ''">
+				AND t.TABLE_NAME = upper(#{name})
+			</if>
+			ORDER BY t.COLUMN_ID
+		</if>
+		<if test="dbName == 'mysql'">	
+			SELECT t.COLUMN_NAME AS name, (CASE WHEN t.IS_NULLABLE = 'YES' THEN '1' ELSE '0' END) AS isNull,
+				(t.ORDINAL_POSITION * 10) AS sort,t.COLUMN_COMMENT AS comments,t.COLUMN_TYPE AS jdbcType 
+			FROM information_schema.`COLUMNS` t 
+			WHERE t.TABLE_SCHEMA = (select database())
+			<if test="name != null and name != ''">
+				AND t.TABLE_NAME = upper(#{name})
+			</if>
+			ORDER BY t.ORDINAL_POSITION
+		</if>
+		<if test="dbName == 'dm'">
+			SELECT
+				t.COLUMN_NAME AS name,
+				(CASE WHEN t.NULLABLE = 'Y' THEN '1' ELSE '0' END) AS isNull,
+				(t.COLUMN_ID * 10) AS sort,
+				c.COMMENTS AS comments,
+				decode(t.DATA_TYPE,'DATE',t.DATA_TYPE || '(' || t.DATA_LENGTH || ')',
+					'VARCHAR2', t.DATA_TYPE || '(' || t.DATA_LENGTH || ')',
+					'VARCHAR', t.DATA_TYPE || '(' || t.DATA_LENGTH || ')',
+					'NVARCHAR2', t.DATA_TYPE || '(' || t.DATA_LENGTH/2 || ')',
+					'CHAR', t.DATA_TYPE || '(' || t.DATA_LENGTH || ')',
+					'NUMBER',t.DATA_TYPE || (nvl2(t.DATA_PRECISION,nvl2(decode(t.DATA_SCALE,0,null,t.DATA_SCALE),
+						'(' || t.DATA_PRECISION || ',' || t.DATA_SCALE || ')', 
+						'(' || t.DATA_PRECISION || ')'),'(18)')),t.DATA_TYPE) AS jdbcType 
+			FROM user_tab_columns t, user_col_comments c 
+			WHERE t.TABLE_NAME = c.table_name 
+				AND t.COLUMN_NAME = c.column_name 
+			<if test="name != null and name != ''">
+				AND t.TABLE_NAME = upper(#{name})
+			</if>
+			ORDER BY t.COLUMN_ID
+		</if>
+		<if test="dbName == 'mssql'">
+			SELECT [name] = [Columns].name ,
+			[isNull] = [Columns].is_nullable ,
+			[sort] = [Columns].column_id * 10,
+			[comments] = [Properties].value,
+	        [jdbcType] = [Types].name
+	 		FROM sys.tables AS [Tables]
+	        INNER JOIN sys.columns AS [Columns] ON [Tables].object_id = [Columns].object_id
+	        INNER JOIN sys.types AS [Types] ON [Columns].system_type_id = [Types].system_type_id
+	                                           AND is_user_defined = 0
+	                                           AND [Types].name &lt;&gt; 'sysname'
+	        LEFT OUTER JOIN sys.extended_properties AS [Properties] ON [Properties].major_id = [Tables].object_id
+	                                                              AND [Properties].minor_id = [Columns].column_id
+	                                                              AND [Properties].name = 'MS_Description'
+			WHERE  1=1
+			<if test="name != null and name != ''">
+				AND [Tables].name = upper(#{name})
+			</if>
+			ORDER BY [Columns].column_id
+		</if>
+	</select>
+	
+	<select id="findTablePK" resultType="string">
+		<if test="dbName == 'oracle'">
+			SELECT lower(cu.COLUMN_NAME) AS columnName
+			FROM user_cons_columns cu, user_constraints au
+			WHERE cu.constraint_name = au.constraint_name
+				AND au.constraint_type = 'P'
+				AND au.table_name = upper(#{name})
+		</if>
+		<if test="dbName == 'mysql'">
+			SELECT lower(au.COLUMN_NAME) AS columnName 
+			FROM information_schema.`COLUMNS` au
+			WHERE au.TABLE_SCHEMA = (select database()) 
+			AND au.COLUMN_KEY='PRI' AND au.TABLE_NAME = upper(#{name})
+		</if>
+		<if test="dbName == 'dm'">
+			SELECT lower(cu.COLUMN_NAME) AS columnName
+			FROM user_cons_columns cu, user_constraints au
+			WHERE cu.constraint_name = au.constraint_name
+				AND au.constraint_type = 'P'
+				AND au.table_name = upper(#{name})
+		</if>
+		<if test="dbName == 'mssql'">
+			SELECT syscolumns.name AS columnName  
+			FROM sysobjects INNER JOIN sysconstraints  
+			ON  sysobjects.xtype in('PK') AND   
+			sysobjects.id = sysconstraints.constid  
+			inner JOIN syscolumns ON sysconstraints.id = syscolumns.id 
+			WHERE syscolumns.typestat=3 
+			AND  OBJECT_NAME(sysobjects.parent_obj) = upper(#{name})
+		</if>
+	</select>
+
+</mapper>

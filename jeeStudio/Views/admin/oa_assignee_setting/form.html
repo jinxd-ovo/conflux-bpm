@@ -1,0 +1,37 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal" style="overflow: auto;">
+		<input name="id" type="hidden" id="id"/>
+			<input name="formNo" type="hidden" id="formNo"/>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>开始时间</label>
+	  		<fieldset class="set">
+				<input name="d51" component-type="datePicker" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" class="Wdate form-control required" type="text" value="" />
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>结束时间</label>
+	  		<fieldset class="set">
+				<input name="d52" component-type="datePicker" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" class="Wdate form-control required" type="text" value="" />
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>代理人</label>
+	  		<fieldset class="set">
+	  			<div name="user01.id" component-type="treeSelect" actionUrl="/sys/tagTree/userTree" sync="false" check="false" chooseParent="false" class="tag-div required"></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>代理流程</label>
+	  		<fieldset class="set">
+				<div name="c01" component-type="checkbox" component-id="act_category" class="i-checks-div "></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>备注</label>
+	  		<fieldset class="set">
+				<textarea name="m01" component-type="textarea" rows="3" maxlength="500"    class="form-control  "></textarea>
+	  		</fieldset>
+	  	</div>
+	</form>
+</div>
+

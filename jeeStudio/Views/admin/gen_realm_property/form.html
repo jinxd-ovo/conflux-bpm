@@ -1,0 +1,192 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal" style="overflow: auto;">
+		<input name="id" type="hidden" id="id"/>
+			<input name="parent.id" type="hidden"/>
+		<input name="formNo" type="hidden" id="formNo"/>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>名称</label>
+	  		<fieldset class="set">
+				<input name="s01" component-type="input" type="text" maxlength="50"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>说明</label>
+	  		<fieldset class="set">
+				<input name="s02" component-type="input" type="text" maxlength="50"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>Comments</label>
+	  		<fieldset class="set">
+				<input name="s27" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>物理类型</label>
+	  		<fieldset class="set">
+	  			<select name="s03" component-type="select" component-id="oa_physical_type" class="form-control required">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>表单类型</label>
+	  		<fieldset class="set">
+	  			<select name="s04" component-type="select" component-id="oa_form_type" class="form-control required">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>Java类型</label>
+	  		<fieldset class="set">
+	  			<select name="s05" component-type="select" component-id="oa_java_type" class="form-control required">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>Java属性名称</label>
+	  		<fieldset class="set">
+				<input name="s19" component-type="input" type="text" maxlength="50"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>字典类型</label>
+	  		<fieldset class="set">
+				<input name="s06" component-type="input" type="text" maxlength="50"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>是否列表显示</label>
+	  		<fieldset class="set">
+	  			<select name="s07" component-type="select" component-id="yes_no" class="form-control ">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>是否查询显示</label>
+	  		<fieldset class="set">
+	  			<select name="s08" component-type="select" component-id="yes_no" class="form-control ">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>是否表单显示</label>
+	  		<fieldset class="set">
+	  			<select name="s09" component-type="select" component-id="yes_no" class="form-control ">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>查询匹配</label>
+	  		<fieldset class="set">
+	  			<select name="s10" component-type="select" component-id="oa_query_matching" class="form-control ">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>是否只读</label>
+	  		<fieldset class="set">
+	  			<select name="s11" component-type="select" component-id="yes_no" class="form-control ">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>窗格</label>
+	  		<fieldset class="set">
+	  			<select name="s12" component-type="select" component-id="oa_oneline" class="form-control ">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>可空</label>
+	  		<fieldset class="set">
+	  			<select name="s13" component-type="select" component-id="yes_no" class="form-control ">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>校验</label>
+	  		<fieldset class="set">
+	  			<select name="s14" component-type="select" component-id="oa_validate_type" class="form-control ">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>最小值</label>
+	  		<fieldset class="set">
+				<input name="s15" component-type="input" type="text" maxlength="50"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>最大值</label>
+	  		<fieldset class="set">
+				<input name="s16" component-type="input" type="text" maxlength="50"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>最小长度</label>
+	  		<fieldset class="set">
+				<input name="s17" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>最大长度</label>
+	  		<fieldset class="set">
+				<input name="s18" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>默认值</label>
+	  		<fieldset class="set">
+				<input name="s20" component-type="input" type="text" maxlength="50"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>日期格式</label>
+	  		<fieldset class="set">
+				<input name="s21" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>Table表名</label>
+	  		<fieldset class="set">
+				<input name="s22" component-type="input" type="text" maxlength="50"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>java属性说明</label>
+	  		<fieldset class="set">
+				<input name="s23" component-type="input" type="text" maxlength="50"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>java字段名</label>
+	  		<fieldset class="set">
+				<input name="s24" component-type="input" type="text" maxlength="50"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>检索标签</label>
+	  		<fieldset class="set">
+				<input name="s25" component-type="input" type="text" maxlength="50"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>检索key</label>
+	  		<fieldset class="set">
+				<input name="s26" component-type="input" type="text" maxlength="50"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	</form>
+</div>
+

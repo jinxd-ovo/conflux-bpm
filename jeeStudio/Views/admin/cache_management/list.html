@@ -1,0 +1,155 @@
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div id="body-div" class="layui-card-body">
+        	<div class="content-box">
+        		<div class="forum-item active">
+	        		<div class="row">
+	                    <div class="col-md-9">
+	                        <div class="forum-icon">
+	                            <i class="fa fa-book"></i>
+	                        </div>
+	                        <a lay-href="/admin/sys_dictionary/list" class="forum-item-title">字典管理</a>
+	                        <div class="forum-sub-title">Dictionary management</div>
+	                    </div>
+	                    <div class="col-md-3 forum-info">
+	                    	<a id="refreshDict" class="btn btn-success btn-bordered btn-sm"><i class="fa fa-refresh"></i> <font>刷新字典缓存</font></a>
+	                    </div>
+	                </div>
+                </div>
+                <div class="forum-item active">
+	        		<div class="row">
+	                    <div class="col-md-9">
+	                        <div class="forum-icon">
+	                            <i class="fa fa-reorder"></i>
+	                        </div>
+	                        <a lay-href="/admin/sys_menu/list" class="forum-item-title">菜单管理</a>
+	                        <div class="forum-sub-title">Menu management</div>
+	                    </div>
+	                    <div class="col-md-3 forum-info">
+	                    	<a id="refreshMenu" class="btn btn-success btn-bordered btn-sm"><i class="fa fa-refresh"></i> <font>刷新菜单缓存</font></a>
+	                    </div>
+	                </div>
+                </div>
+                <div class="forum-item active">
+	        		<div class="row">
+	                    <div class="col-md-9">
+	                        <div class="forum-icon">
+	                            <i class="fa fa-cubes"></i>
+	                        </div>
+	                        <a lay-href="/admin/genTable/list" class="forum-item-title">表单管理</a>
+	                        <div class="forum-sub-title">GenTable management</div>
+	                    </div>
+	                    <div class="col-md-3 forum-info">
+	                    	<a id="refreshGenTable" class="btn btn-success btn-bordered btn-sm"><i class="fa fa-refresh"></i> <font>刷新表单缓存</font></a>
+	                    </div>
+	                </div>
+                </div>
+        	</div>
+        </div>
+    </div>
+</div>
+<style>
+	.content-box{
+	    background-color: #ffffff;
+	    color: inherit;
+	    padding: 15px 20px 20px 20px;
+	    border-color: #fff;
+	    border-image: none;
+	    border-style: solid;
+	    border-width: 1px;
+	}
+	.forum-item{
+		margin: 10px 0;
+	    padding: 10px 0 20px;
+	    border-bottom: 1px solid #f1f1f1;
+	}
+	.forum-icon {
+	    float: left;
+	    width: 30px;
+	    margin-right: 20px;
+	    text-align: center;
+	}
+	.forum-item.active .fa {
+	    color: #1ab394;
+	}
+	.forum-icon .fa {
+	    font-size: 30px;
+	    margin-top: 8px;
+	    color: #9b9b9b;
+	}
+	.forum-item.active .fa.fa-refresh{
+		color: #fff;
+	}
+	.forum-item.active a.forum-item-title {
+	    color: #1ab394;
+	}
+	a.forum-item-title {
+	    color: inherit;
+	    display: block;
+	    font-size: 18px;
+	    font-weight: 600;
+	}
+	.forum-item .forum-sub-title {
+	    color: #999;
+	    margin-left: 50px;
+	}
+	.forum-info .btn{
+		float: right;
+	}
+</style>
+<script>
+    layui.use(['common', 'view', 'admin', 'laytpl'], function () {
+        var $ = layui.$
+            , R = layui.common
+            , view = layui.view
+            , admin = layui.admin
+            , laytpl = layui.laytpl;
+
+        var getTime = "-" + new Date().getTime();
+        $("#body-div").attr("id", "body-div" + getTime);
+       	
+       	$("#body-div"+getTime).find("#refreshDict").on("click",function(){
+			refreshDict();
+		});
+		$("#body-div"+getTime).find("#refreshMenu").on("click",function(){
+			refreshMenu();
+		});
+		$("#body-div"+getTime).find("#refreshGenTable").on("click",function(){
+			refreshGenTable();
+		});
+		
+		//刷新字典缓存
+		function refreshDict(){
+			LayerUtil.ajax({
+				type: 'get',
+        		url: admin.basePath + '/sys/dict/refreshDictCache',
+        		shade: true,
+        		success: function(res){
+        			LayerUtil.success(res["msg"+layui.admin.lang()]);
+        		}
+        	})
+		}
+		//刷新菜单缓存
+		function refreshMenu(){
+			LayerUtil.ajax({
+				type: 'get',
+        		url: admin.basePath + '/sys/menu/refreshMenuCache',
+        		shade: true,
+        		success: function(res){
+        			LayerUtil.success(res["msg"+layui.admin.lang()]);
+        		}
+        	})
+		}
+		//刷新表单缓存
+		function refreshGenTable(){
+			LayerUtil.ajax({
+				type: 'get',
+        		url: admin.basePath + '/gen/genTable/refreshGenTableCache',
+        		shade: true,
+        		success: function(res){
+        			LayerUtil.success(res["msg"+layui.admin.lang()]);
+        		}
+        	})
+		}
+    });
+</script>

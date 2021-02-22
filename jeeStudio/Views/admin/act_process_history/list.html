@@ -1,0 +1,163 @@
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div id="body-div" class="layui-card-body">
+        	<form id="searchForm" class="searchForm form-inline">
+        		<div class="searchDiv positionSpc">
+					<div class="form-group pull-left important">
+						<span>流程实例ID</span>
+						<input name="procInsId" component-type="input" class="form-control" type="text" value="" maxlength="50" />
+					</div>
+					<div class="form-group pull-left">
+						<span>流程定义KEY</span>
+						<input name="procDefKey" component-type="input" class="form-control" type="text" value="" maxlength="50" />
+					</div>
+				</div>
+        	</form>
+        	<div id="toolbar" class="toolbar">
+				<div class="pull-right">
+					<a id="searchBtn" class="btn btn-success btn-bordered btn-sm"><i class="fa fa-search"></i> <font>查询</font></a>
+					<a id="resetBtn" class="btn btn-success btn-bordered btn-sm"><i class="fa fa-refresh"></i> <font>重置</font></a>
+					<a id="easySearch" class="btn btn-success btn-bordered btn-sm" style="display: none;"><i class="fa fa-backward"></i> <font>返回</font></a>
+					<a id="hardSearch" class="btn btn-success btn-bordered btn-sm" style="display: inline-block;"><i class="fa fa-search-plus"></i> <font>高级查询</font></a>
+				</div>
+			</div>
+            <form id="editTableForm">
+				<table id="table-list"></table>
+			</form>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['common', 'view', 'admin', 'laytpl'], function () {
+        var $ = layui.$
+            , R = layui.common
+            , view = layui.view
+            , admin = layui.admin
+            , laytpl = layui.laytpl;
+
+        var getTime = "-" + new Date().getTime();
+        $("#body-div").attr("id", "body-div" + getTime);
+        $("#table-list").attr("id","table-list" + getTime);
+        var btnsStr = LayerUtil.getBtnsStrFromMenuData();
+
+		var bootstrapTableUtil = new BootstrapTableUtil(getTime);
+		bootstrapTableUtil.init({
+			url: admin.basePath + '/act/process/historyList',
+			method: 'post',
+			columns: [
+                {
+					checkbox: true
+				},
+				{
+					field: 'startUserId',
+					title: '流程发起人',
+					sortable: true,
+				},
+				{
+					field: 'id',
+					title: '执行ID',
+					sortable: true,
+				},
+				{
+					field: 'processInstanceId',
+					title: '流程实例ID',
+					sortable: true,
+					formatter: function(value, row, index){
+						return value;
+					}
+				},
+				{
+					field: 'processDefinitionId',
+					title: '流程定义ID',
+					sortable: true,
+					
+				},
+				{
+					field: 'startTime',
+					title: '流程启动时间',
+					sortable: true,
+					formatter: function(value, row, index) {
+						return (typeof value == "undefined" || value == null || value == "") ? "" : moment(value).format('yyyy-MM-dd HH:mm:ss'.replace(/yy/g,"YY").replace(/dd/g,"DD"));
+					}
+					
+				},
+				{
+					field: 'endTime',
+					title: '流程结束时间',
+					sortable: true,
+					formatter: function(value, row, index) {
+						return (typeof value == "undefined" || value == null || value == "") ? "" : moment(value).format('yyyy-MM-dd HH:mm:ss'.replace(/yy/g,"YY").replace(/dd/g,"DD"));
+					}
+					
+				},
+				{
+					field: 'deleteReason',
+					title: '流程状态',
+					sortable: true,
+					formatter: function(value, row, index) {
+						if(value != null){
+							return "[流程作废]原因：" + value;
+						}else{
+							return "[正常结束]";
+						}
+					}
+					
+				},
+                /*{
+                	title: layui.admin.lang() ? 'Operation' : '操作',
+                	width: '45px',
+					"class": 'center must',
+					events: {
+						'click .history': function (e, value, row, index) {
+							history({
+								processDefinitionId: row.processDefinitionId,
+								id: row.id
+							})
+						},
+					},
+					formatter: function(value, row, index) {
+						return  '<div class="show-btn-group">'+
+							'<i class="fa fa-cog" aria-hidden="true"></i>'+
+							'<div class="hide-btn-group" style="width: 240px;">'+
+								'<a class="btn history" dealname="历史">历史</a>'+
+							'</div>'+
+						'</div>';
+					},
+                },*/
+            ],
+		},"act_process");
+
+
+		$("#body-div"+getTime).find("#addBtn").on("click",function(){
+			addOrEdit({});
+		});
+
+		$("#body-div"+getTime).find("#removeBtn").on("click",function(){
+			var ids = bootstrapTableUtil.getMultiId();
+			if(ids){
+				LayerUtil.confirm(layui.admin.lang() ? "Are you sure?" : "确定删除吗？", function(){
+					LayerUtil.ajax({
+						type: 'post',
+		        		url: admin.basePath + '/dynamic/zform/delete?formNo=act_process&ids=' + ids,
+		        		success: function(res){
+		        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+                			bootstrapTableUtil.refresh();
+		        		}
+		        	})
+				})
+	       	}
+		});
+
+		function history(initData) {
+			LayerUtil.openDialogView({
+				title : layui.admin.lang() ? 'View ' : '查看流程历史',
+				initData : initData,
+				formLay : 'demo_list',
+				url : 'admin/demo_list/form',
+				actionUrl : admin.basePath + '/act/process/trace/photo?processDefinitionId=' + initData.processDefinitionId + '&executionId=' + initData.id,
+				actionDataName : 'data',
+				setDataWidthAjax : true,
+			})
+		}
+    });
+</script>

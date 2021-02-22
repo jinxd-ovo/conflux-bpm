@@ -1,0 +1,365 @@
+<div style="padding: 20px; background-color: #F5F5F5;">
+	<div class="layui-row layui-col-space15">
+		<div class="layui-col-md8">
+			<div class="layui-card">
+				<div class="layui-card-header">新闻中心</div>
+				<div class="layui-card-body">
+					<ul id="new-tab"></ul>
+					<ul id="info-tab"></ul>
+				</div>
+			</div>
+		</div>
+		<div class="layui-col-md4">
+			<div class="layui-card">
+				<div class="layui-card-header">我的日程</div>
+				<div class="layui-card-body">
+					<table>
+						<tbody id="scheduleTable" style="border-bottom:0px;">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="layui-col-md8">
+			<div class="layui-card">
+				<div class="layui-card-header">流程中心</div>
+				<div class="layui-card-body">
+					<ul id="process-tab">
+						<li style="font-size:14px; display:inline-block; width:80px;cursor: pointer;" path="todoanddoing">待办</li>
+						<li style="font-size:14px; display:inline-block; width:80px;cursor: pointer;" path="done">已办</li>
+					</ul>
+					<table>
+						<tbody id="processTable" style="border-bottom:0px;">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="layui-col-md4">
+			<div class="layui-card">
+				<div class="layui-card-header">通讯录</div>
+				<div class="layui-card-body">
+					<table>
+						<tbody id="deptTable" style="border-bottom:0px;">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="layui-col-md12">
+			<div class="layui-card">
+				<div class="layui-card-header">我的会议</div>
+				<div class="layui-card-body">
+					<table>
+						<tbody id="meetingTable" style="border-bottom:0px;">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready(function() {
+		LayerUtil.ajax({
+			type:"post",
+			url: layui.admin.basePath + "/dynamic/zform/data?path=path&traceFlag=&formNo=prt_channel",
+			data: JSON.stringify({}),
+			async:true,
+			success:function(data){
+				if (data != null && data.rows.length > 0) {
+					$("#new-tab").html("");
+						var channel_num = 0;
+						for (var i = 0; i < data.rows.length; i++) {
+							if (data.rows[i].parent.id == "0" && channel_num < 10) {
+								var liI = $("<li></li>").attr("style", "font-size:14px; display:inline-block; width:80px;cursor: pointer;").attr("data-types", data.rows[i].id).attr("data-model-types", data.rows[i].s02).html(data.rows[i].s01);
+								$("#new-tab").append(liI);
+								channel_num += 1;
+							}
+						}
+						/*var liMore = $("<li></li>").attr("style", "display:inline-block; float:right;");
+						var aMore = $("<a></a>").attr("class", "more-aaa").attr("style", "color:#cccccc; font-size:14px; font-weight: normal;").html("更多>>");
+						liMore.append(aMore);
+						$("#new-tab").append(liMore);*/
+						$("#new-tab>li").on("click",function(){
+							var types = $(this).attr("data-types");
+							var channelMod = $(this).attr("data-model-types");
+							if(!$(this).hasClass("active") && types){
+								$("#new-tab>li").removeClass("active");
+								$(this).addClass("active");
+								getNewsList(types);
+							}
+						});
+						$("#new-tab>li").eq(0).trigger("click");
+				}
+			}
+		});
+		
+		LayerUtil.ajax({
+			type:"post",
+			url: layui.admin.basePath + "/dynamic/zform/data?path=path&traceFlag=&formNo=sys_user",
+			data: JSON.stringify({}),
+			async:true,
+			success:function(data){
+				var list = data.rows;
+				var count = data.total>10?"10":data.total;
+				$("#deptTable").append('<tr>'
+					+ '<td style="width: 80px;">姓名</td>'
+					+ '<td style="width: 80px;">职位</td>' 
+					+ '<td style="width: 80px;">电话</td>'
+					+ '</tr>'
+				);
+				for(var i = 0; i< count; i++){
+					var record = list[i];
+					var id = record.id;
+					var name = record.s04;
+					var post = record.g01.name;
+					var phone = record.s05;
+					$("#deptTable").append('<tr style="height: 25px;"><td>'
+						+ '<a style="cursor: pointer;" onclick=viewUser({id:"'+id+'"})>'+ name +'</a></td>'
+						+ '<td>' + post + '</td>' 
+						+ '<td>' + phone + '</td></tr>'
+					);
+				}
+			}
+		});
+		
+		getProcess("todoanddoing");
+		
+		LayerUtil.ajax({
+			type:"post",
+			url: layui.admin.basePath + "/dynamic/zform/data?path=path&traceFlag=&formNo=oa_work_calendar",
+			data: JSON.stringify({}),
+			async:true,
+			success:function(data){
+				console.log(data);
+				var list = data.rows;
+				var count = data.total>10?"10":data.total;
+				$("#scheduleTable").append('<tr>'
+					+ '<td style="width: 100px;">日程标题</td>'
+					+ '<td style="width: 110px;">开始时间</td>'
+					+ '</tr>'
+				);
+				for(var i = 0; i< count; i++){
+					var record = list[i];
+					var id = record.id;
+					var name = record.s02;
+					var startDate = record.d51;
+					$("#scheduleTable").append('<tr style="height: 25px;"><td>'
+						+ '<a style="cursor: pointer;" onclick=viewSchedule({id:"'+id+'"})>'+ name +'</a></td>'
+						+ '<td>' + startDate + '</td>' 
+					);
+				}
+			}
+		});
+		
+		LayerUtil.ajax({
+			type:"post",
+			url: layui.admin.basePath + "/dynamic/zform/data?path=path&traceFlag=&formNo=oa_work_meeting",
+			data: JSON.stringify({}),
+			async:true,
+			success:function(data){
+				console.log(data);
+				var list = data.rows;
+				var count = data.total>10?"10":data.total;
+				$("#meetingTable").append('<tr>'
+					+ '<td style="width: 100px;">会议名称</td>'
+					+ '<td style="width: 110px;">开始时间</td>'
+					+ '</tr>'
+				);
+				for(var i = 0; i< count; i++){
+					var record = list[i];
+					var id = record.id;
+					var name = record.s02;
+					var startDate = record.d51;
+					$("#meetingTable").append('<tr style="height: 25px;"><td>'
+						+ '<a style="cursor: pointer;" onclick=viewMeeting({id:"'+id+'"})>'+ name +'</a></td>'
+						+ '<td>' + startDate + '</td>' 
+					);
+				}
+			}
+		});
+		
+	})
+	
+	function getNewsList(types){
+		$("#info-tab").html("");
+		LayerUtil.ajax({
+			type:"post",
+			url: layui.admin.basePath + "/dynamic/zform/data?path=path&traceFlag=&formNo=prt_information",
+			data: JSON.stringify({"parent":{"id":types}, "status":"50"}),
+			async:true,
+			success:function(data){
+				var list = data.rows;
+				var count = 0;
+				for(var i = 0; i< data.total; i++){
+					var record = list[i];
+					var shortTitle = record.s01;
+					if(i<6){
+						$("#info-tab").append(
+								'<li class="list-group-item">'
+								+ '<a style="cursor: pointer;" onclick=viewPrtInfo({id:"' + record.id + '"});>'
+								+ '<span title="'+ shortTitle +'" class="span-ellipsis">' + shortTitle + '</span>'
+								+ '<span style="float: right; marggin-right: 0px;">' + record.d03 + '</span>'
+								+ '</a>'
+								+ '</li>'
+						);
+					}
+				}
+			}
+		});
+	}
+	
+	function viewPrtInfo(initData) {
+		LayerUtil.openDialogView({
+			title : layui.admin.lang() ? 'View ' : '查看内容管理',
+			formLay : 'prt_information',
+			initData : initData,
+			url : 'admin/prt_information/form',
+			actionUrl : layui.admin.basePath + '/dynamic/zform/getZform?formNo=prt_information&id=' + initData.id,
+			actionDataName : 'data',
+			setDataWidthAjax : true,
+		})
+	}
+	
+	function viewUser(initData) {
+		LayerUtil.openDialogView({
+			title : layui.admin.lang() ? 'View ' : '查看用户',
+			formLay : 'sys_user',
+			initData : initData,
+			url : 'admin/sys_user/form',
+			actionUrl : layui.admin.basePath + '/dynamic/zform/getZform?formNo=sys_user&id=' + initData.id,
+			actionDataName : 'data',
+			setDataWidthAjax : true,
+			formFunctionData: "view"
+		})
+	}
+	
+	function getProcess(path) {
+		$("#processTable").html("");
+		LayerUtil.ajax({
+			type:"post",
+			url: layui.admin.basePath + "/dynamic/zform/getTaskList?path=" + path,
+			data: JSON.stringify({"parent":{"id":""}}),
+			async:true,
+			success:function(data){
+				var list = data.rows;
+				var count = data.total>10?"10":data.total;
+				for(var i = 0; i< count; i++){
+					var record = list[i];
+					var recordJson = escape(JSON.stringify(record));
+					var name = record.map.PROC_CATEGORY_LABEL + " - " + record.map.PROC_CREATE_USER;
+					var taskName = record.map.TASK_NAME;
+					var procCreateTime = record.map.PROC_CREATE_TIME;
+					$("#processTable").append('<tr style="height: 25px;"><td style="width:150px;">'
+						+ '<a style="cursor: pointer;" onclick=viewProcess({path:"'+path+'",recordJson:"'+recordJson+'"})>'+ name +'</a></td>'
+						+ '<td style="width:70px;"><font style="width:20px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">' + taskName + '</font></td>' 
+						+ '<td style="width:110px;"><font>' + procCreateTime + '</font></td></tr>'
+					);
+				}
+			}
+		});
+	}
+	
+	$("#process-tab>li").on("click",function(){
+		var path = $(this).attr("path");
+		if(!$(this).hasClass("active") && path){
+			$("#process-tab>li").removeClass("active");
+			$(this).addClass("active");
+			getProcess(path);
+		}
+	});
+	
+	function viewProcess(initData){
+		var path = initData.path;
+		var row = JSON.parse(unescape(initData.recordJson));
+		row.procInsId = row.map.PROC_INS_ID;
+		row.procDefKey = row.map.PROC_DEF_ID.split(":")[0];
+		row.id = row.map.ENTITY_ID;
+		if(path == "todoanddoing"){
+			var returnData = ProcUtil.isCacheData(row);
+			if (returnData.result) {
+				LayerUtil.warning(returnData["message"+layui.admin.lang()]);
+			} else {
+				row.procTaskPermission = returnData.taskPermission;
+				addOrEdit({
+					id: row.id,
+					procDefKey: row.procDefKey,
+					paramStr: ProcUtil.getParamStr(row),
+					formLay: row.map.REST_PARAM.replace("&formNo=","")
+				})
+			}
+		}else if(path == "done"){
+			var returnData = ProcUtil.isCacheView(row);
+			if (returnData.result) {
+				LayerUtil.warning(returnData["message"+layui.admin.lang()]);
+			} else {
+				viewDone({
+					id: row.id,
+					formLay: row.map.REST_PARAM.replace("&formNo=","")
+				})
+			}
+		}
+	}
+	
+	function addOrEdit(initData) {
+		var id = initData ? initData.id : '';
+		LayerUtil.openDialogFlow({
+			title : layui.admin.lang() ? 'Todo and doing ' : '待办',
+			formLay : initData.formLay,
+			initData : initData,
+			setDataWidthAjax : true,
+			actionDataName : 'data',
+			url : 'admin/'+initData.formLay+'/form',
+			actionUrl : layui.admin.basePath + '/dynamic/zform/getZformWithAct?formNo='+ initData.formLay +'&id=' + id + '&procDefKey=' + initData.procDefKey,
+            func : function(index,layero,paramStr) {
+            	if(paramStr.type != "saveAndStart" && paramStr.type != "saveAndComplete") {
+					$(layero).find(".required").removeClass("required");
+				}
+            	$(layero).find("#requeridFormTab").trigger("click");
+            	var validateForm = $(layero).find("#inputForm").validate({});
+            	console.log(validateForm.form());
+            	if(validateForm.form()){
+            		var bootstrapTableUtilArr = [];
+	            	ProcUtil.getUserList(paramStr,bootstrapTableUtilArr);
+            	}
+            }
+		})
+	}
+	
+	function viewDone(initData) {
+		LayerUtil.openDialogView({
+			title : layui.admin.lang() ? 'Done ' : '已办',
+			initData : initData,
+			formLay : initData.formLay,
+			url : 'admin/'+initData.formLay+'/form',
+			actionUrl : layui.admin.basePath + '/dynamic/zform/getZform?formNo='+ initData.formLay +'&id=' + initData.id,
+			actionDataName : 'data',
+			setDataWidthAjax : true,
+		})
+	}
+	
+	function viewSchedule(initData) {
+		LayerUtil.openDialogView({
+			title : layui.admin.lang() ? 'View ' : '查看我的日程',
+			initData : initData,
+			formLay : 'oa_work_calendar',
+			url : 'admin/oa_work_calendar/form',
+			actionUrl : layui.admin.basePath + '/dynamic/zform/getZform?formNo=oa_work_calendar&id=' + initData.id,
+			actionDataName : 'data',
+			setDataWidthAjax : true,
+		})
+	}
+	
+	function viewMeeting(initData) {
+		LayerUtil.openDialogView({
+			title : layui.admin.lang() ? 'View ' : '查看会议管理',
+			initData : initData,
+			formLay : 'oa_work_meeting',
+			url : 'admin/oa_work_meeting/form',
+			actionUrl : layui.admin.basePath + '/dynamic/zform/getZform?formNo=oa_work_meeting&id=' + initData.id,
+			actionDataName : 'data',
+			setDataWidthAjax : true,
+		})
+	}
+</script>

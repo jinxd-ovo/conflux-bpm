@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.act.TaskSettingDao">
+    
+	<sql id="taskSettingColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.user_task_id AS "userTaskId",
+		a.user_task_name AS "userTaskName",
+		a.proc_def_key AS "procDefKey",
+		a.permission_type AS "permissionType",
+		a.permission AS "taskPermission.id",
+		a.setting_value AS "settingValue",
+		a.rule_args AS "ruleArgs"
+	</sql>
+	
+	<sql id="taskSettingJoins">
+	</sql>
+	
+    <resultMap type="TaskSetting" id="TaskSettingResult" autoMapping="true">
+    </resultMap>
+    
+	<select id="get" resultMap="TaskSettingResult" >
+		SELECT 
+			<include refid="taskSettingColumns"/>
+		FROM oa_task_setting a
+		<include refid="taskSettingJoins"/>
+		WHERE a.id = #{id} 
+	</select>
+	
+	<select id="getByProcAndTask" resultMap="TaskSettingResult" >
+		SELECT 
+			<include refid="taskSettingColumns"/>
+		FROM oa_task_setting a
+		<include refid="taskSettingJoins"/>
+		WHERE a.proc_def_key = #{taskSetting.procDefKey} 
+		AND a.user_task_id = #{taskSetting.userTaskId}
+	</select>
+	
+	<select id="findList" resultMap="TaskSettingResult" >
+		SELECT 
+			<include refid="taskSettingColumns"/>
+		FROM oa_task_setting a
+		<include refid="taskSettingJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findListByProcDefKey" resultMap="TaskSettingResult" >
+		SELECT 
+			<include refid="taskSettingColumns"/>
+		FROM oa_task_setting a
+		<include refid="taskSettingJoins"/>
+		<where>
+			a.proc_def_key = #{procDefKey}
+		</where>
+	</select>
+	
+	<select id="findAllList" resultMap="TaskSettingResult" >
+		SELECT 
+			<include refid="taskSettingColumns"/>
+		FROM oa_task_setting a
+		<include refid="taskSettingJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO oa_task_setting(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			user_task_id,
+			user_task_name,
+			proc_def_key,
+			permission_type,
+			permission,
+			setting_value,
+			rule_args
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{userTaskId},
+			#{userTaskName},
+			#{procDefKey},
+			#{permissionType},
+			#{taskPermission.id},
+			#{settingValue},
+			#{ruleArgs}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE oa_task_setting SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			user_task_id = #{userTaskId},
+			user_task_name = #{userTaskName},
+			proc_def_key = #{procDefKey},
+			permission_type = #{permissionType},
+			permission = #{taskPermission.id},
+			setting_value = #{settingValue},
+			rule_args = #{ruleArgs}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM oa_task_setting
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteByLogic">
+		UPDATE oa_task_setting SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="findUniqueByProperty" resultType="TaskSetting" statementType="STATEMENT">
+		select * FROM oa_task_setting  where ${propertyName} = '${value}'
+	</select>
+	
+	<update id="updateUserTaskId">
+		UPDATE oa_task_setting SET
+			user_task_id = #{newId}
+		WHERE user_task_id = #{oldId}
+	</update>
+</mapper>

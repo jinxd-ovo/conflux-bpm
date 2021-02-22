@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+	<name>form</name>
+	<filePath>Views/${table.module}/${table.name}</filePath>
+	<fileName>form.html</fileName>
+	<content><![CDATA[
+		]]>
+	</content>
+</template>

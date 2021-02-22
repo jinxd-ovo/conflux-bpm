@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.common.ZformDao">
+		
+	<select id="get" resultType="Zform" >
+		SELECT
+			${sqlMap.sqlColumns}
+		FROM ${formNo} a
+		${sqlMap.sqlJoins}
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="getMap" resultType="java.util.LinkedHashMap" >
+		SELECT
+			${sqlMap.sqlColumnsFriendly}
+		FROM ${formNo} a
+		${sqlMap.sqlJoins}
+		WHERE a.id = #{id}
+	</select>
+	
+	<resultMap type="Zform" id="zformResult" autoMapping="true">
+    </resultMap>
+	
+	<select id="findList" resultMap="zformResult">
+		SELECT
+			${sqlMap.sqlColumns}
+		FROM ${formNo} a
+		${sqlMap.sqlJoins}
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findListMap" resultType="java.util.LinkedHashMap">
+		SELECT
+		${sqlMap.sqlColumnsFriendly}
+		FROM ${formNo} a
+		${sqlMap.sqlJoins}
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="hasChildren" resultType="Boolean">
+        select case when exists(select 1 from ${formNo} where parent_id = '${id}') then 1 else 0 end from sys_dual
+    </select>
+
+	<select id="findListCount" resultType="Zform">
+		SELECT 
+			a.id AS "id"
+		FROM ${formNo} a
+		${sqlMap.sqlJoins}
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+		</where>
+	</select>
+	
+	<select id="findAllList" resultType="Zform" >
+		SELECT 
+			${sqlMap.sqlColumns}
+		FROM ${formNo} a
+		${sqlMap.sqlJoins}
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO ${formNo}
+			${sqlMap.sqlInsert}
+	</insert>
+	
+	<insert id="insertV">
+		INSERT INTO ${formNo}_V
+			${sqlMap.sqlInsert}
+	</insert>
+	
+	<update id="update">
+		UPDATE ${formNo} SET 	
+			${sqlMap.sqlUpdate}
+		WHERE id = #{id}
+	</update>
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM ${formNo}
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE ${formNo} SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="Zform" statementType="STATEMENT">
+		SELECT * FROM ${formNo} WHERE ${propertyName} = '${value}'
+	</select>
+
+	<select id="findChildrenForDelete" resultType="Zform">
+		SELECT id, parent_id AS "parent.id" FROM ${formNo} WHERE ${fk} = #{parent.id}
+	</select>
+
+	<delete id="deleteChildren">
+		DELETE FROM ${formNo} WHERE ${fk} = #{parent.id}
+	</delete>
+
+	<delete id="deleteChildrenForTree">
+		<bind name="parentIdsLike" value="parentIds + id + ',%'" />
+		DELETE FROM ${formNo} WHERE parent_ids LIKE '${parentIdsLike}'
+	</delete>
+	
+	<select id="findListByProc" resultMap="zformResult">
+		SELECT 
+			${sqlMap.sqlColumns}
+		FROM ${formNo} a
+		${sqlMap.sqlJoins}
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+			AND a.proc_ins_id IN
+			<foreach collection="procInsIdList" index="index" item="procInsId" open="(" separator="," close=")">
+				#{procInsIdList[${index}]}
+			</foreach>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findListByProcMap" resultType="java.util.LinkedHashMap">
+		SELECT
+		${sqlMap.sqlColumnsFriendly}
+		FROM ${formNo} a
+		${sqlMap.sqlJoins}
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+			AND a.proc_ins_id IN
+			<foreach collection="procInsIdList" index="index" item="procInsId" open="(" separator="," close=")">
+				#{procInsIdList[${index}]}
+			</foreach>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findListByProcCount" resultMap="zformResult">
+		SELECT 
+			a.id AS "id"
+		FROM ${formNo} a
+		${sqlMap.sqlJoins}
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+			AND a.proc_ins_id IN
+			<foreach collection="procInsIdList" item="procInsId" open="(" separator="," close=")">
+				#{procInsId}
+			</foreach>
+		</where>
+	</select>
+
+	<select id="getNameById" resultType="String" >
+		SELECT
+			${columnName}
+		FROM ${formNo}
+		WHERE id = #{id}
+	</select>
+
+	<update id="updateSysMenuIsShowCascade">
+		UPDATE sys_menu SET
+			is_show = #{isShow}
+		WHERE parent_ids LIKE '${parentIds}%';
+	</update>
+
+	<select id="findValueList" resultType="java.lang.String">
+		SELECT ${valueColumn}
+		FROM ${formNo}
+		WHERE ${keyColumn} = #{key}
+	</select>
+</mapper>

@@ -1,0 +1,76 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal" style="overflow: auto;">
+		<input name="id" type="hidden" id="id"/>
+		<input name="formNo" type="hidden" id="formNo"/>
+		<input name="s10" type="hidden" id="type" value="1"/>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>上级菜单</label>
+	  		<fieldset class="set">
+	  			<div name="parent.id" component-type="treeSelect" actionUrl="/dynamic/zform/treeData?parentId=0&traceFlag=1&formNo=sys_menu" sync="false" check="false" chooseParent="true" class="tag-div"></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>名称</label>
+	  		<fieldset class="set">
+				<input name="s01" component-type="input" type="text"    class="form-control "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>图标</label>
+	  		<fieldset class="set">
+	  			<div name="s02" component-type="iconSelect" class="tag-div"></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>英文名称</label>
+	  		<fieldset class="set">
+				<input name="s03" component-type="input" type="text"    class="form-control "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>链接</label>
+	  		<fieldset class="set">
+				<input name="s04" component-type="input" type="text"    class="form-control "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>目标</label>
+	  		<fieldset class="set">
+				<input name="s05" component-type="input" type="text"    class="form-control "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>排序</label>
+	  		<fieldset class="set">
+				<input name="s06" component-type="input" type="text"    class="form-control digits required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>可见</label>
+	  		<fieldset class="set">
+	  			<select name="s07" component-type="select" component-id="yes_no" class="form-control ">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>权限标识</label>
+	  		<fieldset class="set">
+				<input name="s08" component-type="input" type="text"    class="form-control "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>按钮标识</label>
+	  		<fieldset class="set">
+				<input name="s09" component-type="input" type="text"    class="form-control "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>备注信息</label>
+	  		<fieldset class="set">
+				<textarea name="remarks" component-type="textarea" rows="3"    class="form-control "></textarea>
+	  		</fieldset>
+	  	</div>
+	</form>
+</div>
+

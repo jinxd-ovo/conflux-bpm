@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.gen.GenTableColumnDao">
+    
+    <sql id="genTableColumnColumns">
+		a.id           AS "id", 
+		a.name         AS "name", 
+		a.comments     AS "comments",
+		a.comments_en  AS "commentsEn",
+		a.jdbc_type    AS "jdbcType", 
+		a.java_type    AS "javaType", 
+		a.java_field   AS "javaField", 
+		a.is_pk        AS "isPk", 
+		a.is_null      AS "isNull", 
+		a.is_insert    AS "isInsert", 
+		a.is_edit      AS "isEdit", 
+		a.is_form      AS "isForm", 
+		a.is_list      AS "isList", 
+		a.is_query     AS "isQuery", 
+		a.query_type   AS "queryType", 
+		a.show_type    AS "showType", 
+		a.dict_type    AS "dictType", 
+		a.sort         AS "sort", 
+		a.create_by    AS "createBy.id", 
+		a.create_date  AS "createDate", 
+		a.update_by    AS "updateBy.id", 
+		a.update_date  AS "updateDate", 
+		a.remarks      AS "remarks", 
+		a.del_flag     AS "delFlag",
+		a.tableName    AS "tableName",
+		a.fieldLabels  AS "fieldLabels",
+		a.fieldKeys    AS "fieldKeys",
+		a.searchLabel  AS "searchLabel",
+		a.searchKey    AS "searchKey",
+		a.validateType AS "validateType",
+		a.min_length   AS "minLength",
+		a.max_length   AS "maxLength",
+		a.min_value    AS "minValue",
+		a.max_value    AS "maxValue",
+		a.is_oneline   AS "isOneLine",
+		a.magic_logic  AS "magicLogic",
+		a.align        AS "align",
+		a.jdbc_name_type AS "jdbcNameType",
+		a.form_sort AS "formSort",
+		a.search_sort AS "searchSort",
+		a.list_sort AS "listSort",
+		a.is_readonly AS "isReadonly",
+		a.default_value AS "defaultValue",
+		a.date_type AS "dateType",
+		a.is_import AS "isImport",
+		a.is_export AS "isExport",
+		a.blockchain_param1 AS "blockChainParam1",
+		a.blockchain_param2 AS "blockChainParam2",
+		a.blockchain_param3 AS "blockChainParam3",
+		a.blockchain_param4 AS "blockChainParam4",
+		a.blockchain_param5 AS "blockChainParam5",
+		a.blockchain_param6 AS "blockChainParam6",
+		b.id AS "genTable.id",
+		b.name AS "genTable.name",
+		b.comments AS "genTable.comments",
+		b.class_name AS "genTable.className",
+		b.parent_table AS "genTable.parentTable",
+		b.parent_table_fk AS "genTable.parentTableFk"
+	</sql>
+	
+	<sql id="genTableColumnJoins">
+		JOIN gen_table b ON b.id = a.gen_table_id
+    </sql>
+    
+    <select id="get" resultType="GenTableColumn">
+		SELECT 
+			<include refid="genTableColumnColumns"/>
+		FROM gen_table_column a
+		<include refid="genTableColumnJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="GenTableColumn">
+		SELECT 
+			<include refid="genTableColumnColumns"/>
+		FROM gen_table_column a
+		<include refid="genTableColumnJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} 
+		<if test="name != null and name != ''">
+			<bind name="nameLike" value="'%' + name + '%'" />
+			AND a.name LIKE '${nameLike}'
+		</if>
+		<if test="genTable != null and genTable.id != null and genTable.id != ''">
+			AND a.gen_table_id = #{genTable.id}
+		</if>
+		ORDER BY a.is_pk DESC, a.is_form, a.form_sort
+	</select>
+	
+	<select id="findAllList" resultType="GenTableColumn">
+		SELECT 
+			<include refid="genTableColumnColumns"/>
+		FROM gen_table_column a
+		<include refid="genTableColumnJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} 
+		ORDER BY a.sort ASC
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO gen_table_column(
+			id, 
+			gen_table_id, 
+			name, 
+			comments,
+			comments_en,
+			jdbc_type, 
+			java_type, 
+			java_field, 
+			is_pk, 
+			is_null, 
+			is_insert, 
+			is_edit, 
+			is_form,
+			is_list, 
+			is_query, 
+			query_type, 
+			show_type, 
+			dict_type, 
+			sort, 
+			create_by, 
+			create_date, 
+			update_by, 
+			update_date, 
+			remarks, 
+			del_flag,
+			tableName,
+			fieldLabels,
+			fieldKeys,
+			searchLabel,
+			searchKey,
+			validateType,
+			min_length,
+			max_length,
+			min_value,
+			max_value,
+			is_oneline,
+			magic_logic,
+			align,
+			jdbc_name_type, 
+			form_sort ,
+			search_sort,
+			list_sort,
+			is_readonly,
+			default_value,
+			date_type,
+			is_import,
+			is_export,
+			blockchain_param1,
+			blockchain_param2,
+			blockchain_param3,
+			blockchain_param4,
+			blockchain_param5,
+			blockchain_param6
+		) VALUES (
+			#{id}, 
+			#{genTable.id}, 
+			#{name}, 
+			#{comments},
+			#{commentsEn},
+			#{jdbcType}, 
+			#{javaType}, 
+			#{javaField}, 
+			#{isPk}, 
+			#{isNull}, 
+			#{isInsert}, 
+			#{isEdit}, 
+			#{isForm}, 
+			#{isList}, 
+			#{isQuery}, 
+			#{queryType}, 
+			#{showType}, 
+			#{dictType}, 
+			#{sort}, 
+			#{createBy.id}, 
+			#{createDate}, 
+			#{updateBy.id}, 
+			#{updateDate}, 
+			#{remarks}, 
+			#{delFlag},
+			#{tableName},
+			#{fieldLabels},
+			#{fieldKeys},
+			#{searchLabel},
+			#{searchKey},
+			#{validateType},
+			#{minLength},
+			#{maxLength},
+			#{minValue},
+			#{maxValue},
+			#{isOneLine},
+			#{magicLogic},
+			#{align},
+			#{jdbcNameType},
+			#{formSort},
+			#{searchSort},
+			#{listSort},
+			#{isReadonly},
+			#{defaultValue},
+			#{dateType},
+			#{isImport},
+			#{isExport},
+			#{blockChainParam1},
+			#{blockChainParam2},
+			#{blockChainParam3},
+			#{blockChainParam4},
+			#{blockChainParam5},
+			#{blockChainParam6}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE gen_table_column SET 
+			name = #{name},
+			comments = #{comments},
+			comments_en = #{commentsEn},
+			jdbc_type = #{jdbcType}, 
+			java_type = #{javaType}, 
+			java_field = #{javaField}, 
+			is_pk = #{isPk}, 
+			is_null = #{isNull}, 
+			is_insert = #{isInsert}, 
+			is_edit = #{isEdit}, 
+			is_form = #{isForm}, 
+			is_list = #{isList}, 
+			is_query = #{isQuery}, 
+			query_type = #{queryType}, 
+			show_type = #{showType}, 
+			dict_type = #{dictType}, 
+			sort = #{sort}, 
+			update_by = #{updateBy.id}, 
+			update_date = #{updateDate}, 
+			remarks = #{remarks},
+			del_flag = #{delFlag},
+			tableName = #{tableName},
+			fieldLabels = #{fieldLabels},
+			fieldKeys = #{fieldKeys},
+			searchLabel = #{searchLabel},
+			searchKey = #{searchKey},
+			validateType = #{validateType},
+			min_length = #{minLength},
+			max_length = #{maxLength},
+			min_value = #{minValue},
+			max_value = #{maxValue},
+			is_oneline = #{isOneLine},
+			magic_logic = #{magicLogic},
+			align = #{align},
+			jdbc_name_type = #{jdbcNameType},
+			form_sort = #{formSort}, 
+			search_sort = #{searchSort},
+			list_sort = #{listSort},
+			is_readonly = #{isReadonly},
+			default_value = #{defaultValue},
+			date_type = #{dateType},
+			is_import = #{isImport},
+			is_export = #{isExport},
+			blockchain_param1 = #{blockChainParam1},
+			blockchain_param2 = #{blockChainParam2},
+			blockchain_param3 = #{blockChainParam3},
+			blockchain_param4 = #{blockChainParam4},
+			blockchain_param5 = #{blockChainParam5},
+			blockchain_param6 = #{blockChainParam6}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM gen_table_column 
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteByLogic">
+		UPDATE gen_table_column SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteByGenTable">
+		DELETE FROM gen_table_column 
+		WHERE gen_table_id = #{id}
+	</update>
+	
+	<update id="deleteByGenTableByLogic">
+		UPDATE gen_table_column SET 
+			del_flag = '1'
+		WHERE gen_table_id = #{id}
+	</update>
+	
+	<select id="findPageList" resultType="GenTableColumn">
+		SELECT 
+			<include refid="genTableColumnColumns"/>
+		FROM gen_table_column a
+		<include refid="genTableColumnJoins"/>
+		WHERE a.is_form = #{isForm}
+		<if test="genTable != null and genTable.id != null and genTable.id != ''">
+			AND a.gen_table_id = #{genTable.id}
+		</if>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.form_sort ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<update id="saveEditForm">
+		UPDATE gen_table_column SET 
+			comments = #{comments},
+			comments_en = #{commentsEn},
+			jdbc_type = #{jdbcType}, 
+			java_type = #{javaType}, 
+			java_field = #{javaField}, 
+			is_null = #{isNull},  
+			query_type = #{queryType}, 
+			show_type = #{showType}, 
+			min_length = #{minLength},
+			max_length = #{maxLength},
+			min_value = #{minValue},
+			max_value = #{maxValue},
+			is_oneline = #{isOneLine},
+			jdbc_name_type = #{jdbcNameType},
+			form_sort = #{formSort},
+			validateType = #{validateType},
+			dict_type = #{dictType},
+			search_sort = #{searchSort},
+			is_form = #{isForm},
+			is_query = #{isQuery},
+			is_list = #{isList},
+			list_sort = #{listSort},
+			is_readonly = #{isReadonly},
+			default_value = #{defaultValue},
+			date_type = #{dateType},
+			is_import = #{isImport},
+			is_export = #{isExport},
+			blockchain_param1 = #{blockChainParam1},
+			blockchain_param2 = #{blockChainParam2},
+			blockchain_param3 = #{blockChainParam3},
+			blockchain_param4 = #{blockChainParam4},
+			blockchain_param5 = #{blockChainParam5},
+			blockchain_param6 = #{blockChainParam6}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="saveEditList">
+		UPDATE gen_table_column SET 
+			is_list = #{isList}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="saveEditSearch">
+		UPDATE gen_table_column SET 
+			is_query = #{isQuery},
+			search_sort = #{searchSort},
+			query_type = #{queryType}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="findGenTableColumnList" resultType="GenTableColumn">
+		SELECT 
+			<include refid="genTableColumnColumns"/>
+		FROM gen_table_column a
+		<include refid="genTableColumnJoins"/>
+		WHERE a.gen_table_id = #{genTableId} AND a.sort > 7 ORDER BY a.form_sort ASC
+	</select>
+	
+	<update id="updateEdit">
+		UPDATE gen_table_column SET 
+			is_list = #{isList},
+			search_sort = #{searchSort}
+		WHERE gen_table_id = #{genTableId}
+	</update>
+	
+	<delete id="deleteByGenTableId">
+		DELETE FROM gen_table_column 
+		WHERE gen_table_id = #{id}
+	</delete>
+	
+	<select id="getListByGenTableId" resultType="GenTableColumn">SELECT 
+			<include refid="genTableColumnColumns"/>
+		FROM gen_table_column a
+		<include refid="genTableColumnJoins"/>
+		WHERE a.gen_table_id = #{genTableId} AND a.java_type = #{javaType}
+	</select>
+
+	<select id="getGenTableColumnViewByGenTableId" resultType="GenTableColumnView">
+		SELECT
+		a.id AS "id",
+		a.name         AS "name",
+		a.gen_table_id AS "genTableId",
+		a.show_type    AS "showType",
+		a.is_oneline   AS "isOneLine",
+		a.is_null      AS "isNull",
+		a.comments     AS "comments",
+		a.comments_en  AS "commentsEn",
+		a.java_field   AS "javaField",
+		a.min_length   AS "minLength",
+		a.max_length   AS "maxLength",
+		a.min_value    AS "minValue",
+		a.max_value    AS "maxValue",
+		a.jdbc_type    AS "jdbcType",
+		a.java_type    AS "javaType",
+		a.query_type   AS "queryType",
+		a.validateType AS "validateType",
+		a.is_form      AS "isForm",
+		a.is_list      AS "isList",
+		a.is_query     AS "isQuery",
+		a.form_sort AS "formSort",
+		a.search_sort AS "searchSort",
+		a.list_sort AS "listSort",
+		a.is_readonly AS "isReadonly",
+		a.default_value AS "defaultValue",
+		a.dict_type AS "dictType",
+		a.tableName    AS "tableName",
+		a.fieldLabels  AS "fieldLabels",
+		a.fieldKeys    AS "fieldKeys",
+		a.searchLabel  AS "searchLabel",
+		a.searchKey    AS "searchKey",
+		a.date_type AS "dateType",
+		a.is_import AS "isImport",
+		a.is_export AS "isExport",
+		a.blockchain_param1 AS "blockChainParam1",
+		a.blockchain_param2 AS "blockChainParam2",
+		a.blockchain_param3 AS "blockChainParam3",
+		a.blockchain_param4 AS "blockChainParam4",
+		a.blockchain_param5 AS "blockChainParam5",
+		a.blockchain_param6 AS "blockChainParam6"
+		FROM gen_table_column a
+		WHERE a.gen_table_id = #{genTableId}  AND (a.dict_type IS NULL OR a.dict_type = '')
+	</select>
+
+	<select id="getGenTableColumnViewByGenTableIdDict" resultType="GenTableColumnView">
+		SELECT
+		a.id AS "id",
+		a.name         AS "name",
+		a.gen_table_id AS "genTableId",
+		a.show_type    AS "showType",
+		a.is_oneline   AS "isOneLine",
+		a.is_null      AS "isNull",
+		a.comments     AS "comments",
+		a.comments_en  AS "commentsEn",
+		a.java_field   AS "javaField",
+		a.min_length   AS "minLength",
+		a.max_length   AS "maxLength",
+		a.min_value    AS "minValue",
+		a.max_value    AS "maxValue",
+		a.jdbc_type    AS "jdbcType",
+		a.java_type    AS "javaType",
+		a.query_type   AS "queryType",
+		a.validateType AS "validateType",
+		a.is_form      AS "isForm",
+		a.is_list      AS "isList",
+		a.is_query     AS "isQuery",
+		a.form_sort AS "formSort",
+		a.search_sort AS "searchSort",
+		a.list_sort AS "listSort",
+		a.is_readonly AS "isReadonly",
+		a.default_value AS "defaultValue",
+		a.dict_type AS "dictType",
+		a.date_type AS "dateType",
+		a.is_import AS "isImport",
+		a.is_export AS "isExport",
+		a.blockchain_param1 AS "blockChainParam1",
+		a.blockchain_param2 AS "blockChainParam2",
+		a.blockchain_param3 AS "blockChainParam3",
+		a.blockchain_param4 AS "blockChainParam4",
+		a.blockchain_param5 AS "blockChainParam5",
+		a.blockchain_param6 AS "blockChainParam6"
+		FROM gen_table_column a
+		WHERE a.gen_table_id = #{genTableId} AND (a.dict_type IS NOT NULL AND a.dict_type != '')
+	</select>
+</mapper>

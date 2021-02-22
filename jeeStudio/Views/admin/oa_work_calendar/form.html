@@ -1,0 +1,74 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal" style="overflow: auto;">
+		<input name="id" type="hidden" id="id"/>
+			<input name="parent.id" type="hidden"/>
+		<input name="formNo" type="hidden" id="formNo"/>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>日程类型</label>
+	  		<fieldset class="set">
+	  			<select name="s01" component-type="select" component-id="schedule_type" class="form-control ">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>日程标题</label>
+	  		<fieldset class="set">
+				<input name="s02" component-type="input" type="text" maxlength="50"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>紧急程度</label>
+	  		<fieldset class="set">
+	  			<select name="s03" component-type="select" component-id="urgency_degree" class="form-control ">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>是否公开</label>
+	  		<fieldset class="set">
+	  			<select name="s04" component-type="select" component-id="yes_no" class="form-control ">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>接收人</label>
+	  		<fieldset class="set">
+	  			<div name="users01.id" component-type="treeSelect" actionUrl="/sys/tagTree/userTree" sync="false" check="true" chooseParent="false" class="tag-div required"></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>开始时间</label>
+	  		<fieldset class="set">
+				<input name="d51" component-type="datePicker" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" class="Wdate form-control " type="text" value="" />
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>结束时间</label>
+	  		<fieldset class="set">
+				<input name="d52" component-type="datePicker" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" class="Wdate form-control " type="text" value="" />
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>日程提醒</label>
+	  		<fieldset class="set">
+				<div name="c01" component-type="checkbox" component-id="schedule_reminder" class="i-checks-div "></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>日程内容</label>
+	  		<fieldset class="set">
+				<textarea name="s05" component-type="textarea" rows="3"    class="form-control  "></textarea>
+	  		</fieldset>
+	  	</div>
+	  	<!--<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>创建人</label>
+	  		<fieldset class="set">
+	  			<div name="user01.id" component-type="treeSelect" actionUrl="/sys/tagTree/userTree" sync="false" check="false" chooseParent="false" class="tag-div "></div>
+	  		</fieldset>
+	  	</div>-->
+	</form>
+</div>
+

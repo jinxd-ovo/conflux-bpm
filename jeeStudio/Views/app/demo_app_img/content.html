@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" href="../../../static/app/css/mui.min.css" />
+		<link rel="stylesheet" href="../../../static/app/css/app.css" />
+		<link rel="stylesheet" href="../../../static/app/css/mui.picker.min.css" />
+		<link rel="stylesheet" href="../../../static/app/css/element-ui.css" />
+		<style>
+			.mui-btn { padding: 10px; }
+			.white .mui-content { background: #fff; }
+			.mui-bar-tab { background-color: #fff; }
+			.mui-content-padded img, .mui-content-padded table { max-width: 100% !important; height: auto !important; }
+			.mui-content-padded h4.title { margin: 20px; text-align: center; }
+			ul { font-size: 14px; color: #666; }
+			ul .my-input { word-wrap: break-word; }
+			ul .my-input span.my-content { font-size: 14px; color: #999; }
+			span.my-content { color: #999999; }
+			ul .my-input input,
+			ul .my-input select,
+			ul .my-input textarea { margin: 0px; padding: 0px; height: 20px; border: 0px; color: #000; font-size: 14px; vertical-align: top; }
+			ul .my-input textarea { height: 100%; min-height: 100px; overflow-y: visible; }
+			.mui-col-xs-3 { text-align: right; padding-right: 15px; }
+			.mui-bar-tab .mui-tab-item.mui-active { color: #929292; }
+			.mui-table-view-cell>a:not(.mui-btn).wy-active { background-color: #eee; }
+			#popover .mui-table-view.left .mui-table-view-cell>a { text-align: left; padding-left: 10%; }
+			#popover .mui-table-view.btn { background-color: #3f97f9; color: #fff; }
+			.mui-card .mui-table-view:before { border-top: 1px solid #c8c7cc; height: 1px; }
+		</style>
+		<link rel="stylesheet" href="../../../static/plugin/webuploader-0.1.5/webuploader.css" />
+	</head>
+
+	<body class="white">
+		<!--侧滑菜单容器-->
+		<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-slide-in">
+			<!--菜单部分-->
+			<aside id="offCanvasSide" class="mui-off-canvas-right">
+				<div id="offCanvasSideScroll" class="mui-scroll-wrapper">
+					<div class="mui-scroll" style="padding-bottom: 40px;">
+						<div class="title">{{title}}</div>
+						<div class="content">
+											</div>
+					</div>
+					<ul class="btn-group" v-if="treeIdComputed != 0">
+						<li>
+							<button @tap='close' type="button" class="gray">取消</button>
+						</li>
+						<li>
+							<button @tap='ok' type="button" class="red">确定</button>
+						</li>
+					</ul>
+				</div>
+			</aside>
+			<div class="mui-inner-wrap">
+				<header id="header" class="mui-bar mui-bar-nav">
+					<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+					<h1 class="mui-title">{{title}}</h1>
+					<!--<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" style="display: none;">通过</button>-->
+				</header>
+				<nav id="bottom-tab" v-show="viewFlag" class="mui-bar mui-bar-tab">
+					<a @tap="save" class="mui-tab-item">
+						<span class="mui-icon mui-icon-checkmarkempty"></span>
+						<span class="mui-tab-label">保存</span>
+					</a>
+				</nav>
+				<div id="videoPlayDiv" v-show="videoIsPlay" v-cloak>
+					<div id="videoPlayTitle">
+						<span @tap="closeVideo" class="mui-icon mui-icon-left-nav"></span>
+						视频播放 
+					</div>
+					<div id="videoCreatDiv" style="text-align: center;">
+						<video v-if="src" controls="controls" style="max-width: 100%; max-height:100%;">
+							<source :src="src" type="video/mp4">
+								your browser does not support the video tag
+							</source>
+						</video>
+					</div>
+				</div>
+				<div id="vue-dom" class="mui-scroll-wrapper mui-content">
+					<div class="mui-scroll">
+						<form>
+							<div class="mui-card">
+								<ul class="mui-table-view">
+									<!-- 图片附件 -->
+								    <li class="mui-table-view-cell">
+										<div class="mui-table">
+											<div class="mui-table-cell mui-col-xs-3" style="vertical-align: top;">图片附件</div>
+											<div class="mui-table-cell mui-col-xs-9 my-input">
+												<template v-if="viewFlag == 'set'">
+													<div class="mui-uploader__files">
+														<div v-for="(imageObj, index) in data.uploadfiles01.imgList" class="mui-uploader__file">
+															<span v-if="imageObj.status === 'true'" class="mui-icon mui-icon-close" @tap="removeImage(index,'uploadfiles01',imageObj)"></span>
+															<img v-if="getType(imageObj.image)===1" class="mui-uploader__img" :src="imageObj.src" 
+																:data-src="imageObj.image" 
+																data-preview-src="" data-preview-group="uploadfiles01"
+																/>
+															<video preload="none" v-else-if="getType(imageObj.image)===2" class="mui-uploader__img" 
+																:src="imageObj.src" :data-src="imageObj.image" 
+																@tap="previewVideo(imageObj.src)" 
+																style="background-color: #000;"></video>
+														</div>
+														<template v-show="data.uploadfiles01.remainNum > 0">
+															<div ref="uploadfiles01Ref" id="uploadfiles01Ref" class="mui-uploader__input-box">
+															</div>
+														</template>
+													</div>
+												</template>
+												<template v-else>
+													<div class="mui-uploader__files">
+														<div v-for="(imageObj, index) in data.uploadfiles01.imgList" class="mui-uploader__file">
+															<img v-if="getType(imageObj.image)===1" class="mui-uploader__img" :src="imageObj.src" 
+																:data-src="imageObj.image"
+																data-preview-src="" data-preview-group="uploadfiles01"
+																/>
+															<video v-else-if="getType(imageObj.image)===2" preload="none" class="mui-uploader__img" 
+																:src="imageObj.src" :data-src="imageObj.image" 
+																@tap="previewVideo(imageObj.src)" 
+																style="background-color: #000;"></video>
+														</div>
+													</div>
+												</template>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</form>
+					</div>
+				</div>
+
+				<!-- off-canvas backdrop -->
+				<div class="mui-off-canvas-backdrop"></div>
+			</div>
+		</div>
+		<script type="text/javascript" src="../../../static/app/js/mui.js"></script>
+		<script type="text/javascript" src="../../../static/app/js/app.js"></script>
+		<script type="text/javascript" src="../../../static/app/js/vue.js"></script>
+		<script type="text/javascript" src="../../../static/app/js/pace.min.js"></script>
+		<script type="text/javascript" src="../../../static/app/js/mui.picker.min.js"></script>
+		<script type="text/javascript" src="../../../static/app/js/element-ui.js"></script>
+		<script type="text/javascript" src="../../../static/app/js/PinYin.js" ></script>
+		
+		<script type="text/javascript" src="../../../static/app/js/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript" src="../../../static/plugin/webuploader-0.1.5/webuploader.js"></script>
+		<script type="text/javascript" src="../../../static/app/js/mui.zoom.js"></script>
+		<script type="text/javascript" src="../../../static/app/js/mui.previewimage.js"></script>
+		
+		<script type="text/javascript" src="content.js"></script>
+	</body>
+</html>

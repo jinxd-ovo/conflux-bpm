@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.system.DictDao">
+    <sql id="dictColumns2">
+		a.id AS "dictionaryID",
+		a.code AS "member",
+		a.name AS "memberName",
+		/*a.types AS "type",*/
+		a.name_en AS "memberName_EN",
+		a.parent_code AS "parentType"
+	</sql>
+
+	<sql id="dictJoins2">
+	</sql>
+
+    <select id="getDictResult" resultType="DictResult" >
+        SELECT
+        <include refid="dictColumns2"/>
+        FROM sys_dictionary a
+        <include refid="dictJoins2"/>
+        WHERE a.id = #{id}
+    </select>
+
+	<select id="dictTypes" resultType="DictResult">
+		SELECT
+		<include refid="dictColumns2"/>
+		, #{type} type
+		FROM sys_dictionary a
+		<include refid="dictJoins2"/>
+		WHERE
+		<if test="type != null and type != ''">
+			<bind name="typeLike" value="'%,' + type + ',%'" />
+			a.parent_ids LIKE '${typeLike}'
+		</if>
+		<if test="type == '' || type == null">
+			a.parent_ids = '0,'
+		</if>
+	</select>
+
+	<select id="getDictGenView" resultType="DictGenView">
+		SELECT
+			a.code AS "key",
+			a.name AS "value"
+		FROM sys_dictionary a
+		WHERE a.parent_id = 'data-params' AND a.parent_code = #{dictType}
+	</select>
+
+	<select id="findDictListLike" resultType="DictGenView">
+		SELECT
+			a.code AS "key",
+			a.name AS "value"
+		FROM sys_dictionary a
+		WHERE a.parent_code = 'data-params'
+		<bind name="keyLike" value="'%' + key + '%'" />
+		AND (a.code LIKE '${keyLike}' OR a.name LIKE '${keyLike}')
+	</select>
+</mapper>

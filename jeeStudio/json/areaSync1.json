@@ -1,0 +1,19 @@
+{
+	"code": 0,
+	"msg": "操作成功！",
+	"temp_token": "temp_token",
+	"long_token": "long_token",
+	"data":[
+		{
+			"name": "北京市",
+			"pId": "1",
+			"id": "110000",
+			"isParent": true
+		},{
+			"name": "黑龙江省",
+			"pId": "1",
+			"id": "230000",
+			"isParent": false
+		}
+	]
+}

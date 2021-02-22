@@ -1,0 +1,456 @@
+<style>
+	.layui-layout-admin .layui-header{
+	    background-color: #0070c1;
+	}
+	.layui-layout-admin .layui-header #topHeader{
+	    padding-left: 0px;
+	}
+	.layui-layout-admin .layui-header a, .layui-layout-admin .layui-header a cite {
+	    color: #A4CCEB;
+	}
+	.layui-layout-admin .layui-header a:hover {
+	    color: #fff;
+	    text-decoration: none;
+	}
+	.layui-layout-admin .layui-header .layui-nav .layui-this:after, .layui-layout-admin .layui-header .layui-nav-bar {
+	    height: 2px;
+	    background-color: #fff;
+	}
+	#topMenu{
+		width: 430px;
+		display: inline-block;
+		height: 50px;
+		line-height: 50px;
+		overflow: hidden;
+		vertical-align: top;
+	}
+	#topMenu #topMenuDiv{
+		padding-left: 10px;
+		width: 380px;
+		display: inline-block;
+		line-height: 50px;
+		vertical-align: top;
+	}
+	#topMenu #topMenuDiv>a{
+		display: inline-block;
+		line-height: 50px;
+		height: 50px;
+    	padding: 0px 10px;
+    	width: 90px;
+    	overflow: hidden;
+	    text-overflow: ellipsis;
+	    white-space: nowrap;
+	    text-align: center;
+    	vertical-align: top;
+	}
+	#topMenu #topMenuDiv>a:hover{
+		text-decoration: none;
+		cursor: pointer;
+	}
+	#topMenu #topMenuDiv>a:hover cite{
+		color: #FFFFFF;
+	}
+	#topMenu .menu-icon {
+	    float: right;
+	    width: 40px;
+	    text-align: center;
+	    color: #A4CCEB;
+	    display: inline-block;
+	    height: 40px;
+	    background: rgb(6,131,229);
+	    line-height: 40px;
+	    margin-top: 5px;
+    }
+    #topMenu .menu-icon:hover {
+	    cursor: pointer;
+	}
+	.layui-nav.layui-nav-tree>.layui-nav-item.layui-nav-itemed{
+		display: none;
+	}
+	#userLoginName{
+		margin-top: 50px;
+	    height: 35px;
+	    background-color: #003667;
+	    color: #fff;
+	    font-size: 13px;
+	    line-height: 35px;
+	    padding-left: 20px;
+	    overflow: hidden;
+	}
+	#sideMenuParentName{
+	    border-top: none;
+	    color: #A19E9E;
+	    margin-top: 0px;
+	    margin-bottom: 0px;
+	    padding-left: 20px;
+	    height: 40px;
+	    line-height: 40px;
+	    background: #2a2e34;
+	}
+	#navbar-line{
+	    margin-left: 20px;
+    	border-bottom: 1px solid #565656;
+	}
+	.layui-side-menu .layui-nav{
+		margin-top: 0px;
+	}
+	.layui-layout-admin .layui-side.bpm-side-menu {
+	    background-color: #2a2e34 !important;
+	}
+	.layui-layout-admin .layui-logo.bpm-logo{
+	    background-color: #008df6!important;
+	}
+	.layui-layout-admin .layui-side.bpm-side-menu .layui-nav-itemed>.layui-nav-child {
+	    background-color: #2a2e34 !important;
+	}
+	.set-more {
+	    box-sizing: border-box;
+	    width: 40px;
+	    height: 50px;
+	    line-height: 50px;
+	    padding: 0px 5px !important;
+	    text-align: center;
+	    background-size: 20px 20px;
+	}
+	.more-clothes {
+	    background: url(static/img/clothes.png) no-repeat center center;
+	}
+	.set-more:hover {
+	    background-color: #A4CCEB !important;
+	}
+	.more-clothes:hover {
+        background: url(static/img/clothes-active.png) no-repeat center center;
+	}
+	.set-more .layui-nav-more{
+		display: none;
+	}
+	.layui-layout-admin .layui-header a.set-more:hover i{
+		color: #0070c1;
+	}
+	.set-more i{
+		font-size: 20px;
+    	vertical-align: middle;
+	}
+	.layadmin-side-shrink .layui-side-menu .layui-nav > .layui-nav-item > dl.layui-nav-child {
+    	display: block;
+    	background-color: #2a2e34 !important;
+    }
+    .layadmin-side-shrink .layui-side-menu .layui-nav > .layui-nav-item > dl.layui-nav-child .layui-nav-child{
+    	display: none;
+    }
+    .layadmin-side-shrink .layui-side-menu .layui-nav > .layui-nav-item > dl.layui-nav-child a .fa{
+    	left: 20px;
+    }
+    .layadmin-side-shrink #sideMenuParentName,.layadmin-side-shrink #navbar-line,.layadmin-side-shrink #userLoginName{
+    	display: none;
+    }
+    .layadmin-side-shrink .layui-side-menu .layui-nav{
+    	margin-top: 50px;
+    }
+</style>
+
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <!-- 头部区域 -->
+        <ul class="layui-nav layui-layout-left" id="topHeader">
+        	<li id="topMenu">
+        		<div id="topMenuDiv"></div>
+        		<label id="dropNavbar" class="menu-icon" style="background: rgb(6, 131, 229);">
+					<i class="fa fa-bars" aria-hidden="true"></i>
+				</label>
+        	</li>
+        </ul>
+        
+        
+        <!--wy修改-->
+        <ul class="layui-nav layui-layout-right" id="layui-layout-right" lay-filter="layadmin-layout-right">
+        </ul>	
+        
+        <script type="text/html" id="layui-layout-right-tempalte">
+        	 	<li class="layui-nav-item" lay-unselect>
+                	<a href="javascript:;" class="set-more" lay-href="/admin/oa_sys_msg/list">
+                		<!--消息-->
+                		<i class="fa fa-commenting-o" aria-hidden="true"></i>
+                		<span id="msgCount" style="font-size: 10px; color: red;position: absolute; top: 10px;right: 3px; background: #fff; height: 15px; width: 15px;line-height: 15px;text-align: center;border-radius: 50%;"></span>
+                	</a>
+                </li>
+ 				<li class="layui-nav-item" lay-unselect>
+	                <a href="javascript:;" class="set-more" layadmin-event="refresh" 
+	                	title="{{layui.admin.lang()==='_EN'?'Refresh':'刷新'}}">
+	                    <i class="layui-icon layui-icon-refresh-3"></i>
+	                </a>
+	            </li>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" class="set-more" layadmin-event="fullscreen" 
+                    	title="{{layui.admin.lang()==='_EN'?'Fullscreen':'全屏'}}">
+                        <i class="layui-icon layui-icon-screen-full"></i>
+                    </a>
+                </li>
+                <li class="layui-nav-item" lay-unselect>
+                    <a href="javascript:;" class="set-more" 
+                    	title="{{layui.admin.lang()==='_EN'?'Language':'语言'}}">
+                    	<i class="fa fa-language" aria-hidden="true"></i>
+                    </a>
+                    <dl class="layui-nav-child" style="text-align:center">
+                        <dd><a layadmin-event="setLanguage" data-lang="">Chinese</a></dd>
+                        <dd><a layadmin-event="setLanguage" data-lang="_EN">English</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item" lay-unselect 
+                	title="{{layui.admin.lang()==='_EN'?'Skin':'皮肤'}}">
+                    <a href="javascript:;" class="set-more more-clothes" layadmin-event="openSetSkin">
+                    </a>
+                    <!--<dl class="layui-nav-child" style="text-align:center">
+                        <dd><a layadmin-event="setSkin" data-skin="oa">OA</a></dd>
+                        <dd><a layadmin-event="setSkin" data-skin="">默认皮肤</a></dd>
+                    </dl>-->
+                </li>
+            {{# if(d.data){ }}
+                <!--<li class="layui-nav-item" lay-unselect>
+                    <a lay-href="/admin/system/noticeList" layadmin-event="message">
+                        <i class="layui-icon layui-icon-notice"></i>
+                        <span class="{{d.data.noticeCount == true ? 'layui-badge-dot' : ''}}"></span>                        
+                    </a>
+                </li>-->
+                <li class="layui-nav-item">
+                    <a href="javascript:;" class="set-more">
+                        <!--<cite>{{ d.data['name'] }}</cite>-->
+                        <i class="fa fa-cog"></i>
+                    </a>
+                    <dl class="layui-nav-child" style="text-align:center">
+                        <dd><a lay-href="admin/userSetPassword">{{layui.admin.lang()?'change password':'修改密码'}}</a></dd>
+                        <dd><a href="javascript:;" layadmin-event="logout">{{layui.admin.lang()?'logout':'登出'}}</a></dd>
+                    </dl>
+                </li>
+            {{# } }}
+                <li class="layui-nav-item">
+                	<a class="set-more" title="{{layui.admin.lang()==='_EN'?'Logout':'退出'}}" layadmin-event="logout">
+	            		<i class="fa fa-sign-out" aria-hidden="true"></i>
+	            	</a>
+		        </li>
+            <!--</ul>-->
+        </script>
+    </div>
+
+    <!-- 侧边菜单 -->
+    <div class="layui-side layui-side-menu bpm-side-menu">
+        <div class="layui-side-scroll">
+            <script type="text/html" template>
+                <div class="layui-logo bpm-logo" lay-href="">
+                    <span>{{ layui.setter.name || '' }}</span>
+                </div>
+            </script>
+            <div id="userLoginName"></div>
+            <div id="sideMenuParentName"></div>
+            <div id="navbar-line"></div>
+            <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu"></ul>
+        </div>
+    </div>
+
+
+    <!-- 页面标签 -->
+    <script type="text/html" template lay-done="layui.element.render('nav', 'layadmin-pagetabs-nav')">
+        {{# if(layui.setter.pageTabs){ }}
+        <div class="layadmin-pagetabs" id="LAY_app_tabs">
+        	<div class="layui-icon layadmin-tabs-control" lay-unselect style="left: 0px;">
+                <a href="javascript:;" layadmin-event="flexible" style="text-decoration: none;">
+                    <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+                </a>
+            </div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-down">
+                <ul class="layui-nav layadmin-tabs-select" lay-filter="layadmin-pagetabs-nav">
+                    <li class="layui-nav-item" lay-unselect>
+                        <a href="javascript:;"></a>
+                        <dl class="layui-nav-child layui-anim-fadein">
+                            <dd layadmin-event="closeThisTabs"><a href="javascript:;">closeThis</a></dd>
+                            <dd layadmin-event="closeOtherTabs"><a href="javascript:;">closeOther</a></dd>
+                            <dd layadmin-event="closeAllTabs"><a href="javascript:;">closeAll</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+            <div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
+                <ul class="layui-tab-title" id="LAY_app_tabsheader">
+                    <li lay-id="/"><i class="layui-icon layui-icon-home"></i></li>
+                </ul>
+            </div>
+        </div>
+        {{# } }}
+    </script>
+
+
+    <!-- 主体内容 -->
+    <div class="layui-body" id="LAY_app_body">
+        <div class="layadmin-tabsbody-item layui-show"></div>
+    </div>
+
+    <!-- 辅助元素，一般用于移动设备下遮罩 -->
+    <div class="layadmin-body-shade" layadmin-event="shade"></div>
+    
+    <form id="submit-form"></form>
+</div>
+<script>
+    layui.use(['admin', 'element', 'laytpl'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , element = layui.element
+            , laytpl = layui.laytpl;
+
+        var path = layui.router().path
+            , pathURL = layui.admin.correctRouter(path.join('/'));
+
+        function binDataManageMenu() {
+
+            admin.req({
+            	//wy修改
+               	//url: admin.basePath + '/GetMenu.json'
+                url: admin.basePath + '/sys/menu/getMenuList'
+                , loading: false
+                , tipOk: false
+                , success: function (res) {
+                    if (res.code === 0) {
+                        admin.sessionData({ page: res.data.menu });
+
+                        var tempArray = [];
+                        var menuHtml = '';
+                        
+						var topMenuHtml = "";
+						
+                        $.each(admin.filterList(res.data.menu, { parentID: '1' }), function (idx, item) {
+                            if(item.isShow != "0"){
+	                            if ($.inArray(item.pageID, tempArray) === -1 && item.parentID === "1") {
+	
+	                                var children = admin.filterList(res.data.menu, { parentID: item.pageID,type:"1"})
+	                                    , isThis = children.length === 0 && pathURL === item.pageUrl && item.pageUrl!=='';
+	                                
+	                                topMenuHtml += '<a href="javascript:;" ' + (item.pageUrl ? ' lay-href="' + item.pageUrl + '"' : '') + ' title="' + item['pageName' + admin.lang()] + '" data-pageid="'+item.pageID+'">'
+	                                	+'<cite>' + item['pageName' + admin.lang()] + '</cite>'
+	                                	+'</a>';
+	                                if (children.length > 0) {
+	                                	menuHtml += '<li pageid="'+item.pageID+'" class="layui-nav-item layui-nav-itemed">'
+	                                    menuHtml += '<dl class="layui-nav-child">';
+	                                    menuHtml += getMenuHtml(res.data.menu, item.pageID);
+	                                    menuHtml += '</dl>';
+	                                    menuHtml += '</li>';
+	                                }
+	                            }
+	                        }
+                        });
+                        $('#LAY-system-side-menu').html(menuHtml);
+                        $('#topMenuDiv').html(topMenuHtml);
+
+                        $('#LAY-system-side-menu .layui-this').closest('dl').addClass('layui-nav-itemed');
+                        $('#LAY-system-side-menu .layui-this').closest('li').addClass('layui-nav-itemed');
+                        //wy添加三级菜单打开样式
+                        $('#LAY-system-side-menu .layui-this').closest('dl').closest('dd').addClass('layui-nav-itemed');
+
+                        element.render('nav', 'layadmin-system-side-menu');
+                        
+                        
+            			admin.initSessionData();
+            			
+            			LayerUtil.ajax({
+	                		url: layui.admin.basePath + '/sys/user/getCurrentUserView',
+	                		success: function(result){
+	                			var data = {
+	                				code: 0,
+	                				data: result.data.userView
+	                			};
+	                			var getTpl = document.getElementById("layui-layout-right-tempalte").innerHTML
+								,view = document.getElementById('layui-layout-right');
+								laytpl(getTpl).render(data, function(html){
+								  	view.innerHTML = html;
+								});
+								element.render('nav', 'layadmin-layout-right');
+								$("#userLoginName").text(result.data.userView.name)
+								
+								
+								LayerUtil.ajax({
+									type:"get",
+									url: layui.admin.basePath + "/system/sysMsg/getUnreadCount",
+									success:function(data){
+										var count = parseInt(data.total);
+										if(count <= 99){
+											$("#msgCount").html(count);
+										}else{
+											$("#msgCount").html("99+");
+										}
+									}
+								});
+	                		}
+	              		});
+		            	
+		            	//顶部菜单展开
+						$(document).on("click", "#dropNavbar", function() {
+							$("#topMenu").css({
+								"overflow": "auto",
+								"background": "#2a2e34",
+								"height": $("#topMenu #topMenuDiv").height()
+							});
+							$("#dropNavbar").css({
+								"background": "#2a2e34"
+							});
+						});
+						//顶部菜单收起
+						$("#topMenu").mouseleave(function() {
+							$("#topMenu").css({
+								"overflow": "hidden",
+								"background": "inherit",
+								"height": 50
+							});
+							$("#dropNavbar").css({
+								"background": "rgb(6,131,229)"
+							});
+						});
+						//显示左侧子菜单
+						$(document).on("click", "#topMenu #topMenuDiv>a", function() {
+							if(!$(this).attr("lay-href")){
+								var pageid = $(this).attr("data-pageid");
+								$(".layui-nav.layui-nav-tree>.layui-nav-item").removeClass("layui-nav-itemed").addClass("layui-nav-itemed");
+								$(".layui-nav.layui-nav-tree>.layui-nav-item").hide();
+								$(".layui-nav.layui-nav-tree>.layui-nav-item.layui-nav-itemed[pageid='"+pageid+"']").show();
+								$("#sideMenuParentName").text($(this).find("cite").text())
+							}
+						});
+						//默认打开第一个Menu
+						$.each($("#topMenu #topMenuDiv>a"), function(idx, obj) {
+							if(!$(obj).attr("lay-href")){
+								$(obj).trigger("click");
+								return false;
+							}
+						});
+                    }
+                }
+            });
+
+        };
+        function getMenuHtml(data, parentId, type) {
+            var menuHtml = "";
+            //$.each(admin.filterList(data, { parentID: parentId, Type: 1 }),function (idx,item) {
+            //wy添加了三级菜单
+            var filterData = admin.filterList(data, { parentID: parentId});
+            if(type === 1){
+            	filterData = admin.filterList(data, { parentID: parentId, type:"1"});
+            }
+            $.each(filterData,function (idx,item) {
+				if(item.isShow != "0"){
+	                var children = admin.filterList(data, { parentID : item.pageID, type: "1" })
+	                    , isThis = children.length === 0 && pathURL === item.pageUrl && item.pageUrl !== '';
+	                   
+	                if (children.length > 0) {
+	                    menuHtml += '<dd data-jump="' + item.pageUrl + '"><a href="javascript:;" shrink="true" lay-tips="' + item['pageName' + admin.lang()] + '"><i class="fa ' + item.pageIcon + '"></i> <cite>' + item['pageName' + admin.lang()] + '</cite></a><dl class="layui-nav-child">';
+	                    menuHtml += getMenuHtml(data, item.pageID, 1);
+	                    menuHtml += '</dl></dd>';
+	                } else {
+	                	menuHtml += '<dd' + (isThis ? ' class="layui-this"' : '') + ' data-jump="' + item.pageUrl + '"><a href="javascript:;" shrink="true" lay-href="' + item.pageUrl + '" lay-tips="' + item['pageName' + admin.lang()] + '"><i class="fa ' + item.pageIcon + '"></i>' + item['pageName' + admin.lang()] + '</a></dd>';
+	                }
+                }
+            })
+
+            return menuHtml;
+        }
+        binDataManageMenu();
+    })
+</script>

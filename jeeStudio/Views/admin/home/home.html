@@ -1,0 +1,504 @@
+<div class="layui-fluid sblh" style="overflow: auto;">
+    <div class="layui-card">
+        <div id="body-div">
+        	
+        	<div class="container" style="width: 100%;">
+        		<ul class="flex" style="padding-top: 15px;">
+        			<li class="autoWidth" style="padding: 0px 25px 0px 15px;">
+        				<div style="margin-bottom: 20px;">
+							<div class="home-title">
+								<h5>新闻中心</h5>
+								<span class="title-eng">News Center</span>
+							</div>
+							
+							<ul id="news-tab" class="home-tab">
+								<!--<li class="tab-li"  data-url="/ff/basic/homeBx" data-target="/admin/ff_other_information/list">保险</li>-->
+								<!--<li class="pull-right">
+									<a class="more-aaa" lay-href="/admin/prt_information_more/list">更多&gt;&gt;</a>
+								</li>-->
+							</ul>
+							
+							<div id="news-list" class="home-list">
+							</div>
+						</div>
+						
+						<div style="margin-bottom: 20px;">
+							<div class="home-title">
+								<h5>流程中心</h5>
+								<span class="title-eng">Workflow Center</span>
+							</div>
+							
+							<ul id="workflow-tab" class="home-tab">
+								<li class="tab-li active" data-path="todoanddoing" data-target="">待办</li>
+								<li class="tab-li" data-path="done" data-target="">已办</li>
+								<!--<li class="pull-right">
+									<a class="more-aaa" lay-href="/admin/ff_other_maintenance/list">更多&gt;&gt;</a>
+								</li>-->
+							</ul>
+							
+							<table style="width: 100%;line-height: 25px;">
+								<tbody id="workflow-list" style="border-bottom:0px;">
+								</tbody>
+							</table>
+						</div>
+        			</li>
+        			<li style="width: 316px;">
+        				<div style="margin-bottom: 20px;">
+        					<div style="border: 1px solid #EBEBEB;">
+        						<div id="calendarDiv"></div>
+        						<div style="border-top: 1px solid #EBEBEB;margin-top:5px;">
+        							<ul class="calendar-list" style="width:100%;overflow:hidden;" id="calendarMeeting">
+        						</div>
+        						<div style="text-align: center;padding-top: 5px; padding-bottom: 5px;cursor:pointer;border-top: 1px solid #EBEBEB;">
+									<a id="addWork">
+										<img alt="添加日程" style="text-decoration: none;" src="static/img/add-rl.png"> &nbsp;添加日程 &nbsp; &nbsp; &nbsp;
+									</a>
+									<a id="addMeeting">
+										<img alt="添加会议" style="text-decoration: none;" src="static/img/add-rl.png"> &nbsp;添加会议
+									</a>
+								</div>
+        					</div>
+						</div>
+						<div style="margin-bottom: 20px;">
+							<div class="home-title">
+								<h5>通讯录</h5>
+								<span class="title-eng">Contacts</span>
+							</div>
+							<div style="width:100%;position:relative;margin-top: 10px;margin-bottom: 10px;">
+								<input type="text" id="search" value="" placeholder="搜索姓名" style="padding-left: 5px;width:100%;height:30px;border: 1px solid #EBEBEB;">
+								<span style="position:absolute;top:6px;right:6px;">
+									<img id="searchImg" class="middle" style="vertical-align:top;margin-top:2px;" src="static/img/search-input_wev8.png">
+								</span>
+							</div>
+							<table style="width: 100%;line-height: 25px;">
+								<thead>
+									<tr>
+										<td>姓名</td>
+										<td>职位</td>
+										<td>电话</td>
+									</tr>
+								</thead>
+								<tbody id="deptTable" style="border-bottom:0px;">
+								</tbody>
+							</table>
+						</div>
+        			</li>
+        		</ul>
+			</div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['common', 'view', 'admin', 'laytpl','element'], function () {
+        var $ = layui.$
+            , R = layui.common
+            , view = layui.view
+            , admin = layui.admin
+            , laytpl = layui.laytpl;
+
+        var getTime = "-" + new Date().getTime();
+        $("#body-div").attr("id", "body-div" + getTime);
+        
+        function getNewsTab(){
+        	LayerUtil.ajax({
+				url: layui.admin.basePath + "/dynamic/zform/data?path=path&traceFlag=&formNo=prt_channel",
+				type: "post",
+				shade: true,
+				data: JSON.stringify({}),
+				success: function(result) {
+					var html = "";
+					$.each(result.rows,function(i,data){
+						if (data.parent.id == "0" && i < 5) {
+							var cls = "";
+							if(i==0){
+        						sessionStorage.setItem("home-list-targetId",data.id);
+								cls = " active";
+								getNewsList(data.id,data.s02);
+							}
+							html += '<li class="tab-li '+cls+'" data-id="'+data.id+'" data-s02="'+data.s02+'" data-target="">'+data.s01+'</li>';
+						}
+					})
+					html += '<li class="pull-right">'+
+								'<a class="more-aaa" lay-href="/admin/prt_information_more/list">更多&gt;&gt;</a>'+
+							'</li>';
+					$("#body-div"+getTime).find("#news-tab").html(html);
+	        	}
+			});
+        }
+        $(document).on("click","#body-div"+getTime+" #news-tab>li",function(){
+        	if($(this).hasClass("tab-li")){
+	    		$("#body-div"+getTime).find("#news-tab .tab-li").removeClass("active");
+	        	$(this).addClass("active");
+	        	var id = $(this).attr("data-id");
+        		sessionStorage.setItem("home-list-targetId",id);
+	        	var s02 = $(this).attr("data-s02");
+	        	getNewsList(id,s02);
+        	}
+        })
+        function getNewsList(id,s02){
+        	$("#body-div"+getTime).find("#news-list").html("");
+        	LayerUtil.ajax({
+				type:"post",
+				url: layui.admin.basePath + "/dynamic/zform/data?path=path&traceFlag=&formNo=prt_information",
+				data: JSON.stringify({"parent":{"id":id}, "status":"50"}),
+				shade: true,
+				success:function(res){
+					var html = "";
+					var content = "";
+					var rightHtml = "";
+					$.each(res.rows, function(i,data) {
+						if(s02 == "20"){
+							content +=	'<li class="" data-id="'+data.id+'" data-formNo="prt_information" data-title="查看内容管理">'+
+									'<a class="ellipsis">';
+							LayerUtil.ajax({
+								type:"post",
+								url: layui.admin.basePath + '/system/sysFile/getFileList?groupId=' + data.s07,
+								async: false,
+								shade: true,
+								success:function(res){
+									var imgList = res.data.fileListMap.files;
+									if(imgList && imgList.length > 0){
+										content += "<img title='"+data.s01+"' src='" + layui.admin.basePath + "/system/sysFile/fileDownload?fileId=" + imgList[0].id + "'>"
+									}
+								}
+							});
+							content += '</a>'+'</li>';
+						}
+						if(i<6){
+							rightHtml += '<ul class="flex">'+
+							'<li class="autoWidth preview" data-id="'+data.id+'" data-formNo="prt_information" data-title="查看内容管理">'+
+								'<div class="ellipsis">';
+							rightHtml += data.s01;
+							rightHtml += '</div>'+
+							'</li>';
+							rightHtml += '<li class="home-list-time">'+data.updateDate.split(" ")[0]+'</li>';
+							rightHtml += '</ul>';
+						}
+					});
+					if(s02 == "20"){
+						html = '<ul class="flex">'+
+							'<li style="width:320px">'+
+								'<ul id="marquee" class="">'+
+									content+
+								'</ul>'+
+							'</li>'+
+							'<li class="autoWidth" style="padding-left: 10px;">'+
+								rightHtml+
+							'</li>'+
+						'</ul>';
+					}else{
+						html = rightHtml;
+					}
+					$("#body-div"+getTime).find("#news-list").html(html);
+					if(s02 == "20"){
+						$("#body-div"+getTime).find('#marquee').bxSlider({
+							mode: 'horizontal', //默认的是水平
+							displaySlideQty: 1, //显示li的个数
+							moveSlideQty: 1, //移动li的个数  
+							auto: true, //自动轮播
+							controls: true, //隐藏左右按钮
+							pager: true, //分页
+							pagerLocation: 'bottom', //分页位置
+							autoHover: true, //鼠标悬停
+							captions: true //显示标题
+						});
+					}
+				}
+			});
+        }
+        
+        function getContacts(value){
+        	LayerUtil.ajax({
+				type:"post",
+				url: layui.admin.basePath + "/dynamic/zform/data?path=path&traceFlag=&formNo=sys_user",
+				data: JSON.stringify({
+					s04: value
+				}),
+				shade:true,
+				success:function(res){
+					var html = "";
+					$.each(res.rows, function(i,data) {
+						if(i<6){
+							html += '<tr>'+
+								'<td>'+
+									'<div class="ellipsis viewFormData" data-id="'+data.id+'" data-formNo="sys_user" data-title="查看用户">'+
+										data.s04+
+									'</div>'+
+								'</td>'+
+								'<td>'+
+									data.g01.name+
+								'</td>'+
+								'<td>'+
+									data.s05+
+								'</td>'+
+								'</tr>';
+						}
+					});
+					$("#body-div"+getTime).find("#deptTable").html(html);
+				}
+			});
+        }
+        $(document).on("click","#body-div"+getTime+" #searchImg",function(){
+    		getContacts($("#body-div"+getTime).find("#search").val())
+        })
+        
+        $(document).on("click","#body-div"+getTime+" .viewFormData",function(){
+       		var title = $(this).attr("data-title");
+       		var id = $(this).attr("data-id");
+       		var formNo = $(this).attr("data-formNo");
+       		LayerUtil.openDialogView({
+				title : layui.admin.lang() ? 'View ' : title,
+				initData : {
+					id:id
+				},
+				formLay : formNo,
+				url : 'admin/'+formNo+'/form',
+				actionUrl : admin.basePath + '/dynamic/zform/getZform?formNo='+formNo+'&id=' + id,
+				actionDataName : 'data',
+				setDataWidthAjax : true,
+			})
+       	});
+        
+    	$(document).on("click","#body-div"+getTime+" .preview",function(){
+       		var title = $(this).attr("data-title");
+       		var id = $(this).attr("data-id");
+       		var formNo = $(this).attr("data-formNo");
+       		
+       		window.open(layui.admin.host+'/preview.html?id='+id+'&formNo='+formNo)
+       	});
+        
+        
+         $(document).on("click","#body-div"+getTime+" #workflow-tab>li",function(){
+    		$("#body-div"+getTime).find("#workflow-tab .tab-li").removeClass("active");
+        	$(this).addClass("active");
+        	var path = $(this).attr("data-path");
+        	getWorkflowList(path);
+        })
+        function getWorkflowList(path){
+        	$("#body-div"+getTime).find("#workflow-list").html("");
+        	LayerUtil.ajax({
+				type:"post",
+				url: layui.admin.basePath + "/dynamic/zform/getTaskList?path=" + path,
+				data: JSON.stringify({"parent":{"id":""}}),
+				shade: true,
+				success:function(res){
+					var html = "";
+					$.each(res.rows, function(i,data) {
+						if(i<6){
+							html += '<tr>'+
+								'<td>'+
+									"<div class='ellipsis viewFormDataAct' data-row='"+JSON.stringify(data)+"'>"+
+										 data.map.PROC_CATEGORY_LABEL + " - " + data.map.PROC_CREATE_USER+
+									'</div>'+
+								'</td>'+
+								'<td>'+
+									data.map.TASK_NAME+
+								'</td>'+
+								'<td>'+
+									data.map.PROC_CREATE_TIME+
+								'</td>'+
+								'</tr>';
+						}
+					});
+					$("#body-div"+getTime).find("#workflow-list").html(html);
+				}
+			});
+        }
+        $(document).on("click","#body-div"+getTime+" .viewFormDataAct",function(){
+        	var path = $("#body-div"+getTime).find("#workflow-tab>li.active").attr("data-path");
+        	var row = $(this).attr("data-row");
+        	row = JSON.parse(row);
+        	row.procInsId = row.map.PROC_INS_ID;
+			row.procDefKey = row.map.PROC_DEF_ID.split(":")[0];
+			row.id = row.map.ENTITY_ID;
+			var formNo =  row.map.REST_PARAM.replace("&formNo=","");
+        	if(path == "todoanddoing"){
+        		var returnData = ProcUtil.isCacheData(row);
+        		if (returnData.result) {
+        			LayerUtil.warning(returnData["message"+layui.admin.lang()]);
+        		}else{
+        			row.procTaskPermission = returnData.taskPermission;
+					LayerUtil.openDialogFlow({
+						title : layui.admin.lang() ? 'Edit ' : '编辑' + row.map.PROC_CATEGORY_LABEL + " - " + row.map.PROC_CREATE_USER,
+						formLay : formNo,
+						initData : {
+							id: row.id,
+							procDefKey: row.procDefKey,
+							paramStr: ProcUtil.getParamStr(row)
+						},
+						setDataWidthAjax : true,
+						actionDataName : 'data',
+						url : 'admin/'+formNo+'/form',
+						actionUrl : admin.basePath + '/dynamic/zform/getZformWithAct?formNo='+formNo+'&id=' + row.id + '&procDefKey=' + row.procDefKey,
+			            func : function(index,layero,paramStr) {
+			            	if(paramStr.type != "saveAndStart" && paramStr.type != "saveAndComplete") {
+								$(layero).find(".required").removeClass("required");
+							}
+			            	$(layero).find("#requeridFormTab").trigger("click");
+			            	var validateForm = $(layero).find("#inputForm").validate({});
+			            	if(validateForm.form()){
+				            	ProcUtil.getUserList(paramStr,[{refresh:function(){$("#body-div"+getTime).find("#workflow-tab>li.active").trigger("click")}}]);
+			            	}
+			            }
+					})
+        		}
+        	}
+        	else if(path == "done"){
+    			var returnData = ProcUtil.isCacheView(row);
+    			if (returnData.result) {
+					LayerUtil.warning(returnData["message"+layui.admin.lang()]);
+				} else {
+					LayerUtil.openDialogView({
+						title : layui.admin.lang() ? 'View ' : '查看' + row.map.PROC_CATEGORY_LABEL + " - " + row.map.PROC_CREATE_USER,
+						initData : {
+							id: row.id,
+						},
+						formLay : formNo,
+						url : 'admin/'+formNo+'/form',
+						actionUrl : admin.basePath + '/dynamic/zform/getZform?formNo='+formNo+'&id=' + row.id,
+						actionDataName : 'data',
+						setDataWidthAjax : true,
+					})
+				}
+    		}
+       	});
+        
+        getNewsTab();
+        getContacts();
+        getWorkflowList("todoanddoing");
+        
+        
+        var nowYear = new Date().getFullYear();
+        LayerUtil.ajax({
+			type:"post",
+			url: layui.admin.basePath + "/oa/meetingCalendar/getCalendarMeetingByYear?year="+nowYear,
+			shade: true,
+			success:function(result){
+	        	$("#body-div"+getTime).find('#calendarDiv').calendar({
+			        width: 316,
+			        height: 380,
+			        data:  result.rows,
+			        workDate:[],
+			        ctx:"",
+			        nowYear: nowYear, 
+			        onSelected: function (view, date, data) {
+			        	var d = new Date(date); 
+			        	var cur = new Date();
+			        	var time = d.getFullYear();
+			        	if(d.getMonth() + 1 < 10){
+			        		time += "-0"+(d.getMonth() + 1);
+			        	}else{
+			        		time += '-'+d.getMonth() + 1;
+			        	}
+			        	if(d.getDate() < 10){
+			        		time += "-0"+d.getDate();
+			        	}else{
+			        		time += '-'+d.getDate();
+			        	}
+			        	$("#body-div"+getTime).find(".calendar-list").html("");
+			        	LayerUtil.ajax({
+							type:"post",
+							url: layui.admin.basePath + "/oa/meetingCalendar/getCalendarMeeting?day="+time,
+							shade: true,
+							async: false,
+							success:function(res){
+					        	var html = "";
+					        	$.each(res.rows,function(i,record){
+					        		if(record.type == "日程"){
+					        			html += "<li class='viewCalandarData' style='width:100%;cursor:pointer;' title='"+record.title+"' data-id='"+record.id+"'  data-type='"+record.type+"' data-formNo='oa_work_calendar'>"
+											+ "<span>"+record.startTime+"（日程） </span>"
+											+ "<a class='meetinOrWorkA'>"+record.title+"</a>"
+											+ "</li>"
+									}else if(record.type == "会议"){
+										html += "<li class='viewCalandarData' style='width:100%;cursor:pointer;' title="+record.title+" data-id='"+record.id+"'  data-type='"+record.type+"' data-formNo='oa_work_meeting'>"
+											+ "<span>"+record.startTime+"（会议） </span>"
+											+ "<a class='meetinOrWorkA'>"+record.title+"</a>"
+											+ "</li>"
+									}
+					        	})
+					        	$("#body-div"+getTime).find(".calendar-list").append(html);
+							}
+						});
+			        },
+			        onChangeDate:function(y,m){
+			        	$("#body-div"+getTime).find(".calendar-list").html("");
+			        	var _this = this;
+			        	_this.$dateItems.find("[data-calendar-day]").removeClass("selected");
+			        	if(_this.nowYear != y){
+			        		_this.nowYear = y;
+			        		LayerUtil.ajax({
+								type:"post",
+								url: layui.admin.basePath + "/oa/meetingCalendar/getCalendarMeetingByYear?year="+y,
+								shade: true,
+								async: false,
+								success:function(res){
+									_this.data = res.rows;
+								}
+							});
+			        	}
+			        }
+			    });
+			}
+		});
+        
+	    $(document).on("click","#body-div"+getTime+" .viewCalandarData",function(){
+       		var title = $(this).attr("data-title");
+       		var id = $(this).attr("data-id");
+       		var formNo = $(this).attr("data-formNo");
+       		LayerUtil.openDialogView({
+				title : layui.admin.lang() ? 'View ' : title,
+				initData : {
+					id:id
+				},
+				formLay : formNo,
+				url : 'admin/'+formNo+'/form',
+				actionUrl : admin.basePath + '/dynamic/zform/getZform?formNo='+formNo+'&id=' + id,
+				actionDataName : 'data',
+				setDataWidthAjax : true,
+			})
+       	});
+        
+        $(document).on("click","#body-div"+getTime+" #addMeeting",function(){
+        	addOrEdit({},'oa_work_meeting',"会议管理");
+    	});
+        $(document).on("click","#body-div"+getTime+" #addWork",function(){
+        	addOrEdit({},'oa_work_calendar','我的日程');
+    	});
+        function addOrEdit(initData,formNo,title) {
+			var id = initData ? initData.id : '';
+			LayerUtil.openDialog({
+				title : layui.admin.lang() ? 'New ' : '添加'+title,
+				formLay : formNo,
+				initData : initData,
+				setDataWidthAjax : true,
+				actionDataName : 'data',
+				url : 'admin/oa_work_meeting/form',
+				actionUrl : admin.basePath + '/dynamic/zform/getZform?formNo='+formNo+'&id=' + id,
+	            btn : ['保存', '取消'],
+	            btn_EN : ['Save', 'Cancel'],
+	            func1 : function(index,layero) {
+	            	var validateForm = $(layero).find("#inputForm").validate({});
+	            	if(validateForm.form()){
+						var data = myHelper.composeData($(layero).find("#inputForm"));
+						LayerUtil.ajax({
+							url : admin.basePath + '/dynamic/zform/save',
+							type : 'post',
+							data : JSON.stringify(data),
+							shade: true,
+							success : function(res) {
+								$("#body-div"+getTime).find(".calendar-list").html("");
+								/*if($("#body-div"+getTime+" #findcalendarDiv").find("li.cur.selected").length > 0){
+									$("#body-div"+getTime+" #findcalendarDiv").find("li.cur.selected").trigger("click");
+								}*/
+						    	$("#body-div"+getTime).find('#calendarDiv').data('calendar').data.push({date:data.d51.split(" ")[0],value:data.s02});
+						    	$("#body-div"+getTime).find('#calendarDiv').data('calendar').triggerFuc();
+								layui.layer.close(index);
+							}
+						});
+	            	}
+	            }
+			})
+		}
+        
+    });
+</script>

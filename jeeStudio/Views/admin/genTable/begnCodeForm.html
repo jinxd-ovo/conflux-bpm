@@ -1,0 +1,40 @@
+<div id="begenCodeForm" class="container-fluid" style="overflow: hidden;background: #fff;padding: 0px;">
+	
+	<form id="inputForm" class="form-horizontal">
+		<div class="col-md-12 col-sm-12 adapt">
+			<label><font color="red">*</font>表单风格</label>
+			<fieldset class="set">
+				<div class="form-control" style="padding: 0px;height:auto;">
+					 <select id="category" name="category" class="required form-control" aria-required="true" 
+					 	component-type="select" component-id="">
+		                <option value="dynamic">动态表单（物理表）</option>
+		            </select>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col-md-12 col-sm-12 adapt">
+			<label><font color="red">*</font>生成功能描述</label>
+			<fieldset class="set">
+				<div class="form-control" style="padding: 0px;height:auto;">
+					<input id="functionName" name="functionName" class="required form-control valid" type="text" value=""
+		                   maxlength="500" aria-required="true" aria-invalid="false" 
+		                   component-type="input">
+		           </div>
+			</fieldset>
+		</div>
+		<div class="col-md-12 col-sm-12 adapt">
+			<label><font color="red">*</font>生成功能名</label>
+			<fieldset class="set">
+				<div class="form-control" style="padding: 0px;height:auto;">
+					<input id="functionNameSimple" name="functionNameSimple" class="required form-control valid" type="text"
+		                   value="" maxlength="500" aria-required="true" aria-invalid="false" 
+		                   component-type="input">
+	           	</div>
+			</fieldset>
+		</div>
+	    <input id="id" name="id" value="" type="hidden" component-type="input">
+	    <input id="moduleName" name="moduleName" type="hidden" value="" component-type="input">
+	    <input id="packageName" name="packageName" type="hidden" value="" component-type="input">
+	    <input id="genTableId" type="hidden" name="genTable.id" value="" component-type="input">
+	</form>
+</div>

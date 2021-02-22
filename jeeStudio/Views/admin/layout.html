@@ -1,0 +1,267 @@
+<!--<style>
+	.layui-side,.layui-side-menu .layui-side-scroll{
+		width: 0px !important;
+	}
+	.layui-layout-admin .layui-logo.bpm-logo{
+		display: none;
+	}
+	.layui-layout-admin .layui-layout-left, .layadmin-pagetabs, .layui-layout-admin .layui-body, .layui-layout-admin .layui-footer{
+		left: 0px !important;
+	}
+</style>-->
+
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <!-- 头部区域 -->
+        <ul class="layui-nav layui-layout-left">
+            <!--<li class="layui-nav-item layadmin-flexible" lay-unselect>
+                <a href="javascript:;" layadmin-event="flexible">
+                    <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+                </a>
+            </li>-->
+            <li class="layui-nav-item" lay-unselect>
+                <a href="javascript:;" layadmin-event="refresh">
+                    <i class="layui-icon layui-icon-refresh-3"></i>
+                </a>
+            </li>
+        </ul>
+        
+        
+        <!--wy修改-->
+        <ul class="layui-nav layui-layout-right" id="layui-layout-right" lay-filter="layadmin-layout-right">
+        
+        </ul>	
+        <!--<script type="text/html" template lay-url="/Account/GetUser" lay-type="post"
+                lay-done="layui.element.render('nav', 'layadmin-layout-right');">-->
+        <script type="text/html" id="layui-layout-right-tempalte">
+ 			<!--<ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">-->
+                {{# if(d.data){ }}
+                <!--<li class="layui-nav-item" lay-unselect>
+                    <a lay-href="/admin/system/noticeList" layadmin-event="message">
+                        <i class="layui-icon layui-icon-notice"></i>
+                        <span class="{{d.data.noticeCount == true ? 'layui-badge-dot' : ''}}"></span>                        
+                    </a>
+                </li>-->
+                <li class="layui-nav-item" lay-unselect>
+                	<a href="javascript:;" lay-href="/admin/oa_sys_msg/list">消息<span id="msgCount" style="font-size: 10px; color:red;"></span></a>
+                </li>
+                <li class="layui-nav-item" lay-unselect>
+                    <a href="javascript:;">
+                        <!--<cite>{{ d.data['UserName'+layui.admin.lang()] }}</cite>-->
+                        <cite>{{ d.data['name'] }}</cite>
+                    </a>
+                    <dl class="layui-nav-child" style="text-align:center">
+                        <dd><a lay-href="admin/userSetPassword">{{layui.admin.lang()?'change password':'修改密码'}}</a></dd>
+                        <dd><a href="javascript:;" layadmin-event="logout">{{layui.admin.lang()?'logout':'登出'}}</a></dd>
+                    </dl>
+                </li>
+                {{# } }}
+
+                <li class="layui-nav-item" lay-unselect>
+                    <a href="javascript:;">
+                        <cite>{{layui.admin.lang()==='_EN'?'English':'Chinese'}}</cite>
+                    </a>
+
+                    <dl class="layui-nav-child" style="text-align:center">
+                        <dd><a layadmin-event="setLanguage" data-lang="">Chinese</a></dd>
+                        <dd><a layadmin-event="setLanguage" data-lang="_EN">English</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item" lay-unselect>
+                    <a href="javascript:;" layadmin-event="openSetSkin">
+                        <cite>{{layui.admin.lang()==='_EN'?'Set skin':'设置皮肤'}}</cite>
+                    </a>
+                    <!--<dl class="layui-nav-child" style="text-align:center">
+                        <dd><a layadmin-event="setSkin" data-skin="oa">OA</a></dd>
+                        <dd><a layadmin-event="setSkin" data-skin="">默认皮肤</a></dd>
+                    </dl>-->
+                </li>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <a href="javascript:;" layadmin-event="fullscreen">
+                        <i class="layui-icon layui-icon-screen-full"></i>
+                    </a>
+                </li>
+            <!--</ul>-->
+        </script>
+    </div>
+
+    <!-- 侧边菜单 -->
+    <div class="layui-side layui-side-menu bpm-side-menu">
+        <div class="layui-side-scroll">
+            <script type="text/html" template>
+               
+                <div class="layui-logo bpm-logo" lay-href="">
+                    <span>{{ layui.setter.name || '' }}</span>
+                </div>
+            </script>
+            <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu"></ul>
+        </div>
+    </div>
+
+
+    <!-- 页面标签 -->
+    <script type="text/html" template lay-done="layui.element.render('nav', 'layadmin-pagetabs-nav')">
+        {{# if(layui.setter.pageTabs){ }}
+        <div class="layadmin-pagetabs" id="LAY_app_tabs">
+        	<div class="layui-icon layadmin-tabs-control" lay-unselect style="left: 0px;">
+                <a href="javascript:;" layadmin-event="flexible" style="text-decoration: none;">
+                    <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+                </a>
+            </div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
+            <div class="layui-icon layadmin-tabs-control layui-icon-down">
+                <ul class="layui-nav layadmin-tabs-select" lay-filter="layadmin-pagetabs-nav">
+                    <li class="layui-nav-item" lay-unselect>
+                        <a href="javascript:;"></a>
+                        <dl class="layui-nav-child layui-anim-fadein">
+                            <dd layadmin-event="closeThisTabs"><a href="javascript:;">closeThis</a></dd>
+                            <dd layadmin-event="closeOtherTabs"><a href="javascript:;">closeOther</a></dd>
+                            <dd layadmin-event="closeAllTabs"><a href="javascript:;">closeAll</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+            <div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
+                <ul class="layui-tab-title" id="LAY_app_tabsheader">
+                    <li lay-id="/"><i class="layui-icon layui-icon-home"></i></li>
+                </ul>
+            </div>
+        </div>
+        {{# } }}
+    </script>
+
+
+    <!-- 主体内容 -->
+    <div class="layui-body" id="LAY_app_body">
+
+		<div class="layadmin-tabsbody-item layui-show"></div>
+	</div>
+	
+    <!-- 辅助元素，一般用于移动设备下遮罩 -->
+    <div class="layadmin-body-shade" layadmin-event="shade"></div>
+    
+    <form id="submit-form"></form>
+</div>
+<script>
+    layui.use(['admin', 'element', 'laytpl'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , element = layui.element
+            , laytpl = layui.laytpl;
+
+        var path = layui.router().path
+            , pathURL = layui.admin.correctRouter(path.join('/'));
+
+        function binDataManageMenu() {
+
+            admin.req({
+            	//wy修改
+               	//url: admin.basePath + '/GetMenu.json'
+                url: admin.basePath + '/sys/menu/getMenuList'
+                , loading: false
+                , tipOk: false
+                , success: function (res) {
+                    if (res.code === 0) {
+                        admin.sessionData({ page: res.data.menu });
+
+                        var tempArray = [];
+                        var menuHtml = '';
+
+                        $.each(admin.filterList(res.data.menu, { parentID: '1' }), function (idx, item) {
+                            if(item.isShow != "0"){
+                            	if ($.inArray(item.pageID, tempArray) === -1 && item.parentID === "1") {
+	
+	                                var children = admin.filterList(res.data.menu, { parentID: item.pageID,type:"1"})
+	                                    , isThis = children.length === 0 && pathURL === item.pageUrl && item.pageUrl!=='';
+	                                
+	                                //wy修改
+	                                item.pageIcon = item.pageIcon ? item.pageIcon : 'fa-file-o';
+	                                menuHtml += '<li class="layui-nav-item' + (isThis ? ' layui-this' : '') + '" data-jump="' + item.pageUrl + '"><a href="javascript:;"' + (item.pageUrl ? ' lay-href="' + item.pageUrl + '"' : '') + ' lay-tips="' + item['pageName' + admin.lang()] + '"><i class="fa ' + item.pageIcon + '"></i> <cite>' + item['pageName' + admin.lang()] + '</cite></a>';
+	                                if (children.length > 0) {
+	                                    menuHtml += '<dl class="layui-nav-child">';
+	                                    menuHtml += getMenuHtml(res.data.menu, item.pageID);
+	                                    menuHtml += '</dl>';
+	                                }
+	                                menuHtml += '</li>';
+	                                tempArray.push(item.pageID);
+	
+	                            }
+                            }
+                        });
+                        $('#LAY-system-side-menu').html(menuHtml);
+
+                        $('#LAY-system-side-menu .layui-this').closest('dl').addClass('layui-nav-itemed');
+                        $('#LAY-system-side-menu .layui-this').closest('li').addClass('layui-nav-itemed');
+                        //wy添加三级菜单打开样式
+                        $('#LAY-system-side-menu .layui-this').closest('dl').closest('dd').addClass('layui-nav-itemed');
+
+                        element.render('nav', 'layadmin-system-side-menu');
+                        
+                        
+            			admin.initSessionData();
+            			
+            			LayerUtil.ajax({
+	                		url: layui.admin.basePath + '/sys/user/getCurrentUserView',
+	                		success: function(result){
+	                			var data = {
+	                				code: 0,
+	                				data: result.data.userView
+	                			};
+	                			var getTpl = document.getElementById("layui-layout-right-tempalte").innerHTML
+								,view = document.getElementById('layui-layout-right');
+								laytpl(getTpl).render(data, function(html){
+								  	view.innerHTML = html;
+								});
+								element.render('nav', 'layadmin-layout-right');
+								
+								
+								LayerUtil.ajax({
+									type:"get",
+									url: layui.admin.basePath + "/system/sysMsg/getUnreadCount",
+									success:function(data){
+										var count = parseInt(data.total);
+										if(count <= 99){
+											$("#msgCount").html(count);
+										}else{
+											$("#msgCount").html("99+");
+										}
+									}
+								});
+								
+								
+	                		}
+	              		});
+		            	
+                    }
+                }
+            });
+
+        }
+        binDataManageMenu();
+        function getMenuHtml(data, parentId, type) {
+            var menuHtml = "";
+            //$.each(admin.filterList(data, { parentID: parentId, Type: 1 }),function (idx,item) {
+            //wy添加了三级菜单
+            var filterData = admin.filterList(data, { parentID: parentId});
+            if(type === 1){
+            	filterData = admin.filterList(data, { parentID: parentId, type:"1"});
+            }
+            $.each(filterData,function (idx,item) {
+				if(item.isShow != "0"){
+	                var children = admin.filterList(data, { parentID : item.pageID, type: "1" })
+	                    , isThis = children.length === 0 && pathURL === item.pageUrl && item.pageUrl !== '';
+	                if (children.length > 0) {
+	                    menuHtml += '<dd data-jump="' + item.pageUrl + '"><a href="javascript:;" ><i class="fa ' + item.pageIcon + '"></i> <cite>' + item['pageName' + admin.lang()] + '</cite></a><dl class="layui-nav-child">';
+	                    menuHtml += getMenuHtml(data, item.pageID, 1);
+	                    menuHtml += '</dl></dd>';
+	                } else {
+	                	menuHtml += '<dd' + (isThis ? ' class="layui-this"' : '') + ' data-jump="' + item.pageUrl + '"><a href="javascript:;" lay-href="' + item.pageUrl + '"><i class="fa ' + item.pageIcon + '"></i>' + item['pageName' + admin.lang()] + '</a></dd>'
+	                }
+            	}
+			})
+
+            return menuHtml;
+        }
+    })
+</script>

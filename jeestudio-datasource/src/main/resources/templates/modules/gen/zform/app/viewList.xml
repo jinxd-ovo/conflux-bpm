@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+	<name>List</name>
+	<filePath>views/app/${table.name}</filePath>
+	<fileName>list.html</fileName>
+	<content><![CDATA[
+	]]>
+	</content>
+</template>

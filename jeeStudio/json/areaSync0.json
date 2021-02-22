@@ -1,0 +1,14 @@
+{
+	"code": 0,
+	"msg": "操作成功！",
+	"temp_token": "temp_token",
+	"long_token": "long_token",
+	"data":[
+		{
+			"name": "中国",
+			"pId": "0",
+			"id": "1",
+			"isParent":true
+		}
+	]
+}

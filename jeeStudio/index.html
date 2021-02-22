@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Conflux BPM</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="js/layui/css/layui.css" media="all">
+    
+	<!--基础css文件--> 
+	<link rel="stylesheet" href="static/plugin/awesome/4.4/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="static/plugin/select2/select2.full.min.css" />
+	<link rel="stylesheet" href="static/plugin/iCheck/custom.css" />
+	<link rel="stylesheet" href="static/plugin/bootstrap/3.3.4/css_default/bootstrap.min.css" />
+	<link rel="stylesheet" href="static/plugin/awesome/4.4/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="static/plugin/ztree/css/zTreeStyle/zTreeStyle.css"/>
+	<link rel="stylesheet" href="static/plugin/jstree/themes/default/style.css"/>
+	<!--引入webuploader-->
+	<link rel="stylesheet" href="static/plugin/webuploader-0.1.5/webuploader.css">
+	<!--引入calendar-->
+	<link rel="stylesheet" href="static/plugin/calendar/calendar.css" />
+	<!--引入kindeditor-->
+	<!--<link rel="stylesheet" href="static/plugin/kindeditor/themes/default/default.css" />
+	<link rel="stylesheet" href="static/plugin/kindeditor/plugins/code/prettify.css" />-->
+	<!--summernote-->
+	<link href="static/plugin/summernote/dist/summernote.css" rel="stylesheet"/>
+	<link rel="stylesheet" href="static/plugin/jquerySlider/jquery.bxslider.css">
+	
+	<link rel="stylesheet" href="static/css/main.css" />
+   
+	<!--自由表单-->
+	<link rel="stylesheet" href="static/plugin/treetable/treetable.css" type="text/css" />
+	<link title="free" rel="stylesheet" href="static/css/newFree.css" />
+	<link title="mui" rel="stylesheet" href="static/app/css/mui.css" disabled="disabled" />
+	<link title="mui" rel="stylesheet" href="static/app/css/app.css" disabled="disabled" />
+		
+	<!--引入gantt-->
+	<link rel="stylesheet" href="static/plugin/gantt/platform.css" type="text/css">
+    <link rel="stylesheet" href="static/plugin/gantt/libs/dateField/jquery.dateField.css" type="text/css">
+    <link rel="stylesheet" href="static/plugin/gantt/gantt.css" type="text/css">
+    <link rel="stylesheet" href="static/plugin/gantt/print.css" type="text/css" media="print">
+		
+	<script>
+        /^http(s*):\/\//.test(location.href) || alert('请先部署到 localhost 下再访问');
+    </script>
+</head>
+<body>
+    <div id="LAY_app" class="bpm-main-css">
+    </div>
+    
+    <script src="js/layui/layui.js"></script>
+    <script src="js/src/lib/extend/crypto.js"></script>
+    <script src="js/src/lib/extend/respond.all.min.js"></script>
+
+	<script type="text/javascript" src="static/plugin/jquery/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="static/plugin/jquery/jquery-migrate-1.1.1.min.js"></script>
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="static/support/html5.js"></script>
+	<script type="text/javascript" src="static/support/respond.js"></script>
+	<![endif]-->
+	
+	<!--自由表单-->
+	<script type="text/javascript" src="static/plugin/jquery-ui/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="static/plugin/jqueryValidate/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="static/plugin/jqueryValidate/messages_zh.min.js"></script>
+	<script type="text/javascript" src="static/plugin/treetable/treetable.js"></script>
+	<script type="text/javascript" src="static/plugin/vendor/web-animations-2.3.1.min.js"></script>
+	<script type="text/javascript" src="static/plugin/vendor/hammer-2.0.8.min.js"></script>
+	<script type="text/javascript" src="static/plugin/vendor/muuri-0.7.0.js"></script>
+	<script src="static/app/js/mui.js"></script>
+	
+	<script type="text/javascript" src="static/plugin/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="static/plugin/select2/select2.full.min.js"></script>
+	<script type="text/javascript" src="static/plugin/select2/zh-CN.js"></script>
+	<script type="text/javascript" src="static/plugin/iCheck/icheck.min.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrapTable/bootstrap-table.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrapTable/bootstrap-table-zh-CN.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrapTable-fixed-columns/bootstrap-table-fixed-columns.js" ></script>
+	<script type="text/javascript" src="static/plugin/My97DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript" src="static/plugin/ztree/js/jquery.ztree.all.min.js"></script>
+	<script type="text/javascript" src="static/plugin/jquery-form/jquery.form.js"></script>
+	<script type="text/javascript" src="static/plugin/moment/moment.js"></script>
+	<script type="text/javascript" src="static/plugin/moment/moment-language.js"></script>
+	<script type="text/javascript" src="static/plugin/jquerySlider/jquery.bxslider.js"></script>
+		
+	<!--引入webuploader-->
+	<script type="text/javascript" src="static/plugin/webuploader-0.1.5/webuploader.js"></script>
+	<!--引入calendar-->
+	<script type="text/javascript" src="static/plugin/calendar/calendar.js"></script>
+	<!--引入kindeditor-->
+	<!--<script charset="utf-8" src="static/plugin/kindeditor/kindeditor-all.js"></script>
+	<script charset="utf-8" src="static/plugin/kindeditor/lang/zh-CN.js"></script>
+	<script charset="utf-8" src="static/plugin/kindeditor/plugins/code/prettify.js"></script>-->
+	<!--summernote-->
+	<script src="static/plugin/summernote/dist/summernote.js"></script>
+	<script src="static/plugin/summernote/dist/lang/summernote-zh-CN.js"></script>
+	<!--tinymce-->
+	<script src="static/plugin/tinymce/tinymce.js"></script>
+
+	<!--辅助js，每个页面需要引用-->
+	<script type="text/javascript" src="static/util/main.js"></script>
+	<script type="text/javascript" src="static/util/helper.js"></script>
+	<script type="text/javascript" src="static/util/bootstrapTable-util.js"></script>
+	<script type="text/javascript" src="static/util/layer-util.js"></script>
+	<script type="text/javascript" src="static/util/treetable-util.js"></script>
+	<script type="text/javascript" src="static/util/jsTree-util.js"></script>
+	<script type="text/javascript" src="static/util/process-util.js"></script>
+	<script type="text/javascript" src="static/util/validate-util.js"></script>
+	<!--<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/util/layer-util.js"></script>
+	-->
+	<!-- 左树右表的左树 -->
+	<script type="text/javascript" src="static/plugin/jstree/jstree.min.js"></script>
+
+	<script type="text/javascript" src="static/plugin/crypto-js/aes.js"></script>
+	<script type="text/javascript" src="static/plugin/crypto-js/core.js"></script>
+	<script type="text/javascript" src="static/plugin/crypto-js/enc-utf8.js"></script>
+	<script type="text/javascript" src="static/plugin/crypto-js/enc-base64.js"></script>
+	<script type="text/javascript" src="static/plugin/crypto-js/md5.js"></script>
+	<script type="text/javascript" src="static/plugin/crypto-js/evpkdf.js"></script>
+	<script type="text/javascript" src="static/plugin/crypto-js/cipher-core.js"></script>
+	<script type="text/javascript" src="static/plugin/crypto-js/crypto-js.js"></script>
+	
+	<!--引入gantt-->
+    <link rel="stylesheet" type="text/css" href="static/plugin/gantt/libs/jquery.svg.css">
+	<script type="text/javascript" src="static/plugin/gantt/libs/jquery.livequery.min.js"></script>
+    <script type="text/javascript" src="static/plugin/gantt/libs/jquery.timers.js"></script>
+    <script type="text/javascript" src="static/plugin/gantt/libs/platform.js"></script>
+    <script type="text/javascript" src="static/plugin/gantt/libs/date.js"></script>
+    <script type="text/javascript" src="static/plugin/gantt/libs/i18nJs.js"></script>
+    <script type="text/javascript" src="static/plugin/gantt/libs/dateField/jquery.dateField.js"></script>
+    <script type="text/javascript" src="static/plugin/gantt/libs/JST/jquery.JST.js"></script>
+    <script type="text/javascript" src="static/plugin/gantt/libs/jquery.svg.min.js"></script>
+    <!--In case of jquery 1.7-->
+    <!--<script type="text/javascript" src="static/plugin/gantt/libs/jquery.svgdom.pack.js"></script>-->
+    <!--In case of jquery 1.8-->
+    <script type="text/javascript" src="static/plugin/gantt/libs/jquery.svgdom.1.8.js"></script>
+    <script type="text/javascript" src="static/plugin/gantt/ganttUtilities.js"></script>
+    <script type="text/javascript" src="static/plugin/gantt/ganttTask.js"></script>
+    <script type="text/javascript" src="static/plugin/gantt/ganttDrawerSVG.js"></script>
+    <!--<script src="ganttDrawer.js"></script>-->
+    <script type="text/javascript" src="static/plugin/gantt/ganttGridEditor.js"></script>
+    <script type="text/javascript" src="static/plugin/gantt/ganttMaster.js"></script>
+ 
+	<script>
+        layui.config({
+            base: 'js/src/' //指定 layuiAdmin 项目路径，本地开发用 src，线上用 dist 
+            , version: new Date().getTime()
+
+        }).use(['index','admin'], function () {
+        	var admin = layui.admin
+        	, router = layui.router()
+            , search = router.search;
+            //layui.admin.req({
+            //    url: '/Account/IsLogin'
+            //    , type: 'post'
+            //})
+            $.ajax({
+	    		type:"get",
+	    		url:layui.admin.basePath + '/getSsoSwitch',
+	    		async:true,
+	    		success:function(data){
+	    			if(data == "true") {
+	    				var url = decodeURI(window.location.href);
+			 			var argsIndex = url .split("?token=");
+			 			var token = argsIndex[1];
+						if (token) {
+							//调用login接口登录
+							admin.req({
+								url: admin.basePath + '/login',
+								type: 'post'
+								, data: {
+									username: token
+								}
+				                , loading: false
+				                , showMsg: false
+				                , success: null
+				                , done:  function(res){
+				                	if(res.data.secLevel){
+				                		layui.admin.sessionData({ secLevel: res.data.secLevel  });
+				                	}else{
+				                		layui.admin.sessionData({ secLevel: null  });
+				                	}
+				                	localStorage.setItem('officeCode',res.data.officeCode);
+				                	localStorage.setItem('companyCode',res.data.companyCode);
+									localStorage.setItem('bpmUser',token);
+				                	location.href = search.redirect ? decodeURIComponent(search.redirect) : 'index.html';
+				                }
+				                , errorFuc: function(res){
+				                	if(res.data.passwordExpired){
+//				                		$("#updatePasswordModal").modal();
+				                	}
+				                }
+				            });
+						}
+	    			}
+	    		}
+	    	});
+        });
+    </script>
+</body>
+</html>

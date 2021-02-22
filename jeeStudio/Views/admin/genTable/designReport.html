@@ -1,0 +1,380 @@
+<div id="freeFormBody" class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal">
+		<input name="id" type="hidden" id="id"/>
+		<input name="formNo" type="hidden" id="formNo"/>
+		
+		<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>报表设计</label>
+	  		<fieldset class="set">
+	  			<textarea id="report" class="tinymce-report" name="report" class="form-control  "></textarea>
+	  		</fieldset>
+	  	</div>
+	</form>
+	
+	<script type="text/html" id="inputTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td>
+			<div class="adapt">
+				<fieldset class="set">
+					<input component-type="input" name="{{d.javaField}}" class="form-control {{#  d.isNull != '1' ? 'required' : ''}} {{d.validateType}}" type="text" value=""
+						{{#  if(d.maxLength){ }}   
+						    maxlength="{{d.maxLength}}" 
+						{{#  } }} 
+						{{#  if(d.minLength){ }} 
+						    minLength="{{d.minLength}}" 
+						{{#  } }} 
+						{{#  if(d.minValue){ }} 
+						    min="{{d.minValue}}" 
+						{{#  } }} 
+						{{#  if(d.maxValue){ }} 
+						    max="{{d.maxValue}}"
+						{{#  } }} 
+							>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="textareaTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td>
+			<div class="adapt">
+				<fieldset class="set">
+		            <textarea component-type="textarea" rows="3" name="{{d.javaField}}" class="form-control {{#  d.isNull != '1' ? 'required' : ''}}" type="text" value=""
+							{{#  if(d.maxLength){ }}   
+							    maxlength="{{d.maxLength}}" 
+							{{#  } }} 
+							{{#  if(d.minLength){ }} 
+							    minLength="{{d.minLength}}" 
+							{{#  } }} 
+							   >
+		            </textarea>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="selectTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td>
+			<div class="adapt">
+				<fieldset class="set">
+					<select component-type="select" component-id="{{d.dictType}}" name="{{d.javaField}}" class="form-control m-b {{#  d.isNull != '1' ? 'required' : ''}}">
+						<option></option>
+					</select>
+				</fieldset>
+	  		</div>
+		</td>
+	</script>
+	<script type="text/html" id="radioboxTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td>
+			<div class="adapt">
+				<fieldset class="set">
+					<div component-type="radio" component-id="{{d.dictType}}" name="{{d.javaField}}" class="i-checks-div {{#  d.isNull != '1' ? 'required' : ''}}"></div>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="checkboxTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td>
+			<div class="adapt">
+				<fieldset class="set">
+					<div component-type="checkbox" component-id="{{d.dictType}}" name="{{d.javaField}}" class="i-checks-div {{#  d.isNull != '1' ? 'required' : ''}}"></div>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="dateselectTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td>
+			<div class="adapt">
+				<fieldset class="set">
+					<input component-type="datePicker" name="{{d.javaField}}" readonly="readonly" onclick="WdatePicker({dateFmt:'{{d.dateType}}'})" class="Wdate form-control {{#  d.isNull != '1' ? 'required' : ''}}" type="text" value="" />
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="sortInputTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td>
+			<div class="adapt">
+				<fieldset class="set">
+					<input component-type="input" name="{{d.javaField}}" class="form-control {{#  d.isNull != '1' ? 'required' : ''}} {{d.validateType}}" type="text" value="">
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="treeTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td>
+			<div class="adapt">
+				<fieldset class="set">
+					<div component-type="treeSelect" name="{{d.realName}}" class="tag-div " 
+						 actionUrl="{{d.actionUrl}}" sync="{{d.sync}}" check="{{d.check}}" chooseParent="{{d.chooseParent}}"></div>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="gridTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td>
+			<div class="adapt">
+				<fieldset class="set">
+					<div component-type="grid" name="{{d.realName}}" class="tag-div " 
+						tableName="{{d.tableName}}" searchKey="{{d.searchKey}}" fieldKeys="{{d.fieldKeys}}" fieldLabels="{{d.fieldLabels}}" searchLabel="{{d.searchLabel}}" javaField="{{d.javaField}}"></div>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="iconTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td>
+			<div class="adapt">
+				<fieldset class="set">
+					<div component-type="iconSelect" name="{{d.javaField}}" class="tag-div "></div>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="treeSelectTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td>
+			<div class="adapt">
+				<fieldset class="set">
+					<div component-type="treeSelect" name="{{d.realName}}" class="tag-div " 
+						actionUrl="{{d.actionUrl}}" sync="{{d.sync}}" check="{{d.check}}" chooseParent="{{d.chooseParent}}"></div>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="summernoteTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td>
+			<div class="adapt">
+				<fieldset class="set">
+					<textarea component-type="summernote" name="{{d.javaField}}" class="form-control  "></textarea>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="fileTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td>
+			<div class="adapt">
+				<fieldset class="set">
+					<div name="{{d.javaField}}" component-type="{{d.showTypeCopy}}" component-accept="{{d.accept}}" class="form-control " style="padding: 1px 12px;" component-uploadpath="/system/sysFile/fileUploadBatchProgress">
+					</div>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+</div>
+<script>
+	layui.use(['laytpl','layer', 'element', 'admin'], function() {
+		var laytpl = layui.laytpl;
+		var element = layui.element;
+		var admin = layui.admin;
+		
+		//表单页自执行方法
+		window.formFuction = function(res, layero, formFunctionData){
+			//wy数据获取
+			var formId = $(layero).find("#id").val();
+			
+			var report = $(layero).find("#report");
+			var newName = "report"+new Date().getTime();
+			report.attr("id",newName);
+			
+			function sortBy(field) {
+				return function(a,b) {
+					return a[field] - b[field];
+				}
+			}
+			
+			if(formId){
+				LayerUtil.ajax({
+					//url: admin.basePath + '/freeForm-data2.json',
+					url: layui.admin.basePath + '/gen/genTable/editForm',
+					type: 'post',
+					async: false,
+					data: JSON.stringify({
+						id:formId
+					}),
+					success: function(result){
+						resultData = result.data.data;
+						resultData.sort(sortBy("formSort"));
+						var html = "<table id='report-table' class='border tdborder'>";
+						var idx = 0;
+						$.each(resultData, function(index, item) {
+							if(item.isForm == "1"){
+								
+								if(idx%2==0 || item.isOneLine==1){
+									html += "<tr>";
+								}
+								
+								item.javaFieldReplace = item.javaField.replace(/\|/g,'-').replace(/\./g,'-');
+								var tpl = $("#freeFormBody #" + item.showType + "TplReport").html();
+								if(tpl) {
+									//isNull !=1必填  isOneLine 1=12
+									html += laytpl(tpl).render(item);
+								} 
+								else if(item.showType.indexOf("select") != -1){
+									var tpl = $("#freeFormBody #treeTplReport").html();
+									item.realName = item.javaField.split("|")[0];
+									if(item.showType=="treeselectRedio"){
+										item.actionUrl = "/sys/tagTree/userTree";
+										item.sync = "false";
+										item.check = "false";
+										item.chooseParent = "false";
+									}
+									else if(item.showType=="treeselectCheck"){
+										item.actionUrl = "/sys/tagTree/userTree";
+										item.sync = "false";
+										item.check = "true";
+										item.chooseParent = "false";
+									}
+									else if(item.showType=="officeselectTree"){
+										item.actionUrl = "/sys/tagTree/officeTreeAsync?id=0";
+										item.sync = "true";
+										item.check = "false";
+										item.chooseParent = "true";
+									}
+									else if(item.showType=="areaselect"){
+										item.actionUrl = "/sys/tagTree/areaTreeAsync?id=0";
+										item.sync = "true";
+										item.check = "false";
+										item.chooseParent = "true";
+									}
+									else if(item.showType=="gridselect"){
+										tpl = $("#freeFormBody #gridTplReport").html();
+									}
+									else if(item.showType == "treeselect"){
+										tpl = $("#freeFormBody #treeSelectTplReport").html();
+										item.actionUrl = "/dynamic/zform/treeData?parentId=0&traceFlag=1&formNo="+item.tableName;
+										item.sync = "false";
+										item.check = "false";
+										item.chooseParent = "true";
+										console.log(item)
+									}
+									else if(item.showType == "iconselect"){
+										tpl = $("#freeFormBody #iconTplReport").html();
+									}
+									html += laytpl(tpl).render(item);
+								}else if(item.showType.indexOf("file") != -1){
+									var tpl = $("#freeFormBody #fileTplReport").html();
+									if(item.showType == "fileuploadpic"){
+										item.showTypeCopy = "upload";
+										item.accept = "pic";
+									}
+									else if(item.showType == "fileuploadsec"){
+										item.showTypeCopy = "uploadsec";
+										item.accept = "";
+									}
+									else if(item.showType == "fileupload"){
+										item.showTypeCopy = "upload";
+										item.accept = "";
+									}
+									html += laytpl(tpl).render(item);
+								}
+								else if(item.showType == "parentId"){
+									var tpl = $("#freeFormBody #treeTplReport").html();
+									html += laytpl(tpl).render(item);
+								}
+								
+								if(idx%2==1 || item.isOneLine==1){
+									html += "</tr>";
+								}
+								idx++;
+							}
+							
+						});
+						html += "</table>";
+						
+						var $html = $("<div>").append(html);
+						$html.find("tr").each(function(j,obj){
+							if($(obj).children("td").length == 2){
+								$(obj).children("td").eq(1).attr("colspan",3);
+							}
+						})
+						$(layero).find("#"+newName).text($html.html());
+						
+						tinymceReport = tinymce.init({
+			                selector: '#'+newName,
+			                language:'zh_CN',
+			                auto_focus: true,
+			                plugins: 'print preview searchreplace autolink directionality visualblocks visualchars fullscreen link template code codesample table charmap hr nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern help emoticons autoresize wycustom1 wycustom2 wycustom3 wycustom4',
+			                toolbar: 'code undo redo restoredraft | cut copy paste pastetext | forecolor backcolor bold italic underline strikethrough link anchor | alignleft aligncenter alignright alignjustify outdent indent | \
+			                 wycustom1 wycustom2 wycustom3 wycustom4 | \
+			                 styleselect formatselect fontselect fontsizeselect | bullist numlist | blockquote subscript superscript removeformat | \
+			                 table charmap emoticons hr insertdatetime print preview | fullscreen ',
+			                height: 650, //编辑器高度
+			                min_height: 400,
+			                fontsize_formats: '12px 14px 16px 18px 24px 36px 48px 56px 72px',
+			                font_formats: '微软雅黑=Microsoft YaHei,Helvetica Neue,PingFang SC,sans-serif;苹果苹方=PingFang SC,Microsoft YaHei,sans-serif;宋体=simsun,serif;仿宋体=FangSong,serif;黑体=SimHei,sans-serif;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings,zapf dingbats;知乎配置=BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif;小米配置=Helvetica Neue,Helvetica,Arial,Microsoft Yahei,Hiragino Sans GB,Heiti SC,WenQuanYi Micro Hei,sans-serif',
+			                //importcss_append: true,
+			                //
+			                toolbar_mode : 'wrap',
+			                //icons:'ax-color',
+							setup : function (ed) { 
+								ed.on('keyup',function(){
+									ed.save();
+								})
+						    }, 
+						    verify_html:false,
+//						    invalid_styles: {
+//						        'td': ''
+//						    },
+//						    valid_styles:{
+//						    	'*': 'width',
+//						    },
+						    br_in_pre: false,
+						    remove_trailing_brs:true,
+						    end_container_on_empty_block:false,
+						    elementpath: false,
+						    keep_styles: false,
+						    protect:[
+						       /\<fieldset class\=\"set\"\>.*?\<\/fieldset\>/g, 
+						    ]
+			            });
+						
+					}
+				});
+			}
+			
+			window.freeFormBodyFuc = {};
+			window.freeFormBodyFuc.dosubmit = function(layIndex){
+				tinyMCE.editors[newName].save();
+				console.log(tinyMCE.editors[newName].getContent());
+			}
+			
+		};
+		
+		
+		
+	});
+</script>

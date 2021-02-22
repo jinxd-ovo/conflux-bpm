@@ -1,0 +1,10 @@
+{
+	"code": 0,
+	"data": {
+		"loginName": "whl",
+		"name": "王海丽"
+	},
+	"msg": "登录成功",
+	"msg_en": "Login successfully",
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJBUFAiLCJpc3MiOiJTZXJ2aWNlIiwiZXhwIjoxNTc3MDY3OTA0LCJ1c2VySWQiOiJlZmI5ZDcyZTZhNjY0NTYxYjMzZjVlNWE3OWI0NjIyNyIsImlhdCI6MTU3NzA2NjEwNCwidXNlcm5hbWUiOiJ3aGwifQ.hgfgltuNybo02XXlp5di58IhZRuaP5DeXTD2w4yp1gM"
+}

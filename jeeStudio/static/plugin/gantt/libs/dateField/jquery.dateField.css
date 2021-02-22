@@ -1,0 +1,92 @@
+.gantt-div .calBox {
+	background-color: #91B4B7;
+	padding: 2px;
+	-moz-border-radius: 4px;
+	text-align: center;
+	color: white;
+	width: 200px;
+	position: absolute;
+}
+
+.gantt-div .calElement,
+.calDayHeader {
+	margin: 1px;
+	display: inline-block;
+	overflow: hidden;
+}
+
+.gantt-div .calDayHeader {
+	background-color: #617777
+}
+
+.gantt-div .calNavBar {
+	padding: 5px 5px 2px 5px;
+	margin-bottom: 5px;
+}
+
+.gantt-div .calDay {}
+
+.gantt-div .calDay .calElement,
+.gantt-div .calDay .calDayHeader {
+	font-size: 11px;
+	border: 1px dotted #617777;
+}
+
+.gantt-div .calElement.prev,
+.gantt-div .calElement.next {
+	width: 16px;
+	height: 16px;
+	border: none;
+}
+
+.gantt-div .calElement.prev {
+	background: transparent url(images/prev.png) no-repeat 10px 0;
+	float: left;
+}
+
+.gantt-div .calElement.next {
+	background: transparent url(images/next.png) no-repeat;
+	float: right;
+}
+
+.gantt-div .calElement.next:hover,
+.gantt-div .calElement.prev:hover {
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	opacity: 0.6
+}
+
+.gantt-div .calDay .calElement .dayNumber {
+	font-size: 20px;
+}
+
+.gantt-div .calDay.calFullMonth .dayNumber {
+	font-size: 14px;
+}
+
+.gantt-div .calDay .calOutOfScope {
+	color: #B8D4D6;
+}
+
+.gantt-div .calElement.selected {
+	background-color: #404040;
+	border: 1px solid #404040;
+}
+
+.gantt-div .calElement:hover {
+	background-color: #404040;
+	border: 1px solid #404040;
+	cursor: pointer;
+}
+
+.gantt-div .calElement.today {
+	background-color: #009E94;
+}
+
+.gantt-div .shortCuts span {
+	border: 1px solid #999999;
+	height: 14px;
+	padding-left: 2px;
+	padding-right: 2px;
+}

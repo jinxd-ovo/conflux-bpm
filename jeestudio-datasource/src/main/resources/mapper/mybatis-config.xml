@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!-- Global parameter-->
+    <settings>
+        <!-- Causes the global mapper to enable or disable caching -->
+        <setting name="cacheEnabled" value="true"/>
+
+        <!-- Enable or disable lazy loading globally. When disabled, all associated objects are loaded immediately-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+
+        <!-- When enabled, objects with deferred loading properties will be fully loaded with arbitrary properties when called. Otherwise, each property will be loaded as needed -->
+        <setting name="aggressiveLazyLoading" value="true"/>
+
+        <!-- Whether to allow a single SQL to return multiple datasets (depending on driver compatibility) default: true -->
+        <setting name="multipleResultSetsEnabled" value="true"/>
+
+        <!-- Whether column aliases can be used (depending on driver compatibility) default: true -->
+        <setting name="useColumnLabel" value="true"/>
+
+        <!-- Allow JDBC to generate primary keys. Drive support is required. If set to true, this setting will force the generated primary key to be used. Some drives are not compatible but can still be executed default:false  -->
+        <setting name="useGeneratedKeys" value="false"/>
+
+        <!-- Specifies how mybatis automatically maps columns of a data base table none: does not implicitly partial: partial full: all -->
+        <setting name="autoMappingBehavior" value="PARTIAL"/>
+
+        <!-- This is the default execution type (simple: simple; reuse: the prepared statements statement may be used repeatedly by the actuator; batch: the statement and batch update can be executed repeatedly by the actuator)  -->
+        <setting name="defaultExecutorType" value="SIMPLE"/>
+
+        <!-- Converting fields using hump nomenclature -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+
+        <!-- Set the local cache range session: there will be data sharing statement: statement range (so there will be no data sharing) defalut:session -->
+        <setting name="localCacheScope" value="SESSION"/>
+
+        <!-- When the JDBC type is set to null, some drivers need to specify a value, default: other. When inserting a null value, you do not need to specify a type -->
+        <setting name="jdbcTypeForNull" value="NULL"/>
+
+    </settings>
+
+    <!-- Type alias -->
+    <typeAliases>
+        <typeAlias alias="Page" type="com.jeestudio.common.entity.common.persistence.Page" /><!-- paging  -->
+    </typeAliases>
+
+    <typeHandlers>
+        <typeHandler handler="com.jeestudio.common.entity.common.mapper.ConvertBlobTypeHandler"
+                     javaType="java.lang.String" jdbcType="BLOB"/>
+    </typeHandlers>
+
+    <!-- Plug-in configuration -->
+    <plugins>
+        <plugin interceptor="com.jeestudio.datasource.interceptor.PaginationInterceptor" />
+    </plugins>
+
+</configuration>

@@ -1,0 +1,1977 @@
+<html>
+<head>
+	<title>节点权限</title>
+	<link rel="stylesheet" href="static/plugin/awesome/4.4/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="static/plugin/iCheck/custom.css" />
+	<link rel="stylesheet" href="static/plugin/select2/select2.full.min.css" />
+	<link rel="stylesheet" href="js/layui/css/layui.css" media="all">
+	<link rel="stylesheet" href="static/plugin/bootstrap/3.3.4/css_default/bootstrap.min.css" />
+	<link rel="stylesheet" href="static/plugin/jstree/themes/default/style.css"/>
+	<link rel="stylesheet" href="static/css/actControl.css"/>
+	<script type="text/javascript" src="static/plugin/jquery/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="static/plugin/iCheck/icheck.min.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="static/plugin/select2/select2.full.min.js"></script>
+	<script type="text/javascript" src="static/util/bootstrapTable-util.js"></script>
+	<script src="js/layui/layui.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrapTable/bootstrap-table.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrapTable/bootstrap-table-zh-CN.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrapTable/bootstrap-table-contextmenu.js"></script> 
+	<script type="text/javascript" src="static/plugin/bootstrapTable/bootstrap-table-export.js"></script> 
+	<!-- <script type="text/javascript" src="static/plugin/bootstrap-editable/js/bootstrap-editable.js"></script> -->
+	<script type="text/javascript" src="static/plugin/bootstrap-editable/bootstrap-table-editable.js"></script>
+	<script type="text/javascript" src="static/plugin/bootstrapTable/tableExport.js"></script> 
+	
+	<script type="text/javascript" src="static/plugin/jstree/jstree.min.js"></script>
+	<script type="text/javascript" src="static/plugin/jqueryValidate/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="static/plugin/jqueryValidate/messages_zh.min.js"></script>
+	<script type="text/javascript" src="static/js/config.js"></script>
+	<!-- <script type="text/javascript" src="static/util/helper.js"></script> -->
+	<script type="text/javascript">
+		var _ctx = adminCtx.hostDev;
+		//获取地址栏参数
+		function getQueryString(name){
+					var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if(r!=null)return  unescape(r[2]); return null;
+		}
+		//封装ajax;
+		function ctAjax(_type,_url,_data,successCallback,errorCallback){
+			var $token = localStorage.getItem('$tokenBPM') || "";
+			var headers = {};
+			if($token){
+				headers.token = $token;
+			}
+			$.ajax({
+				type: _type,
+				url: _ctx + _url,
+				headers: headers,
+				data: _data,
+				dataType:'json',
+				success:function(data){
+					//console.log(data);
+					if(data.token){
+	                    localStorage.setItem("$tokenBPM",data.token);
+	                }
+					if(data.code == 0){
+						successCallback(data);
+					}
+				},
+				error:function(data){
+					errorCallback(data);
+				}
+			});
+		}
+		//渲染tab-n的数据
+		function renderTabN(arr,dom,str){
+			var strLevel = "";
+			for(var i=0;i<arr.length;i++){
+				if(str == 'org'){
+					strLevel += '<option id="'+str+':'+arr[i].id+'" class="unselected" onclick="fillSelectedTempId(this),fillSelectedValueUsers(this);" ondblclick="fillSelectedValues(this);">'+arr[i].orgName+'</option>';
+				}else{
+					strLevel += '<option id="'+str+':'+arr[i].id+'" class="unselected" onclick="fillSelectedTempId(this),fillSelectedValueUsers(this);" ondblclick="fillSelectedValues(this);">'+arr[i].name+'</option>';
+				}
+			}
+			//console.log(strLevel);
+			$('#'+dom).html(strLevel);
+		}
+		//请求页面数据
+		var _operation,_tableOperation,_extendOperation;
+		var validateForm;
+		var $table;   // 父页面table表格id
+		var $topIndex;//弹出窗口的 index
+		var clickOffice = ""; //单击部门临时存储
+		var office = "";    //临时部门存储类型
+		var clickUser = ""; //单击人员临时存储
+		var user = "";      //临时人员存储类型
+		var clickEvent = "";
+		//回调函数，在编辑和保存动作时，供openDialog调用提交表单。
+		function doSubmit(table, index, pName, pValue){
+			if(validateForm.form()){
+				var defaultPValue = '10';
+		    	if (!pName && !pValue) {
+					//添加
+				} else {
+					//保存，办理
+					if (pName && pValue && $("#" + pName) && pValue != '') $("#" + pName).val(pValue);
+				}
+		      
+				$table = table;
+				$topIndex = index;
+				jp.loading();
+				$("#inputForm").submit();
+				return true;
+			}
+			return false;
+		}
+		
+		$(document).ready(function() { 
+
+			//初始化checkbox;
+			$('body .i-checks').iCheck({
+				checkboxClass: "icheckbox_square-green",
+				radioClass: "iradio_square-green"
+			});
+			//初始化select
+			ctAjax('get','/sys/dict/getDictListView',{
+				types: 'oa_rule_scope'
+			},function(result){
+				console.log(result);
+				var _dataDict = [{
+					id: '', text: '请选择...'
+				}];
+				for(var j=0;j<result.data.data.length;j++){
+					_dataDict.push({
+						id: result.data.data[j].member,
+						text: result.data.data[j].memberName
+					})
+				}
+				$("#scope").select2({
+					width: '100%',
+					minimumResultsForSearch: -1,
+					data: _dataDict
+				});
+			})
+			//http://localhost:8900/jeeStudio/gtoa/a/sys/dict/getDictListView?types=sex
+			ctAjax('get','/sys/dict/getDictListView',{
+				types: 'oa_task_permission_category'
+			},function(result){
+				//console.log(result);
+				var _dataDict = [{
+					id: '', text: ' '
+				}];
+				for(var j=0;j<result.data.data.length;j++){
+					_dataDict.push({
+						id: result.data.data[j].member,
+						text: result.data.data[j].memberName
+					})
+				}
+				$("#taskPermissionCategory").select2({
+					width: '100%',
+					minimumResultsForSearch: -1,
+					data: _dataDict
+				});
+				//初始化人员范围数据
+				ctAjax('get','/act/taskSetting/getTaskSetting',{
+					procDefKey: getQueryString('procDefKey'),
+					userTaskId: getQueryString('userTaskId'),
+					userTaskName: decodeURIComponent(getQueryString('userTaskName'))
+				},function(data){
+					console.log(data);
+					// $('#taskPermissionCategory').select2('destroy');
+					// $("#taskPermissionCategory").select2({
+					// 	width: '100%',
+					//  	minimumResultsForSearch: -1,
+					// 	data: [{id: '', text: ' '},{id: '1', text: '收文'},{id: '2', text: '发文'},{id: '3', text: '签报'},{id: '4', text: '协同'}]
+					// });
+					// $('#taskPermissionCategory').html('<option value=""></option><option value="1">收文</option><option value="2">发文</option><option value="3">签报</option><option value="4">协同</option>');
+					// $('#taskPermissionCategory').select2({
+					// 	width: '100%',
+					// 	minimumResultsForSearch: -1
+					// })
+					var data = data.data.taskSetting;
+					$('#userTaskTitle').html(data.taskSetting.userTaskName);
+					$('#userTaskNameHide').val(data.taskSetting.userTaskName);
+					$('input[name="id"]').val(data.taskSetting.id);
+					$('input[name="dirtyUpdateDate"]').val(data.taskSetting.updateDate);
+					$('input[name="procDefKey"]').val(data.taskSetting.procDefKey); 
+					$('input[name="procDefKey"]').val(data.taskSetting.procDefKey);
+					$('input[name="userTaskId"]').val(data.taskSetting.userTaskId);
+					if(data.taskSetting.taskPermission){
+						$('#taskPermissionId').val(data.taskSetting.taskPermission.id);
+						$('#describe').val(data.taskSetting.taskPermission.describe);
+						$('#ruleArgs').val(data.taskSetting.taskPermission.ruleArgs);
+						$('#taskPermissionName').val(data.taskSetting.taskPermission.name);//权限名称
+						$('#taskPermissionCategory').val(data.taskSetting.taskPermission.category).trigger("change");//权限类型
+						_operation = data.taskSetting.taskPermission.operation;
+						_tableOperation = data.taskSetting.taskPermission.tableOperation;
+						_extendOperation = data.taskSetting.taskPermission.extendOperation;
+					}
+					if(data.taskSetting.settingValue){
+						$('#settingValue').val(data.taskSetting.settingValue.replace(/&quot;/g,"'"));
+					}
+					//渲染各种list
+					var levelListData = data.levelList;
+					var orgListData = data.orgList;
+					var postListData = data.postList;
+					var roleListData = data.roleList;
+					var officeListData = data.officeList;
+					newReady(officeListData);
+					renderTabN(levelListData,'levelListTask','level');
+					renderTabN(orgListData,'orgListTask','org');
+					renderTabN(postListData,'postListTask','post');
+					renderTabN(roleListData,'roleListTask','role');
+					// <option id="level:${level.id }" class="unselected" onclick="fillSelectedTempId(this),fillSelectedValueUsers(this);" ondblclick="fillSelectedValues(this);">${level.name }</option>
+					selectedValueInit();
+					enableOrDisableInit();
+					initRuleArgs();
+					//whl 表单操作 回显
+					var operation = _operation;
+					if(operation != null && operation != ""){
+						var operationArray = operation.split(",");
+						
+						$.each(operationArray, function (i, val) {//jxd
+							$("input[type='checkbox'][class='i-checks'][name='taskPermission.operation'][value='" + val + "']").iCheck("check");
+						});
+						
+					}
+					//whl 列表操作 回显
+					var tableOperation = _tableOperation;
+					if(tableOperation != null && tableOperation != ""){
+						var tableOperationArray = tableOperation.split(",");
+						
+						$.each(tableOperationArray, function (i, val) {//jxd
+							$("input[type='checkbox'][class='i-checks'][name='taskPermission.tableOperation'][value='" + val + "']").iCheck("check");
+						});
+						
+					}
+					var extendOperation = _extendOperation;
+					if(extendOperation != null && extendOperation != ""){
+						var extendOperationArray = extendOperation.split(",");
+						
+						$.each(extendOperationArray, function (i, val) {//jxd
+							$("input[type='checkbox'][class='i-checks'][name='taskPermission.extendOperation'][value='" + val + "']").iCheck("check");
+						});
+						
+					}
+				})
+				//初始化人员数据结束
+			})
+			
+			$("#operationError").hide();
+			/* $("#tableOperationError").hide(); */
+			validateForm = $("#inputForm").validate({
+				submitHandler: function(form){
+					jp.post(_ctx + "/oa/setting/taskSetting/save",$('#inputForm').serialize(),function(data){
+						if(data.success){
+	                    	$table.bootstrapTable('refresh');
+	                    	jp.success(data.msg);
+	                    	jp.close($topIndex);//关闭dialog
+	                    }else{
+            	  			jp.error(data.msg);
+	                    }
+					});
+				},
+				errorContainer: "#messageBox",
+				errorPlacement: function(error, element) {
+					$("#messageBox").text("输入有误，请先更正。");
+					if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
+						error.appendTo(element.parent().parent());
+					} else {
+						error.insertAfter(element);
+					}
+				}
+			});
+			// selectedValueInit();
+			// enableOrDisableInit();
+			// initRuleArgs();
+		});
+		/**
+		 *	初始化方法，加载已选择select标签内全部option标签
+		 */
+		function selectedValueInit(){
+			if ($('#settingValue').val() != null && $('#settingValue').val() != '') {
+				var settingValues = eval('(' + $('#settingValue').val() + ')');
+				for(var i = 0; i < settingValues.length; i++){
+					$('#selectedValue').append(
+						$('<option></option>').attr('id',settingValues[i].type + ':' + settingValues[i].id)
+							.attr('class','selected')
+							.attr('onclick','fillRemoveTempId(this)')
+							.attr('ondblclick','removeSelectedValue(this)')
+							.html(settingValues[i].name)
+					);
+				}
+			}
+		}
+		/**
+		 *	向已选择select标签内填充一个option标签，并填充一条json字符串
+		 */
+		function fillSelectedValues(obj){
+			if ($('#selectedValue').html().indexOf($(obj).attr('id')) == -1) {
+				$('#selectedValue').append(
+					$('<option></option>').attr('id',$(obj).attr('id'))
+						.attr('class', 'selected')
+						.attr('onclick', 'fillRemoveTempId(this)')
+						.attr('ondblclick', 'removeSelectedValue(this)')
+						.html($(obj).val())
+				);
+				var settingValue = '';
+				var newSettingValue = '{\"type\":\"' + $(obj).attr('id').split(':')[0]
+					 + '\",\"id\":\"' +  $(obj).attr('id').split(':')[1]
+					 + '\",\"name\":\"' +  $(obj).val()
+					 + '\"}';
+				var oldSettingValue = $('#settingValue').val();
+				if (oldSettingValue != null && oldSettingValue != '') {
+					oldSettingValue = oldSettingValue.substring(0, oldSettingValue.lastIndexOf(']'));
+					settingValue = oldSettingValue + ',' + newSettingValue + ']';
+				} else {
+					settingValue = '[' + newSettingValue + ']';
+				}
+				$('#settingValue').val(settingValue);
+			}
+		}
+		/**
+		 *	从已选择select标签内移除一个option标签，并移除一条json字符串
+		 */
+		function removeSelectedValue(obj){
+			var settingValue = '';
+			var settingValues = eval('(' + $('#settingValue').val() + ')');
+			if (settingValues.length > 1) {
+				settingValue = '[';
+				for(var i = 0; i < settingValues.length; i++){
+					if(settingValues[i].id != $(obj).attr('id').split(':')[1]){
+						settingValue += '{\"type\":\"' + settingValues[i].type
+							 + '\",\"id\":\"' + settingValues[i].id
+							 + '\",\"name\":\"' + settingValues[i].name
+							 + '\"},';
+					}
+				}
+				settingValue = settingValue.substring(0, settingValue.lastIndexOf(',')) + ']';
+			}
+			$('#settingValue').val(settingValue);
+			$(obj).remove();
+			if("office" == $(obj).attr('id').split(':')[0]){
+				var getNode = $('#carKindjsTree').jstree("get_node", $(obj).attr('id').split(':')[1]);
+				$('#carKindjsTree').jstree(true).show_node(getNode);
+			}
+		}
+		/**
+		 *	向用户select标签内填充一组option标签
+		 */
+		function fillSelectedValueUsers(obj){
+			ctAjax('get','/act/taskSetting/getUsersByIdIndex',{
+				objId:$(obj).attr('id')
+			},function(data){
+				var data = data.data.list;
+				$(obj).parent().parent().parent().children('[class=\'users\']').children().html('');
+				for (var i = 0; i < data.length; i++) {
+					$(obj).parent().parent().parent().children('[class=\'users\']').children().append(
+						$('<option></option>').attr('id', 'user:' + data[i].id)
+							.attr('class', 'unselected')
+							.attr('onclick', 'fillSelectedTempId(this)')
+							.attr('ondblclick', 'fillSelectedValues(this)')
+							.html(data[i].name)
+					);
+				}
+			})
+			// $.ajax({
+			// 	type:'post',
+			// 	url: _ctx + '/oa/setting/taskSetting/getUsersByIdIndex',
+			// 	data:'objId=' + $(obj).attr('id'),
+			// 	dataType:'json',
+			// 	success:function(data){
+			// 		$(obj).parent().parent().parent().children('[class=\'users\']').children().html('');
+			// 		for (var i = 0; i < data.length; i++) {
+			// 			$(obj).parent().parent().parent().children('[class=\'users\']').children().append(
+			// 				$('<option></option>').attr('id', 'user:' + data[i].id)
+			// 					.attr('class', 'unselected')
+			// 					.attr('onclick', 'fillSelectedTempId(this)')
+			// 					.attr('ondblclick', 'fillSelectedValues(this)')
+			// 					.html(data[i].name)
+			// 			);
+			// 		}
+			// 	}
+			// });
+		}
+		/**
+		 *	相对角色向已选择select标签内填充一个option前置方法，构造全新option对象
+		 */
+		function fillSelectedValuesForRelative(obj){
+			if ($('#relativeTempId').val() != null && $('#relativeTempId').val() != '') {
+				var relativeTempId = $('#relativeTempId').val();
+				relativeTempId = relativeTempId.substring(0, relativeTempId.lastIndexOf('_'));
+				fillSelectedValues(
+					$('<option></option>').attr('id', relativeTempId + $(obj).attr('id'))
+						.html($('#relativeTempName').val() + $(obj).val())
+				);
+			}
+		}
+		/**
+		 *	1.向相对角色隐藏域内填充一条最后一次选择的相对角色信息，相对角色用户select标签构造全新option对象时使用
+		 *	2.根据相对角色控制用户select标签显示或隐藏
+		 */
+		function fillRelativeTempValue(obj){
+			$('#relativeTempId').val($(obj).attr('id'));
+			$('#relativeTempName').val($(obj).val());
+			/* if ($(obj).attr('id').indexOf('empty') != -1) {
+				$('#optionSwitch').attr('style','display:none;');
+			} else {
+				$('#optionSwitch').attr('style','');
+			} */
+			if ($(obj).attr('id').indexOf('Org') == -1) {
+				$('#optionSwitch1').attr('style','');
+				$('#optionSwitch2').attr('style','display:none;');
+			} else {
+				$('#optionSwitch1').attr('style','display:none;');
+				$('#optionSwitch2').attr('style','');
+			}
+		}
+		/**
+		 *	向当前选中隐藏域内填充一条最后一次选择的，非已选择select标签内option标签的option标签信息
+		 */
+		function fillSelectedTempId(obj){
+			$('#selectedTempId').val($(obj).attr('id'));
+		}
+		/**
+		 *	选择按钮向已选择select标签内填充一个option标签前置方法
+		 */
+		function fillSelectedValuesForButton(){
+			if(clickOffice == "" && clickUser == ""){
+				$('option[id=\'' + $('#selectedTempId').val() + '\'][class=\'unselected\']').dblclick();
+			}else{
+				if(clickOffice != "" && office == "office"){
+					var node = clickOffice;
+					if ($('#selectedValue').html().indexOf(node.id) == -1) {
+						$('#selectedValue').append(
+							$('<option></option>').attr('id',"office:"+node.id)
+								.attr('class', 'selected')
+								.attr('onclick', 'fillRemoveTempId(this)')
+								.attr('ondblclick', 'removeSelectedValue(this)')
+								.html(node.text)
+						);
+						var settingValue = '';
+						var newSettingValue = '{\"type\":\"' + "office"
+							 + '\",\"id\":\"' +  node.id
+							 + '\",\"name\":\"' +  node.text
+							 + '\"}';
+						var oldSettingValue = $('#settingValue').val();
+						if (oldSettingValue != null && oldSettingValue != '') {
+							oldSettingValue = oldSettingValue.substring(0, oldSettingValue.lastIndexOf(']'));
+							settingValue = oldSettingValue + ',' + newSettingValue + ']';
+						} else {
+							settingValue = '[' + newSettingValue + ']';
+						}
+						var getNode = $('#carKindjsTree').jstree("get_node", node.id);
+						$('#carKindjsTree').jstree(true).hide_node(getNode);
+						$('#settingValue').val(settingValue);
+						office = "";
+						clickOffice = "";
+					}
+				}else if(clickUser !="" && user == "user"){
+					var userArray = clickUser.split("_");
+					if ($('#selectedValue').html().indexOf(userArray[0]) == -1) {
+						$('#selectedValue').append(
+							$('<option></option>').attr('id',"user:"+userArray[0])
+								.attr('class', 'selected')
+								.attr('onclick', 'fillRemoveTempId(this)')
+								.attr('ondblclick', 'removeSelectedValue(this)')
+								.html(userArray[1])
+						);
+						var settingValue = '';
+						var newSettingValue = '{\"type\":\"' + "user"
+							 + '\",\"id\":\"' +  userArray[0]
+							 + '\",\"name\":\"' +  userArray[1]
+							 + '\"}';
+						var oldSettingValue = $('#settingValue').val();
+						if (oldSettingValue != null && oldSettingValue != '') {
+							oldSettingValue = oldSettingValue.substring(0, oldSettingValue.lastIndexOf(']'));
+							settingValue = oldSettingValue + ',' + newSettingValue + ']';
+						} else {
+							settingValue = '[' + newSettingValue + ']';
+						}
+						$('#settingValue').val(settingValue);
+		 	   			//$("#"+userArray[0]+"_userOffice").remove();
+						clickUser = "";
+						user = "";
+					}
+				}
+				/* var node = clickOffice;
+				var span = "";
+				if(chilArray.indexOf(node.id) == -1){
+   					span = span + "<p id="+node.id+"_office style='cursor:pointer;' onclick='addSelectedSearch(this)' ondblclick='addSelectedSearchDb(this)'><span id="+node.id+"_selected title="+node.text+">"+node.text+"</span></p>";
+   				}
+ 	   			$("#selectEd").append(span); */
+			}
+			
+		}
+		/**
+		 *	向当前选中隐藏域内填充一条最后一次选择的，已选择select标签内option标签的option标签信息
+		 */
+		function fillRemoveTempId(obj){
+			$('#removeTempId').val($(obj).attr('id'));
+		}
+		/**
+		 *	选择按钮从已选择select标签内移除一个option标签前置方法
+		 */		
+		function removeSelectedValuesForButton(){
+			$('option[id=\'' + $('#removeTempId').val() + '\'][class=\'selected\']').dblclick();
+		}
+		/**
+		 *	初始化方法，加载已添加的规则变量
+		 */
+		function ruleArgsInit(){
+			if($('#ruleArgs').val() != null && $('#ruleArgs').val()!=''){
+				var ruleArgs = eval('(' + $('#ruleArgs').val() + ')');
+				for(var i = 0; i < ruleArgs.length; i++){
+					$('#ruleArgsTbody').append(
+						$('<tr></tr>').attr('id', ruleArgs[i].key)
+							.append(
+								$('<td></td>').html(ruleArgs[i].key)
+							).append(
+								$('<td></td>').html(ruleArgs[i].value)
+							).append(
+								$('<td></td>').append(
+									$('<a></a>').attr('class', 'btn btn-white btn-sm')
+										.attr('title', '移除')
+										.attr('onclick', 'ruleArgsRemove(this)')
+										.append(
+											$('<i></i>').attr('class', 'fa fa-minus')
+												.html(' 移除')
+										)
+								)
+							)
+					);
+				}
+			}
+		}
+		/**
+		 *	添加一条规则变量，添加一条json字符串
+		 */
+		function ruleArgsAdd(){
+			if ($('#ruleArgsKey').val() != null && $('#ruleArgsKey').val().trim() != ''
+				&& $('#ruleArgsValue').val() != null && $('#ruleArgsValue').val().trim() != ''
+				&& $('tr#' + $('#ruleArgsKey').val()).attr('id') == undefined) {
+				$('#ruleArgsTbody').append(
+					$('<tr></tr>').attr('id', $('#ruleArgsKey').val())
+						.append(
+							$('<td></td>').html($('#ruleArgsKey').val())
+						).append(
+							$('<td></td>').html($('#ruleArgsValue').val())
+						).append(
+							$('<td></td>').append(
+								$('<a></a>').attr('class', 'btn btn-white btn-sm')
+									.attr('title', '移除')
+									.attr('onclick', 'ruleArgsRemove(this)')
+									.append(
+										$('<i></i>').attr('class', 'fa fa-minus')
+											.html(' 移除')
+									)
+							)
+						)
+				);
+				var ruleArgs = '';
+				var newRuleArgs = '{\"key\":\"' + $('#ruleArgsKey').val().trim()
+					 + '\",\"value\":\"' +  $('#ruleArgsValue').val().trim()
+					 + '\"}';
+				var oldRuleArgs = $('#ruleArgs').val();
+				if (oldRuleArgs != null && oldRuleArgs != '') {
+					oldRuleArgs = oldRuleArgs.substring(0, oldRuleArgs.lastIndexOf(']'));
+					ruleArgs = oldRuleArgs + ',' + newRuleArgs + ']';
+				} else {
+					ruleArgs = '[' + newRuleArgs + ']';
+				}
+				$('#ruleArgs').val(ruleArgs);
+				//清空
+				$('#ruleArgsKey').val('');
+				$('#ruleArgsValue').val('');
+			}
+		}
+		/**
+		 *	移除一条规则变量，移除一条json字符串
+		 */
+		function ruleArgsRemove(obj){
+			var ruleArg = '';
+			var ruleArgs = eval('(' + $('#ruleArgs').val() + ')');
+			if (ruleArgs.length > 1) {
+				ruleArg = '[';
+				for(var i = 0; i < ruleArgs.length; i++){
+					if(ruleArgs[i].key != $(obj).parent().parent().attr('id')){
+						ruleArg += '{\"key\":\"' + ruleArgs[i].key
+							 + '\",\"value\":\"' + ruleArgs[i].value
+							 + '\"},';
+					}
+				}
+				ruleArg = ruleArg.substring(0, ruleArg.lastIndexOf(',')) + ']';
+			}
+			$('#ruleArgs').val(ruleArg);
+			$(obj).parent().parent().remove();
+		}
+		/**
+		 *	异步保存
+		 */
+		function ajaxSave(){
+			if(validateForm.form()){
+				var isChecked = $("input[type='checkbox'][class='i-checks'][name='taskPermission.operation']").is(":checked");
+				if (isChecked) {
+					var saveIndex = layer4j.msg("正在保存", {icon: 16,shade: 0.01,time: 999999999});
+					ctAjax('post','/act/taskSetting/saveTaskSetting',$('#inputForm').serialize(),function(data){
+						//alert(234);
+						//console.log(data);
+						var data = data.data;
+						layer4j.close(saveIndex);
+						//console.log(data);
+						if ($('#id').val() == null || $('#id').val().trim() == '') {
+							$('#id').val(data.taskSetting.id);
+						}
+						$("#taskPermissionId").val(data.taskSetting.taskPermission.id);
+						$('#dirtyUpdateDate').val(data.taskSetting.updateDate);
+						layer4j.close(saveIndex);
+						window.parent.document.getElementById("saveTaskSetting").removeAttribute("disabled");
+						layer4j.msg('保存成功', {icon:1});
+					},function(data){
+						layer4j.close(saveIndex);
+						window.parent.document.getElementById("saveTaskSetting").removeAttribute("disabled");
+						layer4j.msg('保存失败', {icon:1});
+					})
+					// $.ajax({
+					// 	type:'post',
+					// 	url:_ctx + '/oa/setting/taskSetting/save',
+					// 	data: $('#inputForm').serialize(),
+					// 	dataType:'json',
+					// 	success:function(data){
+					// 		if ($('#id').val() == null || $('#id').val().trim() == '') {
+					// 			$('#id').val(data.body.id);
+					// 		}
+					// 		$("#taskPermissionId").val(data.body.permission);
+					// 		$('#dirtyUpdateDate').val(data.body.dirtyUpdateDate);
+					// 		layer4j.close(saveIndex);
+					// 		window.parent.document.getElementById("saveTaskSetting").removeAttribute("disabled");
+					// 		layer4j.msg('保存成功', {icon:1});
+					// 	},
+					// 	error:function(data){
+					// 		layer4j.close(saveIndex);
+					// 		window.parent.document.getElementById("saveTaskSetting").removeAttribute("disabled");
+					// 		layer4j.msg('保存失败', {icon:1});
+					// 	}
+					// });
+				} else {
+					$("#operationError").show();
+					window.parent.document.getElementById("saveTaskSetting").removeAttribute("disabled");
+				}
+			} else {
+				window.parent.document.getElementById("saveTaskSetting").removeAttribute("disabled");
+			}
+		}
+		
+		var layer4j;
+		$(function(){
+			layui.use('layer', function(){
+				layer4j = layui.layer;
+			});
+		});
+		
+		//whl-----------------------------部门选择start
+		function newReady(_data){
+			var clickNode = "";
+			var to = false;
+			var jstreeData;
+			$('#carKindjsTree').jstree({
+				'core': {
+					"multiple": false,
+					"animation": 0,
+					"themes": {
+						"variant": "large",
+						"icons": false,
+						"stripes": false
+					},
+					'data': function(obj, callback) {
+							//console.log(data);
+							var _obj = [];
+							for(var i=0;i<_data.length;i++){
+								if(_data[i].parentId == null){
+									_data[i].parentId = 0;
+								}
+								if(_data[i].id == 1 && _data[i].parentId == 0){
+									_obj.push({
+										id: _data[i].id,
+										parent: '#',
+										text: _data[i].name,
+										parentId: _data[i].parentId
+									})
+								}else{
+									_obj.push({
+										id: _data[i].id,
+										parent: _data[i].parentId,
+										text: _data[i].name,
+										parentId: _data[i].parentId
+									})
+								}
+							}
+							jstreeData = _obj;
+                            if(_obj) {
+                                callback.call(this, _obj);
+                            }else{
+                                $("#carKindjsTree").html("暂无数据！");
+                            }
+						/* top.myHelper.ajax(_ctx + "/sys/office/treeDataListUser?selectIds="+$("#selectIds").val(), "get", null, function(result) {
+						    var d = result.data;
+							jstreeData = d;
+							userArray = result.user;
+							callback.call(this, result.data);
+						}); */
+					}
+				},
+				"conditionalselect": function(node, event) {
+					return false;
+				},
+				'plugins': ['wholerow', "search"]
+	
+			}).bind("activate_node.jstree", function(obj, e) {
+				var array = new Array();
+				var node = $('#carKindjsTree').jstree(true).get_selected(true)[0];
+				var nodeChildren = node.children_d;
+				var id = node.id;
+				var text = node.text;
+				var opt = {
+					silent: true,
+					query: {
+						'kind.id': node.id
+					}
+				};
+				if(nodeChildren.length == 0){
+					array[0] = id;
+				}else{
+					array = nodeChildren;
+				}
+				clearTimeout(clickNode);
+				clickNode = setTimeout(function(){
+					var chil = $("#selectEd").children();
+					var chilLength = chil.length;
+					var chilArray = new Array();
+					for(var i=0;i<chilLength;i++){
+						var chilItem = chil[i];
+						var idp = chilItem.id;
+						chilArray.push(idp.split("_")[0]);
+					}
+					ctAjax('get','/act/taskSetting/getUsersByIdIndex',{
+						objId: 'office:'+ array
+					},function(data){
+						var data = data.data.list;
+						console.log(data);
+						var span = "";
+						$("#select_office").html("");
+						for(var i=0;i<data.length;i++){
+							var item = data[i];
+							span += "<p id="+item.id+"_userOffice class='selectOffice' style='cursor:pointer;height:30px;padding-top:5px;' onclick='addSelectSearch(this)' ondblclick='addSelectSearchDb(this)'><span id="+item.id+"_select title="+item.name+">"+item.name+"</span></p>";
+						}
+						$("#select_office").html(span);
+					});
+
+		     	   	// $.ajax({
+		     	   	// 	url:_ctx + "/sys/user/findUserBuOfficeId?ids="+array,
+		     	   	// 	type:"post",
+		     	   	// 	success:function(result){
+		     	   	// 		$("#select_office").html("");
+		     	   	// 		var span = "";
+		     	   	// 		var data = eval("("+result+")");
+		     	   	// 		var dataLength = data.length;
+		     	   	// 		for(var i=0;i<dataLength;i++){
+		     	   	// 			var item = data[i];
+		     	   	// 			if(chilArray.indexOf(item.id) == -1){
+		     	   	// 			span = span + "<p id="+item.id+"_userOffice class='selectOffice' style='cursor:pointer;height:30px;padding-top:5px;' onclick='addSelectSearch(this)' ondblclick='addSelectSearchDb(this)'><span id="+item.id+"_select title="+item.text+">"+item.text+"</span></p>";
+		     	   	// 			}
+		     	   	// 		}
+		     	   	// 	$("#select_office").html(span);
+		     	   	// 	}
+		     	   	// });
+		     	   office = "office";
+				   clickOffice = node;
+		     	 },200);
+				
+			}).bind("dblclick.jstree", function(obj, e) {
+				clearTimeout(clickNode);
+             	var node = $('#carKindjsTree').jstree(true).get_selected(true)[0];
+				addDbSelected(node);
+        	}).on('loaded.jstree', function(e, data) {
+				data.instance.open_node(jstreeData[0]);
+				//$("#carKindjsTree").jstree('open_all');
+			}).on('ready.jstree', function() {
+				$.each(jstreeData, function(i, item) {
+					var id = "#carKindjsTree li#" + item.id + ">.jstree-wholerow";
+					if ($(id).find(".jsTreeNumDiv").length > 0) {
+						$(id).find(".jsTreeNumDiv").remove();
+					}
+				});
+			}).on('after_open.jstree', function(node, obj) {
+				$.each(obj.node.children_d, function(i, item) {
+					var id = "#carKindjsTree li#" + item + ">.jstree-wholerow";
+					if ($(id).find(".jsTreeNumDiv").length > 0) {
+						$(id).find(".jsTreeNumDiv").remove();
+					}
+					var data = $.each(jstreeData, function(i,obj) {
+						return obj.id == item;
+					});
+					if (data.length > 0) {
+					}
+				});
+			});
+			
+			window.refreshJsTree = function() {
+				$.ajax({
+                    type : "get",
+                    url : _ctx + "/sys/office/treeDataListUser?shortName=false&selectIds="+$("#selectIds").val(),//getAreaBuild=getTreeArea
+                    dataType : "json", 
+                    success : function(result) {
+						var d = result.data;
+						jstreeData = d;
+                        if(result.data) {
+                             callback.call(this, result.data);
+                        }else{
+                             $("#carKindjsTree").html("暂无数据！");
+                        }
+                    }
+                 });
+				/* top.myHelper.ajax(_ctx + "/sys/office/treeDataListUser?selectIds="+$("#selectIds").val(), "get", null, function(result) {
+					var parent = $.grep(result.data, function(item, index) {
+						return item.parent == "#";
+					});
+					var data = $.extend(true, result.data, parent);
+					$("#carKindjsTree").jstree(true).settings.core.data = data;
+					$("#carKindjsTree").jstree(true).refresh();
+				}); */
+			}
+			$(document).on("click", ".searchForm-title .toggle", function() {
+				$(this).find(".fa").toggleClass("fa-chevron-up");
+				$(this).find(".fa").toggleClass("fa-chevron-down");
+				$(this).closest("li").find(".searchForm-body").toggle();
+			});
+		}
+		//部门双击添加
+		function addDbSelected(node){
+			if ($('#selectedValue').html().indexOf(node.id) == -1) {
+				$('#selectedValue').append(
+					$('<option></option>').attr('id',"office:"+node.id)
+						.attr('class', 'selected')
+						.attr('onclick', 'fillRemoveTempId(this)')
+						.attr('ondblclick', 'removeSelectedValue(this)')
+						.html(node.text)
+				);
+				var settingValue = '';
+				var newSettingValue = '{\"type\":\"' + "office"
+					 + '\",\"id\":\"' +  node.id
+					 + '\",\"name\":\"' +  node.text
+					 + '\"}';
+				var oldSettingValue = $('#settingValue').val();
+				if (oldSettingValue != null && oldSettingValue != '') {
+					oldSettingValue = oldSettingValue.substring(0, oldSettingValue.lastIndexOf(']'));
+					settingValue = oldSettingValue + ',' + newSettingValue + ']';
+				} else {
+					settingValue = '[' + newSettingValue + ']';
+				}
+				var getNode = $('#carKindjsTree').jstree("get_node", node.id);
+				$('#carKindjsTree').jstree(true).hide_node(getNode);
+				$('#settingValue').val(settingValue);
+			}
+		}
+		//人员单击添加
+		function addSelectSearch(e){
+			office = "";
+			clickOffice = "";
+			clearTimeout(clickEvent);
+			clickEvent = setTimeout(function(){
+				var selectId = $(e).attr("id");
+				$(e).addClass('active').siblings().removeClass('active');
+				var selectStr = selectId.split("_");
+				var title = $("#"+selectStr[0]+"_select").attr("title");
+				clickUser = selectStr[0] + "_" + title; 
+				user = "user"; 
+			},200);    
+		}
+		function addSelectSearchDb(e){
+			office = "";
+			clickOffice = "";
+			clearTimeout(clickEvent);
+			var selectId = $(e).attr("id");
+			var selectStr = selectId.split("_");
+			var title = $("#"+selectStr[0]+"_select").attr("title");
+			if ($('#selectedValue').html().indexOf(selectStr[0]) == -1) {
+				$('#selectedValue').append(
+					$('<option></option>').attr('id',selectStr[0])
+						.attr('class', 'selected')
+						.attr('onclick', 'fillRemoveTempId(this)')
+						.attr('ondblclick', 'removeSelectedValue(this)')
+						.html(title)
+				);
+				var settingValue = '';
+				var newSettingValue = '{\"type\":\"' + "user"
+					 + '\",\"id\":\"' +  selectStr[0]
+					 + '\",\"name\":\"' +  title
+					 + '\"}';
+				var oldSettingValue = $('#settingValue').val();
+				if (oldSettingValue != null && oldSettingValue != '') {
+					oldSettingValue = oldSettingValue.substring(0, oldSettingValue.lastIndexOf(']'));
+					settingValue = oldSettingValue + ',' + newSettingValue + ']';
+				} else {
+					settingValue = '[' + newSettingValue + ']';
+				}
+				$('#settingValue').val(settingValue);
+	   			//$("#"+selectId).remove();
+				clickUser = "";
+				user = "";
+			}
+		}
+		//whl-----------------------------部门选择end
+		//选项卡设置
+		layui.use('element', function(){
+		  var element = layui.element;
+		  
+		});
+		//whl ----------------------------添加权限模板
+		function addPermission(){
+			layui.use('layer', function(){
+				  var layer = layui.layer;
+				  layer.open({
+					    type: 2, 
+					    area: ['900px', '500px'],
+					    title: "选择节点权限模板",
+					    content: "taskPerList.html",
+					    btn: ['确定','取消'],
+					    offset: ['5px', '40px'],
+					    yes: function (index, layero){
+					    	var body = layer.getChildFrame('body', index);
+				         	var iframeWin = layero.find('iframe')[0];
+				         	var row = iframeWin.contentWindow.select();
+				         	if(row == false){
+				         	}else{
+				         		//权限名称
+					         	var name = row.name;
+				         		$("#taskPermissionName").val(name);
+				         		//权限类型
+				         		var category = row.category;
+				         		$("#taskPermissionCategory").val(category).select2();
+				         		enableOrDisableInit();
+				         		//描述
+				         		var describe = row.describe;
+				         		$("#describe").val(describe);
+				         		//表单操作
+				         		var operation = row.operation;
+				         		if(operation != null && operation != ""){
+				         			var operationArray = operation.split(",");
+				         			
+				         			$("input[type='checkbox'][class='i-checks'][name='taskPermission.operation']").iCheck("uncheck");
+				         			$.each(operationArray, function (i, val) {//jxd
+					     				$("input[type='checkbox'][class='i-checks'][name='taskPermission.operation'][value='" + val + "']").iCheck("check");
+					     			});
+				         			
+				         		}
+				         		//列表操作
+				         		var tableOperation = row.tableOperation;
+				         		if(tableOperation != null && tableOperation != ""){
+				         			var tableOperationArray = tableOperation.split(",");
+				         			
+				         			$("input[type='checkbox'][class='i-checks'][name='taskPermission.tableOperation']").iCheck("uncheck");
+				         			$.each(tableOperationArray, function (i, val) {//jxd
+					     				$("input[type='checkbox'][class='i-checks'][name='taskPermission.tableOperation'][value='" + val + "']").iCheck("check");
+					     			});
+				         		}
+				         		//规则变量
+				         		var ruleArgs = row.ruleArgs;
+				         		if(ruleArgs == null){
+				         			ruleArgs = "";
+								}
+				         		$("#ruleArgs").val(ruleArgs);
+				         		initRuleArgs();
+					         	layer.close(index);
+				         	}
+				      	},
+				      	no: function(index, layero){
+				      		layer.close(index);
+				      	}
+					});
+				});
+		}
+		function enableOrDisableBtn(value) {
+			//收文,发文,签报 value = 1 2 3, enable转发文, enable转收文, enable转分发
+			if ("1" == value || "2" == value || "3" == value) {
+				$("#saveAndSend").iCheck("enable");
+				$("#saveAndSendDiv").attr("class", "").addClass("icheck-normal");
+				$("#saveAndReceive").iCheck("enable");
+				$("#saveAndReceiveDiv").attr("class", "").addClass("icheck-normal");
+				$("#saveAndToDistribute").iCheck("enable");
+				$("#saveAndToDistributeDiv").attr("class", "").addClass("icheck-normal");
+			}
+			//分发 value = edocDistribute, enable转发文, enable转收文, diasble转分发
+			else if ("edocDistribute" == value) {
+				$("#saveAndSend").iCheck("enable");
+				$("#saveAndSendDiv").attr("class", "").addClass("icheck-normal");
+				$("#saveAndReceive").iCheck("enable");
+				$("#saveAndReceiveDiv").attr("class", "").addClass("icheck-normal");
+				$("#saveAndToDistribute").iCheck("uncheck");
+				$("#saveAndToDistribute").iCheck("disable");
+				$("#saveAndToDistributeDiv").attr("class", "").addClass("icheck-disable");
+			}
+			//其他, diasble转发文, diasble转收文, diasble转分发
+			else {
+				$("#saveAndSend").iCheck("uncheck");
+				$("#saveAndSend").iCheck("disable");
+				$("#saveAndSendDiv").attr("class", "").addClass("icheck-disable");
+				$("#saveAndReceive").iCheck("uncheck");
+				$("#saveAndReceive").iCheck("disable");
+				$("#saveAndReceiveDiv").attr("class", "").addClass("icheck-disable");
+				$("#saveAndToDistribute").iCheck("uncheck");
+				$("#saveAndToDistribute").iCheck("disable");
+				$("#saveAndToDistributeDiv").attr("class", "").addClass("icheck-disable");
+			}
+		}
+		function enableOrDisableInit() {
+			var value = $("#taskPermissionCategory").val();
+			enableOrDisableBtn(value);
+		}
+		//whl
+		function addTable(){
+			layui.use('layer', function(){
+				var layer = layui.layer;
+				layer.open({
+					type: 2, 
+					area: ['900px', '500px'],
+					title: "选择表单",
+					content: "addTableList.html",
+					btn: ['确定','取消'],
+					offset: ['5px', '90px'],
+					yes: function (index, layero){
+						var body = layer.getChildFrame('body', index);
+						var iframeWin = layero.find('iframe')[0];
+						var row = iframeWin.contentWindow.select();
+						createFormLabels(row);
+						layer.close(index);
+					},
+					no: function(index, layero){
+						layer.close(index);
+					}
+				});
+			});
+		}
+	</script>
+	<script>
+		function createPropertyLabel(id, javaField) {
+			var propertyLabel = $("<input>").addClass("form-control propertyLabel").attr("placeholder", "填写属性");
+			if (id != null && javaField != null) {
+				propertyLabel.attr("id", id).attr("value", javaField);
+			}
+			return propertyLabel;
+		}
+		function createCommentsLabel(id, comments){
+			var commentsLabel = $("<input>").addClass("form-control commentsLabel").attr("placeholder", "填写说明");
+			if (id != null && comments != null) {
+				commentsLabel.attr("id", id).attr("value", comments);
+			}
+			return commentsLabel;
+		}
+		function createDisplayLabel(id) {
+			var displayLabel = $("<select></select>").addClass("form-control displayLabel")
+				.append($("<option></option>").val("1").html("显示")).append($("<option></option>").val("0").html("隐藏"));
+			if (id != null) {
+				displayLabel.attr("id", id);
+			}
+			return displayLabel;
+		}
+		function createDisableLabel(id) {
+			var disableLabel = $("<select></select>").addClass("form-control disableLabel")
+				.append($("<option></option>").val("0").html("查看")).append($("<option></option>").val("1").html("编辑"));
+			if (id != null) {
+				disableLabel.attr("id", id);
+			}
+			return disableLabel;
+		}
+		function createRequireLabel(id) {
+			var requireLabel = $("<select></select>").addClass("form-control requireLabel")
+				.append($("<option></option>").val("0").html("选填")).append($("<option></option>").val("1").html("必填"));
+			if (id != null) {
+				requireLabel.attr("id", id);
+			}
+			return requireLabel;
+		}
+//		function createOperatorLabel() {
+//			var operatorLabel = $("<select></select>").addClass("form-control operatorLabel")
+//				.append($("<option></option>").val(">").html("大于")).append($("<option></option>").val(">=").html("大于等于"))
+//				.append($("<option></option>").val("==").html("等于")).append($("<option></option>").val("<=").html("小于等于"))
+//				.append($("<option></option>").val("<").html("小于")).append($("<option></option>").val("!=").html("不等于"));
+//			return operatorLabel;
+//		}
+//		function createPercentLabel() {
+//			var percentLabel = $("<input>").addClass("form-control percentLabel").attr("placeholder", "填写条件");
+//			return percentLabel;
+//		}
+//		function createPathLabel() {
+//			var pathLabel = $("<input>").addClass("form-control pathLabel").attr("placeholder", "填写分支");
+//			return pathLabel;
+//		}
+//		function createNodeLabel() {
+//			var nodeLabel = $("<input>").addClass("form-control nodeLabel").attr("placeholder", "允许回退指定的目的节点ID（例：apply,audit,...）");
+//			return nodeLabel;
+//		}
+		function createContentLabel() {
+			var contentLabel = $("<select></select>").addClass("form-control contentLabel")
+				.append($("<option></option>").val("editType").html("文档"))
+				.append($("<option></option>").val("useRed").html("套红"));
+			return contentLabel;
+		}
+		function createContentEditTypeLabel() {
+			var contentEditTypeLabel = $("<select></select>").addClass("form-control contentEditTypeLabel contentLabelChildLabel")
+				.append($("<option></option>").val("0").html("不可编辑"))
+				.append($("<option></option>").val("1").html("可以编辑，无痕迹"))
+				.append($("<option></option>").val("2").html("可以编辑，有痕迹，不可修订"))
+				.append($("<option></option>").val("3").html("可以编辑，有痕迹，可以修订"));
+			return contentEditTypeLabel;
+		}
+		function createContentUseRedLabel() {
+			var contentUseRedLabel = $("<select></select>").addClass("form-control contentUseRedLabel contentLabelChildLabel")
+				.append($("<option></option>").val("1").html("可以套红"));
+			return contentUseRedLabel;
+		}
+		$(document).on("change", ".contentLabel", function(event) {
+			$(".contentLabelChildLabel").hide();
+			if ("editType" == $(this).val()) {
+				$(".contentEditTypeLabel").show();
+			} else if ("useRed" == $(this).val()) {
+				$(".contentUseRedLabel").show();
+			}
+		});
+		function createOperationTypeLabel() {
+			var operationTypeLabel = $("<select></select>").addClass("form-control operationTypeLabel")
+				.append($("<option></option>").val("saveAndClaim").html("暂存"))
+				.append($("<option selected=selected></option>").val("saveAndComplete").html("提交"))
+				.append($("<option></option>").val("saveAndReject").html("回退"))
+				.append($("<option></option>").val("saveAndSuperReject").html("指定回退"))
+				.append($("<option></option>").val("saveAndCreateNode").html("加签"))
+				.append($("<option></option>").val("saveAndDeleteNode").html("减签"))
+				.append($("<option></option>").val("saveAndNotify").html("知会"))
+				.append($("<option></option>").val("saveAndDistribute").html("分发"))
+				.append($("<option></option>").val("saveAndToDistribute").html("转分发"))
+				.append($("<option></option>").val("saveAndSend").html("转发文"))
+				.append($("<option></option>").val("saveAndReceive").html("转收文"))
+				.append($("<option></option>").val("saveAndTerminate").html("终止"))
+				.append($("<option></option>").val("cancel").html("取消"));
+			return operationTypeLabel;
+		}
+		function createOperationNameLabel() {
+			var operationNameLabel = $("<input>").addClass("form-control operationNameLabel").attr("placeholder", "填写自定义按钮名称");
+			return operationNameLabel;
+		}
+		/**
+		 * 手动编辑字段规则
+		 */
+		function editLabels(obj) {
+			var flag = $(obj).attr("flag");
+			if (flag == "done") {
+				$(obj).attr("flag", "edit").html("<i class='fa fa-plus'></i> 完成");
+				$("#addBtn").attr("disabled", "disabled");
+				var ruleArgs = $("#ruleArgs").val();
+				if (ruleArgs) {
+					$("#ruleArgsTbody").html("");
+					ruleArgs = eval("(" + ruleArgs + ")");
+					for (var i = 0; i < ruleArgs.length; i++) {
+						var div_ = $("<div></div>").attr("style", "display: flex; flex-direction: row; align-items: center;");
+						var k0 = ruleArgs[i].key.split("_")[0];
+						var k1 = ruleArgs[i].key.split("_")[1];
+						if (k0 == "form") {
+							var v0 = ruleArgs[i].value.split("_")[0];
+							var v1 = ruleArgs[i].value.split("_")[1];
+							var html = "（表单规则）字段 [ " + k1 + " ] 字段说明 [ " + v1 + " ] 规则是：";
+	//						var propertyLabel = createPropertyLabel().attr("style", "flex: 1;").val(k1);
+	//						var commentsLabel = createCommentsLabel().attr("style", "flex: 1;").val(v1);
+							var div__ = $("<div></div>").attr("style", "width: 50%;").append(html);
+							var displayLabel = createDisplayLabel().attr("style", "flex: 1;").val(v0[0]);
+							var disableLabel = createDisableLabel().attr("style", "flex: 1;").val(v0[1]);
+							var requireLabel = createRequireLabel().attr("style", "flex: 1;").val(v0[2]);
+							div_.append(div__).append(displayLabel).append(disableLabel).append(requireLabel);
+						} else if (k0 == "content") {
+							var v0 = ruleArgs[i].value;
+							var html;
+	//						var contentLabel = createContentLabel().attr("style", "flex: 1;").val(k1);
+							var contentEditTypeLabel = createContentEditTypeLabel().attr("style", "flex: 1;");
+							var contentUseRedLabel = createContentUseRedLabel().attr("style", "flex: 1;");
+							if (k1 == "editType") {
+								html = "（正文规则）当前节点的正文 [ 文档 ] 规则是：";
+								contentEditTypeLabel.val(v0);
+								contentUseRedLabel.hide();
+							} else if (k1 == "useRed") {
+								html = "（正文规则）当前节点的正文 [ 套红 ] 规则是：";
+								contentEditTypeLabel.hide();
+								contentUseRedLabel.val(v0);
+							}
+							var div__ = $("<div></div>").attr("style", "width: 50%;").append(html);
+							div_.append(div__).append(contentEditTypeLabel).append(contentUseRedLabel);
+						} else if (k0 == "operation") {
+							var v0 = ruleArgs[i].value.split("_")[0];
+							var v1 = ruleArgs[i].value.split("_")[1];
+							var html = "（按钮规则）当前节点的按钮 [ " + v0 + " ] 的自定义名称是：";
+	//						var operationTypeLabel = createOperationTypeLabel().attr("style", "flex: 1;").val(k1);
+							var operationNameLabel = createOperationNameLabel().attr("style", "flex: 1;").val(v1);
+							var div__ = $("<div></div>").attr("style", "width: 50%;").append(html);
+							div_.append(div__).append(operationNameLabel);
+						}
+						var input_ = $("<input>").attr("type", "hidden").addClass("thisRuleArgsJson").val(JSON.stringify(ruleArgs[i]));
+						var td0_ = $("<td></td>").attr("style", "width: 85%;").attr("colspan", "2");
+						var td1_ = $("<td></td>").attr("style", "width: 15%;");
+						var a_ = $("<a></a>").attr("title", "移除").attr("onclick", "removeRuleArgs(this);").addClass("btn btn-white btn-sm");
+						var i_ = $("<i></i>").attr("class", "fa fa-minus").html(" 移除");
+						td0_.append(div_);
+						td1_.append(a_.append(i_));
+						$("#ruleArgsTbody").append($("<tr></tr>").append(input_).append(td0_).append(td1_));
+					}
+				}
+			} else if (flag == "edit") {
+				$(obj).attr("flag", "done").html("<i class='fa fa-plus'></i> 编辑");
+				$("#addBtn").removeAttr("disabled");
+				var newRuleArgs = [];
+				var tbody = $("#ruleArgsTbody").children();
+				for (var i = 0; i < tbody.length; i++) {
+					var ruleArgsI = $(tbody[i]).find("input:eq(0)").val();
+					ruleArgsI = eval("(" + ruleArgsI + ")");
+					var k0 = ruleArgsI.key.split("_")[0];
+					var k1 = ruleArgsI.key.split("_")[1];
+					if (k0 == "form") {
+						var v1 = ruleArgsI.value.split("_")[1];
+						var s1 = $(tbody[i]).find("select:eq(0)").val();
+						var s2 = $(tbody[i]).find("select:eq(1)").val();
+						var s3 = $(tbody[i]).find("select:eq(2)").val();
+						var k = ruleArgsI.key;
+						var v = s1 + s2 + s3 + "_" + v1;
+						ruleArgsI = {
+							key: k,
+							value: v
+						};
+					} else if (k0 == "content") {
+						var s;
+						if (k1 == "editType") {
+							s = $(tbody[i]).find("select:eq(0)").val();
+						} else if (k1 == "useRed") {
+							s = $(tbody[i]).find("select:eq(1)").val();
+						}
+						var k = ruleArgsI.key;
+						var v = s;
+						ruleArgsI = {
+							key: k,
+							value: v
+						};
+					} else if (k0 == "operation") {
+						var v0 = ruleArgsI.value.split("_")[0];
+						var i1 = $(tbody[i]).find("input:eq(1)").val();
+						var k = ruleArgsI.key;
+						var v = v0 + "_" + i1;
+						ruleArgsI = {
+							key: k,
+							value: v
+						};
+					}
+					newRuleArgs.push(ruleArgsI);
+				}
+				newRuleArgs = JSON.stringify(newRuleArgs);
+				$("#ruleArgs").val(newRuleArgs)
+				initRuleArgs();
+			}
+		}
+		/**
+		 * 手动添加字段规则
+		 */
+		function createLabels(label) {
+			$("#expressionTd").html("");
+			var scope = $(label).val();
+			if (scope == "form") {
+				var propertyLabel = createPropertyLabel().attr("style", "width: 20%;");
+				var commentsLabel = createCommentsLabel().attr("style", "width: 20%;");
+				var displayLabel = createDisplayLabel().attr("style", "width: 20%;");
+				var disableLabel = createDisableLabel().attr("style", "width: 20%;");
+				var requireLabel = createRequireLabel().attr("style", "width: 20%;");
+				$("#expressionTd").append(propertyLabel).append(commentsLabel).append(displayLabel).append(disableLabel).append(requireLabel);
+			} else if (scope == "flag") {
+				var propertyLabel = createPropertyLabel().attr("style", "width: 20%;");
+				var commentsLabel = createCommentsLabel().attr("style", "width: 20%;");
+				var operatorLabel = createOperatorLabel().attr("style", "width: 20%;");
+				var percentLabel = createPercentLabel().attr("style", "width: 20%;");
+				var pathLabel = createPathLabel().attr("style", "width: 20%;");
+				$("#expressionTd").append(propertyLabel).append(commentsLabel).append(operatorLabel).append(percentLabel).append(pathLabel);
+			} else if (scope == "hand") {
+				var pathLabel = createPathLabel();
+				$("#expressionTd").append(pathLabel);
+			} else if (scope == "reject") {
+				var nodeLabel = createNodeLabel();
+				$("#expressionTd").append(nodeLabel);
+			} else if (scope == "content") {
+				var contentLabel = createContentLabel().attr("style", "width: 50%;");
+				var contentEditTypeLabel = createContentEditTypeLabel().attr("style", "width: 50%;");
+				var contentUseRedLabel = createContentUseRedLabel().attr("style", "width: 50%;").hide();
+				$("#expressionTd").append(contentLabel).append(contentEditTypeLabel).append(contentUseRedLabel);
+			} else if (scope == "operation") {
+				var operationTypeLabel = createOperationTypeLabel().attr("style", "width: 50%;");
+				var operationNameLabel = createOperationNameLabel().attr("style", "width: 50%;");
+				$("#expressionTd").append(operationTypeLabel).append(operationNameLabel);
+			}
+		}
+		/**
+		 * 从表单添加字段规则
+		 */
+		function createFormLabels(data) {
+			var scope = $("#scope").val("form").trigger("change");
+			$("#expressionTd").html("");
+			for (var i = 0; i < data.length; i++) {
+				if ($("#propertyLabel:" + data[i].id).val()) {
+				
+				} else {
+					var propertyLabel = createPropertyLabel("propertyLabel:" + data[i].id, data[i].javaFieldId).attr("style", "width: 20%;");
+					var commentsLabel = createCommentsLabel("commentsLabel:" + data[i].id, data[i].comments).attr("style", "width: 20%;");
+					var displayLabel = createDisplayLabel("displayLabel:" + data[i].id).attr("style", "width: 20%;");
+					var disableLabel = createDisableLabel("disableLabel:" + data[i].id).attr("style", "width: 20%;");
+					var requireLabel = createRequireLabel("requireLabel:" + data[i].id).attr("style", "width: 20%;");
+					$("#expressionTd").append(propertyLabel).append(commentsLabel).append(displayLabel).append(disableLabel).append(requireLabel);
+				}
+			}
+		}
+		/**
+		 * 添加规则变量
+		 */
+		function addRuleArgs() {
+			var ruleArgsJson = $("#ruleArgs").val();
+			var newRuleArgsJson = "";
+			var newRuleArgsHtml = "";
+			var scope = $("#scope").val();
+			if (scope == "form") {
+				var propertyLabel = $("#expressionTd").children(".propertyLabel");
+				var commentsLabel = $("#expressionTd").children(".commentsLabel");
+				var displayLabel = $("#expressionTd").children(".displayLabel");
+				var displayLabelHtml = $("#expressionTd").children(".displayLabel").children("option:selected");
+				var disableLabel = $("#expressionTd").children(".disableLabel");
+				var disableLabelHtml = $("#expressionTd").children(".disableLabel").children("option:selected");
+				var requireLabel = $("#expressionTd").children(".requireLabel");
+				var requireLabelHtml = $("#expressionTd").children(".requireLabel").children("option:selected");
+				if (propertyLabel != null && commentsLabel != null && displayLabel != null && displayLabelHtml != null && disableLabel != null && disableLabelHtml != null && requireLabel != null && requireLabelHtml != null) {
+					var duplicate = false;
+					for (var i = 0; i < propertyLabel.length; i++) {
+						if (propertyLabel[i].value.trim() != "" && commentsLabel[i].value.trim() != "") {
+							var newRuleArgsJsonKey = "{\"key\":\"" + scope + "_" + propertyLabel[i].value.trim() + "\",";
+							if (ruleArgsJson.indexOf(newRuleArgsJsonKey) == -1) {
+								if (commentsLabel[i].value == null || commentsLabel[i].value == undefined) {
+									commentsLabel[i].value = "";
+								}
+								newRuleArgsJson = newRuleArgsJsonKey + "\"value\":\"" + displayLabel[i].value + disableLabel[i].value + requireLabel[i].value + "_" + commentsLabel[i].value.trim() + "\"}";
+								newRuleArgsHtml = "（表单规则）字段 [ " + propertyLabel[i].value.trim() + " ] 字段说明：[ " + commentsLabel[i].value.trim() + " ]  规则： [ " + displayLabelHtml[i].text + " ] [ " + disableLabelHtml[i].text + " ] [ " + requireLabelHtml[i].text + " ]";
+								addRuleArgsJson(newRuleArgsJson, newRuleArgsHtml);
+								
+								$("#expressionTd > input[id='" + propertyLabel[i].id + "']").remove();
+								$("#expressionTd > input[id='" + commentsLabel[i].id + "']").remove();
+								$("#expressionTd > select[id='" + displayLabel[i].id + "']").remove();
+								$("#expressionTd > select[id='" + disableLabel[i].id + "']").remove();
+								$("#expressionTd > select[id='" + requireLabel[i].id + "']").remove();
+								
+								if ($("#expressionTd").html() == "") {
+									$("#scope").val("form").trigger("change");
+								}
+							} else {
+								duplicate = true;
+							}
+						} else {
+							layer.msg("（表单规则）存在空值", {icon:0});
+							//jp.warning("（表单规则）存在空值");
+						}
+					}
+					if (duplicate) {
+						layer.msg("（表单规则）存在重复字段", {icon:0});
+						//jp.warning("（表单规则）存在重复字段");
+					}
+				} else {
+					layer.msg("（表单规则）存在空值", {icon:0});
+					//jp.warning("（表单规则）存在空值");
+				}
+			} else if (scope == "flag") {
+				var propertyLabel = $("#expressionTd").children(".propertyLabel").val().trim();
+				var commentsLabel = $("#expressionTd").children(".commentsLabel").val().trim();
+				var operatorLabel = $("#expressionTd").children(".operatorLabel").val().trim();
+				var operatorLabelHtml = $("#expressionTd").children(".operatorLabel").children("option:selected").html().trim();
+				var percentLabel = $("#expressionTd").children(".percentLabel").val().trim();
+				var pathLabel = $("#expressionTd").children(".pathLabel").val().trim();
+				if (propertyLabel != null && propertyLabel != "" && commentsLabel != null  && commentsLabel != "" && operatorLabel != null  && operatorLabel != "" 
+						&& operatorLabelHtml != null  && operatorLabelHtml != "" && percentLabel != null  && percentLabel != "" && pathLabel != null && pathLabel != "" ) {
+					for (var i = 0; i < i + 1; i++) {
+						var newRuleArgsJsonKey = "{\"key\":\"" + scope + "_" + propertyLabel + "_" + i + "\",";
+						if (ruleArgsJson.indexOf(newRuleArgsJsonKey) == -1) {
+							if(commentsLabel == null || commentsLabel == undefined){
+								commentsLabel = "";
+							}
+							newRuleArgsJson = newRuleArgsJsonKey + "\"value\":\"" + propertyLabel + operatorLabel + "'" + percentLabel + "'_" + pathLabel + "_" + commentsLabel + "\"}";
+							newRuleArgsHtml = "（分支规则）字段 [ " + propertyLabel + " ]  字段说明：[ " + commentsLabel + " ]  [ " + operatorLabelHtml + " ] [ " + percentLabel + " ] 时，选择分支： [ " + pathLabel + " ]";
+							addRuleArgsJson(newRuleArgsJson, newRuleArgsHtml);
+							break;
+						}
+					}
+				} else {
+					layer.msg("（分支规则）存在空值", {icon:0});
+					//jp.warning("（分支规则）存在空值");
+				}
+			} else if (scope == "hand") {
+				var pathLabel = $("#expressionTd").children(".pathLabel").val().trim();
+				if (pathLabel != null && pathLabel != "") {
+					for (var i = 0; i < i + 1; i++) {
+						var newRuleArgsJsonKey = "{\"key\":\"" + scope + "_" + i + "\",";
+						if (ruleArgsJson.indexOf(newRuleArgsJsonKey) == -1) {
+							newRuleArgsJson = newRuleArgsJsonKey + "\"value\":\"" + pathLabel + "\"}";
+							newRuleArgsHtml = "（分支规则）分支 [ " + pathLabel + " ] 由当前节点办理人选择";
+							addRuleArgsJson(newRuleArgsJson, newRuleArgsHtml);
+							break;
+						}
+					}
+				} else {
+					layer.msg("（分支规则）存在空值", {icon:0});
+					//jp.warning("（分支规则）存在空值");
+				}
+			} else if (scope == "reject") {
+				var nodeLabel = $("#expressionTd").children(".nodeLabel").val().trim();
+				if (nodeLabel != null && nodeLabel != "") {
+					for (var i = 0; i < i + 1; i++) {
+						var newRuleArgsJsonKey = "{\"key\":\"" + scope + "_" + i + "\",";
+						if (ruleArgsJson.indexOf(newRuleArgsJsonKey) == -1) {
+							newRuleArgsJson = newRuleArgsJsonKey + "\"value\":\"" + nodeLabel + "\"}";
+							newRuleArgsHtml = "（回退规则）允许指定回退的目的节点：[ " + nodeLabel + " ]";
+							addRuleArgsJson(newRuleArgsJson, newRuleArgsHtml);
+							break;
+						}
+					}
+				} else {
+					layer.msg("（回退规则）存在空值", {icon:0});
+					//jp.warning("（回退规则）存在空值");
+				}
+			} else if (scope == "content") {
+				var contentLabel = $("#expressionTd").children(".contentLabel").val().trim();
+				var contentLabelHtml = $("#expressionTd").children(".contentLabel").children("option:selected").html().trim();
+				var contentLabelChildLabel = "";
+				var contentLabelChildLabelHtml = "";
+				if ("editType" == contentLabel) {
+					contentLabelChildLabel = $("#expressionTd").children(".contentEditTypeLabel").val().trim();
+					contentLabelChildLabelHtml = $("#expressionTd").children(".contentEditTypeLabel").children("option:selected").html().trim();
+				} else if ("useRed" == contentLabel) {
+					contentLabelChildLabel = $("#expressionTd").children(".contentUseRedLabel").val().trim();
+					contentLabelChildLabelHtml = $("#expressionTd").children(".contentUseRedLabel").children("option:selected").html().trim();
+				}
+				if (contentLabel != null && contentLabel != "" && contentLabelChildLabel != null && contentLabelChildLabel != "") {
+					var newRuleArgsJsonKey = "{\"key\":\"" + scope + "_" + contentLabel + "\",";
+					if (ruleArgsJson.indexOf(newRuleArgsJsonKey) == -1) {
+						newRuleArgsJson = newRuleArgsJsonKey + "\"value\":\"" + contentLabelChildLabel + "\"}";
+						newRuleArgsHtml = "（正文规则）当前节点的正文 [ " + contentLabelHtml + " ] 规则是：[ " + contentLabelChildLabelHtml + " ]";
+						addRuleArgsJson(newRuleArgsJson, newRuleArgsHtml);
+					} else {
+						layer.msg("（正文规则）已存在一个正文 [ " + contentLabelHtml + " ] 规则", {icon:0});
+						//jp.warning("（正文规则）已存在一个正文规则");
+					}
+				} else {
+					layer.msg("（正文规则）存在空值", {icon:0});
+					//jp.warning("（正文规则）存在空值");
+				}
+			} else if (scope == "operation") {
+				var operationTypeLabel = $("#expressionTd").children(".operationTypeLabel").val().trim();
+				var operationTypeLabelHtml = $("#expressionTd").children(".operationTypeLabel").children("option:selected").html().trim();
+				var operationNameLabel = $("#expressionTd").children(".operationNameLabel").val().trim();
+				
+				if (operationTypeLabel != null && operationTypeLabelHtml != null && operationNameLabel != null) {
+					var newRuleArgsJsonKey = "{\"key\":\"" + scope + "_" + operationTypeLabel + "\",";
+					if (ruleArgsJson.indexOf(newRuleArgsJsonKey) == -1) {
+						newRuleArgsJson = newRuleArgsJsonKey + "\"value\":\"" + operationTypeLabelHtml + "_" + operationNameLabel + "\"}";
+						newRuleArgsHtml = "（按钮规则）当前节点的按钮 [ " + operationTypeLabelHtml + " ] 的自定义名称是：[ " + operationNameLabel + " ]";
+						addRuleArgsJson(newRuleArgsJson, newRuleArgsHtml);
+					} else {
+						layer.msg("（按钮规则）已存在一个按钮 [ " + operationTypeLabelHtml + " ] 的自定义名称", {icon:0});
+					}
+				} else {
+					layer.msg("（按钮规则）存在空值", {icon:0});
+				}
+			}
+		}
+		function addRuleArgsJson(newRuleArgsJson, newRuleArgsHtml) {
+			var ruleArgsJson = "";
+			var oldRuleArgsJson = $("#ruleArgs").val();
+			if (oldRuleArgsJson != null && oldRuleArgsJson != "") {
+				oldRuleArgsJson = oldRuleArgsJson.substring(0, oldRuleArgsJson.lastIndexOf("]"));
+				ruleArgsJson = oldRuleArgsJson + "," + newRuleArgsJson + "]";
+			} else {
+				ruleArgsJson = "[" + newRuleArgsJson + "]";
+			}
+			$("#ruleArgs").val(ruleArgsJson);
+			addRuleArgsHtml(newRuleArgsJson, newRuleArgsHtml);
+		}
+		function addRuleArgsHtml(newRuleArgsJson, newRuleArgsHtml) {
+			$("#ruleArgsTbody").append($("<tr></tr>").append($("<input>").addClass("thisRuleArgsJson").attr("type", "hidden").val(newRuleArgsJson)).append($("<td></td>")
+			.attr("colspan", "2").attr("style", "width: 85%;").html(newRuleArgsHtml)).append($("<td colspan='2'></td>").attr("style", "width: 15%;").append($("<a></a>")
+			.addClass("btn btn-white btn-sm").attr("title", "移除").attr("onclick", "removeRuleArgs(this)").append($("<i></i>").attr("class", "fa fa-minus").html(" 移除")))));
+		}
+		function removeRuleArgs(label) {
+			var ruleArgsJson = "";
+			var oldRuleArgsJson = eval("(" + $("#ruleArgs").val() + ")");
+			if (oldRuleArgsJson.length > 1) {
+				ruleArgsJson = "[";
+				var thisRuleArgsJson = $(label).parent().parent().children(".thisRuleArgsJson").val();
+				for(var i = 0; i < oldRuleArgsJson.length; i++){
+					var tempRuleArgsJson = "{\"key\":\"" + oldRuleArgsJson[i].key + "\",\"value\":\"" + oldRuleArgsJson[i].value + "\"}";
+					if(tempRuleArgsJson != thisRuleArgsJson){
+						ruleArgsJson += tempRuleArgsJson;
+						ruleArgsJson += ",";
+					}
+				} 
+				ruleArgsJson = ruleArgsJson.substring(0, ruleArgsJson.lastIndexOf(",")) + "]";
+			}
+			$("#ruleArgs").val(ruleArgsJson);
+			$(label).parent().parent().remove();
+		}
+		function initRuleArgs() {
+			$("#ruleArgsTbody").html("");
+			var ruleArgsJson = $("#ruleArgs").val();
+			if(ruleArgsJson != null && ruleArgsJson !=''){
+				var ruleArgsJson = eval("(" + ruleArgsJson + ")");
+				for(var i = 0; i < ruleArgsJson.length; i++){
+					var key = ruleArgsJson[i].key;
+					var value = ruleArgsJson[i].value;
+					var newRuleArgsJson = "{\"key\":\"" + key + "\",\"value\":\"" + value + "\"}";
+					var scope = ruleArgsJson[i].key.split("_")[0];
+					if (scope == "form") {
+						var propertyLabel = key.split("_")[1];
+						var commentsLabel = value.split("_")[1];
+						var displayLabelHtml = value[0] == 0 ? "隐藏" : "显示";
+						var disableLabelHtml = value[1] == 0 ? "查看" : "编辑";
+						var requireLabelHtml = value[2] == 0 ? "选填" : "必填";
+						newRuleArgsHtml = "（表单规则）字段 [ " + propertyLabel + " ] 字段说明：[ " + commentsLabel + " ] 规则： [ " + displayLabelHtml + " ] [ " + disableLabelHtml + " ] [ " + requireLabelHtml + " ]";
+						addRuleArgsHtml(newRuleArgsJson, newRuleArgsHtml);
+					} else if (scope == "flag") {
+						var propertyLabel = key.split("_")[1];
+						var operatorLabel = value.split("_")[0];
+						var pathLabel = value.split("_")[1];
+						var commentsLabel = value.split("_")[2];
+						var operatorLabelHtml = "";
+						var percentLabel = "";
+						if (operatorLabel.indexOf("<=") != -1) {
+							operatorLabelHtml = "小于等于";
+							percentLabel = operatorLabel.split("<=")[1];
+						} else if (operatorLabel.indexOf("==") != -1) {
+							operatorLabelHtml = "等于";
+							percentLabel = operatorLabel.split("==")[1];
+						} else if (operatorLabel.indexOf(">=") != -1) {
+							operatorLabelHtml = "大于等于";
+							percentLabel = operatorLabel.split(">=")[1];
+						} else if (operatorLabel.indexOf("<") != -1) {
+							operatorLabelHtml = "小于";
+							percentLabel = operatorLabel.split("<")[1];
+						} else if (operatorLabel.indexOf(">") != -1) {
+							operatorLabelHtml = "大于";
+							percentLabel = operatorLabel.split(">")[1];
+						} else if (operatorLabel.indexOf("!=") != -1) {
+							operatorLabelHtml = "不等于";
+							percentLabel = operatorLabel.split("!=")[1];
+						}
+						percentLabel = percentLabel.replace(new RegExp("'", "gm"), "");
+						newRuleArgsHtml = "（分支规则）字段 [ " + propertyLabel + " ] 字段说明：[ " + commentsLabel + " ] [ " + operatorLabelHtml + " ] [ " + percentLabel + " ] 时，选择分支： [ " + pathLabel + " ]";
+						addRuleArgsHtml(newRuleArgsJson, newRuleArgsHtml);
+					} else if (scope == "hand") {
+						var pathLabel = value;
+						newRuleArgsHtml = "（分支规则）分支 [ " + pathLabel + " ] 由当前节点办理人选择";
+						addRuleArgsHtml(newRuleArgsJson, newRuleArgsHtml);
+					} else if (scope == "reject") {
+						var nodeLabel = value;
+						newRuleArgsHtml = "（回退规则）允许指定回退的目的节点：[ " + nodeLabel + " ]";
+						addRuleArgsHtml(newRuleArgsJson, newRuleArgsHtml);
+					} else if (scope == "content") {
+						var contentLabelHtml = "";
+						var contentLabelChildLabelHtml = "";
+						var contentLabel = key.split("_")[1];
+						if ("editType" == contentLabel) {
+							contentLabelHtml = "文档";
+							if ("0" == value) {
+								contentLabelChildLabelHtml = "不可编辑";
+							} else if ("1" == value) {
+								contentLabelChildLabelHtml = "可以编辑，无痕迹";
+							} else if ("2" == value) {
+								contentLabelChildLabelHtml = "可以编辑，有痕迹，不可修订";
+							} else if ("3" == value) {
+								contentLabelChildLabelHtml = "可以编辑，有痕迹，可以修订";
+							}
+						} else if ("useRed" == contentLabel) {
+							contentLabelHtml = "套红";
+							if ("1" == value) {
+								contentLabelChildLabelHtml = "可以套红";
+							}
+						}
+						newRuleArgsHtml = "（正文规则）当前节点的正文 [ " + contentLabelHtml + " ] 规则是：[ " + contentLabelChildLabelHtml + " ]";
+						addRuleArgsHtml(newRuleArgsJson, newRuleArgsHtml);
+					} else if (scope == "operation") {
+						var operationTypeLabelHtml = value.split("_")[0];
+						var operationNameLabel = value.split("_")[1];
+						newRuleArgsHtml = "（按钮规则）当前节点的按钮 [ " + operationTypeLabelHtml + " ] 的自定义名称是：[ " + operationNameLabel + " ]";
+						addRuleArgsHtml(newRuleArgsJson, newRuleArgsHtml);
+					}
+				}
+			}
+		}
+		
+	</script> 
+	<style>
+		.selectOffice:hover{
+			background-color: #f4fcfa;
+		}
+		.selectOffice.active,.selectOffice.active:hover{
+			background-color: #a8e4ff;
+		}
+		.layui-layer-iframe {
+		    overflow-y: hidden;
+		}
+		.icheck-normal{float: left; margin: 3px;}
+        .icheck-disable{float: left; margin: 3px; color: #eee;}
+        .btn-primary{    
+        	background-color: #1c84c6;
+		    border-color: #1c84c6;
+		    color: #FFFFFF;
+    	}
+    	.btn-primary:hover{    
+        	background-color: #1c84c6;
+		    border-color: #1c84c6;
+		    color: #FFFFFF;
+    	}
+    	.btn-primary:active{    
+        	background-color: #1c84c6;
+		    border-color: #1c84c6;
+		    color: #FFFFFF;
+    	}
+    	.btn-primary:link{    
+        	background-color: #1c84c6;
+		    border-color: #1c84c6;
+		    color: #FFFFFF;
+    	}
+    	.btn-primary:visited{    
+        	background-color: #1c84c6;
+		    border-color: #1c84c6;
+		    color: #FFFFFF;
+    	}
+    	.ownError{
+		    color: #cc5965;
+		    display: inline-block;
+		    margin-left: 5px;
+    	}
+	</style>
+</head>
+<body class="hideScroll" style="margin: 20px;">
+	<form id="inputForm" action="taskSetting" class="form-horizontal" method="get">
+	<input type="hidden" id="id" name="id" value=""/>
+	<input type="hidden" id="dirtyUpdateDate" name="dirtyUpdateDate" value="" />
+	<input type="hidden" name="procDefKey" value=""/>
+	<input type="hidden" name="userTaskId" value=""/>
+	<input type="hidden" name="userTaskName" value="" id="userTaskNameHide"/>
+	<input type="hidden" id="taskPermissionId" name="taskPermission.id" value=""/>
+		<!-- <sys:message content="${message}"/>	 -->
+		<div>
+			<h2 id="userTaskTitle"></h2>
+		</div>
+		<div class="layui-tab">
+			<ul class="layui-tab-title">
+				<li class="layui-this">人员范围</li>
+				<li>规则权限</li>
+			</ul>
+			<div class="layui-tab-content" style="padding: 0px;">
+				<div class="layui-tab-item layui-show">
+					<table  class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
+						<tbody>
+		    				<tr>
+								<td colspan="4">
+									<div class="tabs-container" style="width: 60%; float: left;">
+							            <ul class="nav nav-tabs">
+											<li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">部门</a>
+							                </li>
+											<li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">岗位</a>
+							                </li>
+											<li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">职务</a>
+							                </li>
+											<li class=""><a data-toggle="tab" href="#tab-4" aria-expanded="false">相对角色</a>
+							                </li>
+							                <li class=""><a data-toggle="tab" href="#tab-5" aria-expanded="false">组织</a>
+							                </li>
+											<li class=""><a data-toggle="tab" href="#tab-6" aria-expanded="false">角色</a>
+							                </li>
+							            </ul>
+			            				<div class="tab-content">
+											<div id="tab-1" class="tab-pane active">
+												<div style="float: left; width: 50%;height: 240px;overflow-y:scroll; outline: none;">
+													<div id="carKindjsTree"></div>
+												</div>	
+												<div style="float: left; width: 50%;height: 240px;overflow-y:scroll; outline: none;" class="users">
+													<div id="select_office"></div>
+												</div><!-- office:1234556 -->
+											</div>
+											<div id="tab-2" class="tab-pane">
+												<div style="float: left; width: 50%;">
+													<select multiple="multiple" class="form-control " style="height: 240px;" id="postListTask">
+														<!-- <c:forEach items="${postList }" var="post">
+															<option id="post:${post.id }" class="unselected" onclick="fillSelectedTempId(this),fillSelectedValueUsers(this);" ondblclick="fillSelectedValues(this);">${post.name }</option>
+														</c:forEach> -->
+													</select>
+												</div>
+												<div style="float: left; width: 50%;" class="users">
+													<select multiple="multiple" class="form-control " style="height: 240px;">
+													</select>
+												</div>
+											</div>
+											<div id="tab-3" class="tab-pane">
+												<div style="float: left; width: 50%;">
+													<select multiple="multiple" class="form-control " style="height: 240px;" id="levelListTask">
+														<!-- <c:forEach items="${levelList }" var="level">
+															<option id="level:${level.id }" class="unselected" onclick="fillSelectedTempId(this),fillSelectedValueUsers(this);" ondblclick="fillSelectedValues(this);">${level.name }</option>
+														</c:forEach> -->
+													</select>
+												</div>
+												<div style="float: left; width: 50%;" class="users">
+													<select multiple="multiple" class="form-control " style="height: 240px;">
+													</select>
+												</div>
+											</div>
+											<div id="tab-4" class="tab-pane">
+												<input type="hidden" id="relativeTempId">
+												<input type="hidden" id="relativeTempName">
+												<div style="float: left; width: 50%;" class="relative">
+													<select multiple="multiple" class="form-control " style="height: 240px;">
+														<option id="relative:creater_" class="unselected" onclick="fillSelectedTempId(this),fillRelativeTempValue(this);" ondblclick="fillSelectedValues(this);">发起者</option>
+														<option id="relative:pre_" class="unselected" onclick="fillSelectedTempId(this),fillRelativeTempValue(this);">上节点</option>
+														<%-- <option id="relative:empty_" class="unselected" onclick="fillSelectedTempId(this),fillRelativeTempValue(this);" ondblclick="fillSelectedValues(this);">空节点</option> --%>
+														<option id="relative:createrSuperDept_" class="unselected" onclick="fillSelectedTempId(this),fillRelativeTempValue(this);">发起者上级部门</option>
+														<option id="relative:createrDeptMain_" class="unselected" onclick="fillSelectedTempId(this),fillRelativeTempValue(this);">发起者主管各部门</option>
+														<option id="relative:createrDeptOther_" class="unselected" onclick="fillSelectedTempId(this),fillRelativeTempValue(this);">发起者分管各部门</option>
+														<option id="relative:preSuperDept_" class="unselected" onclick="fillSelectedTempId(this),fillRelativeTempValue(this);">上节点上级部门</option>
+														<option id="relative:preDeptMain_" class="unselected" onclick="fillSelectedTempId(this),fillRelativeTempValue(this);">上节点主管各部门</option>
+														<option id="relative:preDeptOther_" class="unselected" onclick="fillSelectedTempId(this),fillRelativeTempValue(this);">上节点分管各部门</option>
+			
+														<option id="relative:createrOrg_" class="unselected" onclick="fillSelectedTempId(this),fillRelativeTempValue(this);">发起者所属组织</option>
+														<option id="relative:createrOrgMain_" class="unselected" onclick="fillSelectedTempId(this),fillRelativeTempValue(this);">发起者负责组织</option>
+														<option id="relative:preOrg_" class="unselected" onclick="fillSelectedTempId(this),fillRelativeTempValue(this);">上节点所属组织</option>
+														<option id="relative:preOrgMain_" class="unselected" onclick="fillSelectedTempId(this),fillRelativeTempValue(this);">上节点负责组织</option>
+													</select>
+												</div>
+												<div style="float: left; width: 50%;">
+													<div id="optionSwitch1">
+													<select multiple="multiple" class="form-control " style="height: 240px;">
+														<option id="DeptMember" class="unselected" onclick="fillSelectedTempId(this)" ondblclick="fillSelectedValuesForRelative(this);">部门成员</option>
+														<option id="DeptLeaderMain" class="unselected" onclick="fillSelectedTempId(this)" ondblclick="fillSelectedValuesForRelative(this);">部门主管</option>
+														<option id="DeptLeaderOther" class="unselected" onclick="fillSelectedTempId(this)" ondblclick="fillSelectedValuesForRelative(this);">部门分管领导</option>
+														<%-- 
+														<option id="Admin" class="unselected" onclick="fillSelectedTempId(this)" ondblclick="fillSelectedValuesForRelative(this);">部门管理员</option>
+														<option id="Clerk" class="unselected" onclick="fillSelectedTempId(this)" ondblclick="fillSelectedValuesForRelative(this);">部门公文收发员</option>
+														--%>
+													</select>
+													</div>
+													<div id="optionSwitch2" style="display: none;">
+													<select multiple="multiple" class="form-control " style="height: 240px;">
+														<option id="OrgMember" class="unselected" onclick="fillSelectedTempId(this)" ondblclick="fillSelectedValuesForRelative(this);">组织成员</option>
+														<option id="OrgLeaderMain" class="unselected" onclick="fillSelectedTempId(this)" ondblclick="fillSelectedValuesForRelative(this);">组织负责人</option>
+													</select>
+													</div>
+												</div>
+											</div>
+											<div id="tab-5" class="tab-pane">
+												<div style="float: left; width: 50%;">
+													<select multiple="multiple" class="form-control " style="height: 240px;" id="orgListTask">
+														<!-- <c:forEach items="${orgList }" var="org">
+															<option id="org:${org.id }" class="unselected" onclick="fillSelectedTempId(this),fillSelectedValueUsers(this);" ondblclick="fillSelectedValues(this);">${org.orgName }</option>
+														</c:forEach> -->
+													</select>
+												</div>
+												<div style="float: left; width: 50%;" class="users">
+													<select multiple="multiple" class="form-control " style="height: 240px;">
+													</select>
+												</div>
+											</div>
+											<div id="tab-6" class="tab-pane">
+												<div style="float: left; width: 50%;">
+													<select multiple="multiple" class="form-control " style="height: 240px;" id="roleListTask">
+														<!-- <c:forEach items="${roleList }" var="role">
+															<option id="role:${role.id }" class="unselected" onclick="fillSelectedTempId(this),fillSelectedValueUsers(this);" ondblclick="fillSelectedValues(this);">${role.name }</option>
+														</c:forEach> -->
+													</select>
+												</div>
+												<div style="float: left; width: 50%;" class="users">
+													<select multiple="multiple" class="form-control " style="height: 240px;">
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="tabs-container" style="width: 5%; float: left; text-align: center; padding-top: 120px;">
+										<div>
+											<input type="hidden" id="selectedTempId">
+											<a onclick="fillSelectedValuesForButton();" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="选择"><i class="glyphicon glyphicon-chevron-right"></i></a>
+										</div>
+										<div>
+											<input type="hidden" id="removeTempId">
+											<a onclick="removeSelectedValuesForButton();" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="移除"><i class="glyphicon glyphicon-chevron-left"></i></a>
+										</div>
+									</div>
+									<div class="tabs-container" style="width: 35%; float: left;">
+							            <ul class="nav nav-tabs">
+											<li><a>已选择</a></li>
+							            </ul>
+			            				<div class="tab-content">
+											<div class="tab-pane active">
+												<input type="hidden" id="settingValue" name="settingValue" value="">
+												<select id="selectedValue" multiple="multiple" class="form-control " style="height: 240px;">
+												</select>
+											</div>
+										</div>
+									</div>
+								</td>
+							</tr>
+		    			</tbody>
+		    		</table>
+		    	</div>
+		    	<div class="layui-tab-item">
+		    		<table  class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
+		    			<tbody>
+							<input type="hidden" name="taskPermission.type" value="2"/>
+							<input type="hidden" name="taskPermission.position" value="1"/>
+							<input type="hidden" name="taskPermission.isInuse" value="1"/>
+							
+							<a class="btn-white btn btn-xs" href="javascript:addPermission();" style="margin: 5px 0px; height: 30px; line-height: 25px; font-size: 12px;">
+								<i class="fa fa-plus"></i>
+								节点权限模板
+							</a>
+					    	<tr>
+								<td class="width-15 active"><label class="pull-right"><font color="red">*</font>权限名称：</label></td>
+						        <td class="width-35">
+									<fieldset class="set">
+										<input name="taskPermission.name" id="taskPermissionName" htmlEscape="false" class="form-control required"/>
+									</fieldset>
+								</td>
+								<td class="width-15 active"><label class="pull-right"><font color="red">*</font>权限类型：</label></td>
+						        <td class="width-35">
+									<fieldset class="set">
+									<select path="taskPermission.category" name="taskPermission.category" id="taskPermissionCategory" class="form-control required" onchange="enableOrDisableBtn(this.value);">
+										<!-- <option value="" label=""/> -->
+										<!-- <option value=""></option>
+										<option value="1">收文</option>
+										<option value="2">发文</option>
+										<option value="3">签报</option>
+										<option value="4">协同</option> -->
+										<!-- <option value="" label=""/>
+										<options items="${fns:getDictListEdit('oa_task_permission_category',taskSetting.id)}" itemLabel="label" itemValue="value" htmlEscape="false"/> -->
+									</select>
+									</fieldset>
+								</td>
+							</tr>
+							<tr>
+								<td class="width-15 active"><label class="pull-right"><font color="red">*</font>表单按钮：</label></td>
+						
+								<td class="width-35" colspan="3">
+									<fieldset class="set">
+									<div class="icheck-normal" title="保存表单数据，不会提交">
+										<input type="checkbox" class="i-checks" name="taskPermission.operation" value="暂存_saveAndClaim"/>
+										暂存
+									</div>
+									<div class="icheck-normal" title="保存表单数据，并且提交">
+										<input type="checkbox" class="i-checks" name="taskPermission.operation" value="提交_saveAndComplete"/>
+										提交
+									</div>
+									<div class="icheck-normal" title="保存表单数据，退到上一个节点">
+										<input type="checkbox" class="i-checks" name="taskPermission.operation" value="回退_saveAndReject"/>
+										回退
+									</div>
+									<div class="icheck-normal" title="保存表单数据，退到指定的节点">
+										<input type="checkbox" class="i-checks" name="taskPermission.operation" value="指定回退_saveAndSuperReject"/>
+										指定回退
+									</div>
+									<div class="icheck-normal" title="在当前节点后，创建一个单人节点">
+										<input type="checkbox" class="i-checks" name="taskPermission.operation" value="加签_saveAndCreateNode"/>
+										加签
+									</div>
+									<div class="icheck-normal" title="在当前节点后，删除一个节点">
+										<input type="checkbox" class="i-checks" name="taskPermission.operation" value="减签_saveAndDeleteNode"/>
+										减签
+									</div>
+									<div class="icheck-normal" title="在当前节点后，创建一个知会节点">
+										<input type="checkbox" class="i-checks" name="taskPermission.operation" value="知会_saveAndNotify"/>
+										知会
+									</div>
+									<div class="icheck-normal" title="在当前节点后，创建一个分发节点">
+										<input type="checkbox" class="i-checks" name="taskPermission.operation" value="分发_saveAndDistribute"/>
+										分发
+									</div>
+									<div id="saveAndToDistributeDiv" class="icheck-normal" title="将发文、收文或签报的正文转换为新的分发流程的电子附件">
+										<input id="saveAndToDistribute" type="checkbox" class="i-checks" name="taskPermission.operation" value="转分发_saveAndToDistribute"/>
+										转分发
+									</div>
+									<div id="saveAndSendDiv" class="icheck-normal" title="将发文或收文的正文转换为新的发文流程的电子附件">
+										<input id="saveAndSend" type="checkbox" class="i-checks" name="taskPermission.operation" value="转发文_saveAndSend"/>
+										转发文
+									</div>
+									<div id="saveAndReceiveDiv" class="icheck-normal" title="将收文的正文转换为新的收文流程的电子附件">
+										<input id="saveAndReceive" type="checkbox" class="i-checks" name="taskPermission.operation" value="转收文_saveAndReceive"/>
+										转收文
+									</div>
+									<div class="icheck-normal" title="保存表单数据，结束流程">
+										<input type="checkbox" class="i-checks" name="taskPermission.operation" value="终止_saveAndTerminate"/>
+										终止
+									</div>
+									<div class="icheck-normal" title="取消，不会保存任何数据" style="display: none;">
+										<input type="checkbox" class="i-checks" name="taskPermission.operation" value="取消_cancel" checked="checked"/>
+										取消
+									</div>
+									</fieldset>
+									<label id="operationError" class="ownError" style="display: inline-block;">这是必填字段</label>
+								</td>
+							</tr>
+							<tr>
+								<td class="width-15 active"><label class="pull-right"><font color="red">*</font>列表按钮：</label></td>
+						
+								<td class="width-35" colspan="3">
+									<fieldset class="set">
+									<div title="选中表示：当前节点允许被撤销" style="float: left; margin: 3px;">
+										<input type="checkbox" class="i-checks" name="taskPermission.tableOperation" value="撤销_revoke"/>
+										撤销
+									</div>
+									<div title="选中表示：当前节点允许被取回" style="float: left; margin: 3px;">
+										<input type="checkbox" class="i-checks" name="taskPermission.tableOperation" value="取回_backward"/>
+										取回
+									</div>
+									</fieldset>
+									<!-- <label id="tableOperationError" class="ownError" style="display: inline-block;">这是必填字段</label> -->
+								</td>
+							</tr>
+							<tr>
+								<td class="width-15 active"><label class="pull-right"><font color="red">*</font>扩展功能：</label></td>
+						
+								<td class="width-35" colspan="3">
+									<fieldset class="set">
+									<div title="选中表示：当前节点提交时，可以从组织机构中选择用户" style="float: left; margin: 3px;">
+										<input type="checkbox" class="i-checks" name="taskPermission.extendOperation" value="submitToOfficeUser"/>
+										可以提交到组织机构中的用户
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="width-15 active"><label class="pull-right">规则变量：</label></td>
+								
+								<td colspan="3">
+									<input type="hidden" id="ruleArgs" name="taskPermission.ruleArgs" value=''>
+									<a class="btn btn-white btn-sm" onclick="addTable();" title="表单"><i class="fa fa-plus"></i> 表单</a>
+									<a class="btn btn-white btn-sm" onclick="editLabels(this);" title="编辑" flag="done"><i class="fa fa-plus"></i> 编辑</a>
+									<table class="table table-striped table-bordered table-condensed">
+										<thead>
+											<tr>
+												<td style="width: 15%;">
+													<select path="" id="scope" class="form-control" onchange="createLabels(this);">
+														<!-- <option value="">请选择...</option>
+														<option value="form">表单</option>
+														<option value="content">正文</option>
+														<option value="operation">按钮</option> -->
+														<!-- <option value="" label="请选择..."/>
+														<options items="${fns:getDictListEdit('oa_rule_scope',taskPermission.id)}" itemLabel="label" itemValue="value" htmlEscape="false"/> -->
+													</select>
+												</td>
+												<td style="width: 70%;" id="expressionTd"></td>
+												<td style="width: 15%;">
+													<a id="addBtn" class="btn btn-white btn-sm" onclick="addRuleArgs();" title="添加"><i class="fa fa-plus"></i> 添加</a>
+												</td>
+												<!--<td style="width: 7%;">
+													<a class="btn btn-white btn-sm" onclick="addTable();" title="表单"><i class="fa fa-plus"></i> 表单</a>
+												</td>-->
+											</tr>
+										</thead>
+										<tbody id="ruleArgsTbody">
+										</tbody>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td class="width-15 active"><label class="pull-right">描述：</label></td>
+								<td class="width-35" colspan="3">
+									<fieldset class="set">
+									<textarea name="taskPermission.describe" path="taskPermission.describe"  id="describe" value="" class="form-control" htmlEscape="false" rows="4" maxlength="100" style="resize: none;"></textarea>
+									</fieldset>
+								</td>
+							</tr>
+			    		</tbody>
+		    	</table>
+		    </div>
+		  </div>
+		</div>
+	</form>
+</body>
+</html>

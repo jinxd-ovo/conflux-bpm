@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.system.SysMsgDao">
+    
+	<sql id="sysMsgColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.owner_code AS "ownerCode",
+		a.types AS "types",
+		a.title AS "title",
+		a.content_ AS "content",
+		a.record_id AS "record",
+		a.menu_name AS "menuName",
+		a.menu_name_en AS "menuName_EN",
+		a.menu_href AS "menuHref",
+		a.sender AS "sender.id",
+		su2.name AS "sender.name",
+		a.send_time AS "sendTime",
+		a.recipient AS "recipient.id",
+		su.name AS "recipient.name",
+		a.read_time AS "readTime",
+		a.status AS "status"
+	</sql>
+	
+	<sql id="sysMsgJoins">
+	LEFT JOIN sys_user su On su.id = a.recipient
+	LEFT JOIN sys_user su2 On su2.id = a.sender
+	</sql>
+	
+    
+	<select id="get" resultType="SysMsg" >
+		SELECT 
+			<include refid="sysMsgColumns"/>
+		FROM oa_sys_msg a
+		<include refid="sysMsgJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SysMsg" >
+		SELECT 
+			<include refid="sysMsgColumns"/>
+		FROM oa_sys_msg a
+		<include refid="sysMsgJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+			<if test="ownerCode != null and ownerCode != ''">
+				<bind name="ownerCodeLike" value="ownerCode + '%'" />
+				AND a.owner_code LIKE '${ownerCodeLike}'
+			</if>
+			<if test="types != null and types != ''">
+				AND a.types = #{types}
+			</if>
+			<if test="title != null and title != ''">
+				<bind name="titleLike" value="'%' + title + '%'" />
+				AND a.title LIKE '${titleLike}'
+			</if>
+			<if test="sender != null and sender.id != null and sender.id != ''">
+				AND a.sender = #{sender.id}
+			</if>
+			<if test="beginSendTime != null and endSendTime != null and beginSendTime != '' and endSendTime != ''">
+				AND a.send_time BETWEEN #{beginSendTime} AND #{endSendTime}
+			</if>
+			<if test="recipient != null and recipient.id != null and recipient.id != ''">
+				AND a.recipient = #{recipient.id}
+			</if>
+			<if test="beginReadTime != null and endReadTime != null and beginReadTime != '' and endReadTime != ''">
+				AND a.read_time BETWEEN #{beginReadTime} AND #{endReadTime}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.status, a.send_time DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SysMsg" >
+		SELECT 
+			<include refid="sysMsgColumns"/>
+		FROM oa_sys_msg a
+		<include refid="sysMsgJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO oa_sys_msg(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			owner_code,
+			types,
+			title,
+			content_,
+			record_id,
+			menu_name,
+			menu_name_en,
+			menu_href,
+			sender,
+			send_time,
+			recipient,
+			read_time,
+			status
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{ownerCode},
+			#{types},
+			#{title},
+			#{content},
+			#{record},
+			#{menuName},
+			#{menuName_EN},
+			#{menuHref},
+			#{sender.id},
+			#{sendTime},
+			#{recipient.id},
+			#{readTime},
+			#{status}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE oa_sys_msg SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			owner_code = #{ownerCode},
+			types = #{types},
+			title = #{title},
+			content_ = #{content},
+			record_id = #{record},
+			menu_name = #{menuName},
+			menu_name_en = #{menuName_EN},
+			menu_href = #{menuHref},
+			sender = #{sender.id},
+			send_time = #{sendTime},
+			recipient = #{recipient.id},
+			read_time = #{readTime},
+			status = #{status}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM oa_sys_msg
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteByLogic">
+		UPDATE oa_sys_msg SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="findUniqueByProperty" resultType="SysMsg" statementType="STATEMENT">
+		SELECT * FROM oa_sys_msg WHERE ${propertyName} = '${value}'
+	</select>
+
+	<select id="getUnreadCount" resultType="int" >
+		SELECT count(*) FROM oa_sys_msg
+		WHERE recipient = #{currentUserId} and status = #{status}
+	</select>
+</mapper>

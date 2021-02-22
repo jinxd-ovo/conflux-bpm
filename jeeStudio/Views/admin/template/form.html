@@ -1,0 +1,208 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal" style="overflow: auto;">
+		<input name="id" type="hidden" id="id"/>
+		
+		<div class="col-md-6 col-sm-6 adapt">
+			<label>区域选择</label>
+			<fieldset class="set">
+				<div name="iconSelect" component-type="iconSelect" class="tag-div"></div>
+			</fieldset>
+		</div>
+		
+		<div class="col-md-6 col-sm-6 adapt">
+			<label>图标选择</label>
+			<fieldset class="set">
+				<div name="iconSelect" component-type="iconSelect" class="tag-div">
+					<input name="iconSelect" readonly="readonly" class="form-control" type="text" value="">
+					<a class="tag-div-button"><i class="fa fa-search"></i></a>
+				</div>
+			</fieldset>
+		</div>
+		
+		<div class="col-md-6 col-sm-12 adapt">
+			<label>附件上传</label>
+			<fieldset class="set">
+				<div name="upload" component-type="upload" class="form-control required" style="padding: 1px 12px;">
+					
+					<div class="input-group" style="width:100%">
+                		<input name="upload" type="hidden">
+	                	<a id="s01123" class="btn btn-white btn-sm">
+	                	<i class="fa fa-plus"></i> 添加文件</a>
+	                	<div id="fileListDiv" class="filelist" style="margin: 5px 0px 5px 3px;"></div>
+                	</div>
+					<script>
+						myHelper.initWebUploader("s01123")
+					</script>
+				</div>
+			</fieldset>
+		</div>
+		
+		
+		<div class="col-md-6 col-sm-6 adapt">
+			<label>姓名</label>
+			<fieldset class="set">
+				<input name="name" component-type="input" class="form-control required" type="text" value="" maxlength="50">
+			</fieldset>
+		</div>
+		<div class="col-md-6 col-sm-6 adapt">
+			<label>角色</label>
+			<fieldset class="set">
+				<select name="roleName" component-type="select" component-id="wytest-roleName" class="form-control">
+					<option></option>
+				</select>
+			</fieldset>
+		</div>
+		<div class="col-md-6 col-sm-6 adapt">
+			<label>爱好</label>
+			<fieldset class="set">
+				<div name="hobby" component-type="checkbox" component-id="hobby" class="i-checks-div"></div>
+			</fieldset>
+		</div>
+		<div class="col-md-6 col-sm-6 adapt">
+			<label>性别</label>
+			<fieldset class="set">
+				<div name="sex" component-type="radio" component-id="sex" class="i-checks-div"></div>
+			</fieldset>
+		</div>
+		<div class="col-md-6 col-sm-6 adapt">
+			<label>日期</label>
+			<fieldset class="set">
+				<input name="date" component-type="datePicker" readonly="readonly" onclick="WdatePicker()" class="Wdate form-control" type="text" value="">
+			</fieldset>
+		</div>
+		<div class="col-md-12 col-sm-12 adapt">
+			<label>文本框</label>
+			<fieldset class="set">
+				<textarea name="textarea" component-type="textarea" rows="3" class="form-control"></textarea>
+			</fieldset>
+		</div>
+		<div class="col-md-6 col-sm-6 adapt">
+			<label>开始日期</label>
+			<fieldset class="set">
+				<input name="startDate" id="form-startId" component-type="datePicker" readonly="readonly" onclick="WdatePicker({maxDate:'#F{$dp.$D(\'form-endId\')}'})" class="Wdate form-control" type="text" value="">
+			</fieldset>
+		</div>
+		<div class="col-md-6 col-sm-6 adapt">
+			<label>结束日期</label>
+			<fieldset class="set">
+				<input name="endDate" id="form-endId" component-type="datePicker" readonly="readonly" onclick="WdatePicker({minDate:'#F{$dp.$D(\'form-startId\')}'})" class="Wdate form-control" type="text" value="">
+			</fieldset>
+		</div>
+		<div class="col-md-6 col-sm-6 adapt">
+			<label>区域选择</label>
+			<fieldset class="set">
+				<div name="area" component-type="treeSelect" actionUrl="/area.json" sync="false" check="false" chooseParent="true" class="tag-div"></div>
+			</fieldset>
+		</div>
+	</form>
+	
+	<div id="body-div"></div>
+	
+</div>
+
+<script>
+	//表单页自执行方法
+	window.formFuction = function(res,layero){
+        var getTime = "-" + new Date().getTime();
+		//这段必须写，防止id重复
+        $(layero).find("#body-div").attr("id", "body-div" + getTime);
+		
+		var bootstrapTableUtilArr = [];
+		
+			var bootstrapTableUtil = new BootstrapTableUtil("",false,getTime);
+			bootstrapTableUtil.init({
+				url: layui.admin.basePath + '/gen/genTable/findDynamicList',
+				method: 'post',
+				columns: [{
+					title: layui.admin.lang() ? 'Operation' : '操作',
+                	width: '45px',
+					"class": 'center',
+					events: {
+						'click .edit': function (e, value, row, index) {
+							addOrEdit({
+								id: row.id
+							})
+						},
+						'click .del': function (e, value, row, index) {
+							delFuc(row);
+						},
+						'click .view' : function(e, value, row, index){
+							LayerUtil.openDialogView({
+								title: layui.admin.lang() ? 'Form' : '表单',
+								initData:{
+									id: row.id
+								},
+								url: 'admin/template/form',
+								actionUrl: layui.admin.host + '/GetForm.json',
+								actionDataName: 'data',
+								setDataWidthAjax: true,
+							})
+						}
+					},
+					formatter: function(value, row, index) {
+						return  '<div class="show-btn-group">'+
+							'<i class="fa fa-cog" aria-hidden="true"></i>'+
+							'<div class="hide-btn-group" style="width: 240px;">'+
+								'<a class="btn view" dealname="查看">查看</a>'+
+								'<a class="btn edit" dealname="编辑">编辑</a>'+
+								'<a class="btn del" dealname="删除">删除</a>'+
+							'</div>'+
+						'</div>';
+					}
+				}],
+			});
+			bootstrapTableUtilArr.push(bootstrapTableUtil);
+		
+		$(layero).find("#addBtn").on("click",function(){
+			var biaoKey = $(layero).find(".layui-this").text();
+			console.log(biaoKey)
+			addOrEdit();
+		})
+		//添加或者编辑
+		function addOrEdit(initData){
+			LayerUtil.openDialog({
+        		id: 'LAY-system-view-popup'+new Date().getTime(),
+				title: layui.admin.lang() ? 'Form' : '表单',
+				initData:initData,
+				url: 'admin/template/form',
+				actionUrl: layui.admin.host + '/GetForm.json',
+				actionDataName: 'data',
+				setDataWidthAjax: true,
+	            btn: ['保存', '关闭'],
+	            btn_EN: ['save', 'close'],
+	            func1:function(index,layero){
+                	var data = myHelper.composeData($(layero).find("#inputForm"));
+                	LayerUtil.ajax({
+						url: layui.admin.host + '/true.json',
+						type:'get',
+                		data: JSON.stringify(data),
+                		success: function(res){
+                			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+                			$.each(bootstrapTableUtilArr, function(idx,obj) {
+                				obj.refresh();
+                			});
+                			layui.layer.close(index);
+                		}
+                	});
+	            }
+			})
+		}
+		function delFuc(row){
+    		LayerUtil.confirm('确认要删除' + row.name + '吗？', function() {
+				LayerUtil.ajax({
+					url: admin.basePath + '/gen/genTable/deleteDynamic',
+					type:'post',
+	        		shade:true,
+					data: JSON.stringify({id:row.id}),
+					success: function(res){
+	        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+	        			$.each(bootstrapTableUtilArr, function(idx,obj) {
+            				obj.refresh();
+            			});
+	        		}
+				});
+			});
+    	}
+			
+	}
+</script>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" href="../../../static/app/css/mui.min.css" />
+		<link rel="stylesheet" href="../../../static/app/css/app.css" />
+		<link rel="stylesheet" href="../../../static/app/css/mui.picker.min.css" />
+		<link rel="stylesheet" href="../../../static/app/css/element-ui.css" />
+		<style>
+			.mui-btn { padding: 10px; }
+			.white .mui-content { background: #fff; }
+			.mui-bar-tab { background-color: #fff; }
+			.mui-content-padded img, .mui-content-padded table { max-width: 100% !important; height: auto !important; }
+			.mui-content-padded h4.title { margin: 20px; text-align: center; }
+			ul { font-size: 14px; color: #666; }
+			ul .my-input { word-wrap: break-word; }
+			ul .my-input span.my-content { font-size: 14px; color: #999; }
+			span.my-content { color: #999999; }
+			ul .my-input input,
+			ul .my-input select,
+			ul .my-input textarea { margin: 0px; padding: 0px; height: 20px; border: 0px; color: #000; font-size: 14px; vertical-align: top; }
+			ul .my-input textarea { height: 100%; min-height: 100px; overflow-y: visible; }
+			.mui-col-xs-3 { text-align: right; padding-right: 15px; }
+			.mui-bar-tab .mui-tab-item.mui-active { color: #929292; }
+			.mui-table-view-cell>a:not(.mui-btn).wy-active { background-color: #eee; }
+			#popover .mui-table-view.left .mui-table-view-cell>a { text-align: left; padding-left: 10%; }
+			#popover .mui-table-view.btn { background-color: #3f97f9; color: #fff; }
+			.mui-card .mui-table-view:before { border-top: 1px solid #c8c7cc; height: 1px; }
+		</style>
+		<link rel="stylesheet" href="../../../static/plugin/webuploader-0.1.5/webuploader.css" />
+	</head>
+
+	<body class="white">
+		<!--侧滑菜单容器-->
+		<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-slide-in">
+			<!--菜单部分-->
+			<aside id="offCanvasSide" class="mui-off-canvas-right">
+				<div id="offCanvasSideScroll" class="mui-scroll-wrapper">
+					<div class="mui-scroll" style="padding-bottom: 40px;">
+						<div class="title">{{title}}</div>
+						<div class="content">
+												<!-- 单选树 -->
+							<div v-if="treeId == 'singleuser01Tree'" style="padding: 10px;">
+								<el-input placeholder="输入关键字进行过滤" v-model="filteruser01"></el-input>
+								<el-tree ref="treeuser01" :data="treeDatauser01" :props="defaultProps" node-key="id" :default-expanded-keys="expandedKeysuser01" :filter-node-method="filterNode" @node-click="handleNodeClickuser01"></el-tree>
+							</div>
+							<!-- 多选树 -->
+							<div v-show="treeId == 'users01Tree'" style="padding: 10px;">
+								<el-input placeholder="输入关键字进行过滤" v-model="filterusers01"></el-input>
+								<el-tree ref="treeusers01" :data="treeDatausers01" :props="defaultProps" show-checkbox node-key="id" :default-expanded-keys="expandedKeysusers01" :default-checked-keys="expandedKeysusers01" :filter-node-method="filterNode" :expand-on-click-node="false" :check-on-click-node="true"></el-tree>
+								<!--expand-on-click-node check-on-click-node-->
+							</div>
+							<!-- 单选树 -->
+							<div v-if="treeId == 'singleoffice01Tree'" style="padding: 10px;">
+								<el-input placeholder="输入关键字进行过滤" v-model="filteroffice01"></el-input>
+								<el-tree ref="treeoffice01" :data="treeDataoffice01" :props="defaultProps" node-key="id" :default-expanded-keys="expandedKeysoffice01" :filter-node-method="filterNode" @node-click="handleNodeClickoffice01"></el-tree>
+							</div>
+							<div v-if="treeId == 'singlearea01Tree'" style="padding: 10px;">
+								<el-tree ref="treearea01" :data="treeDataarea01" 
+									:props="defaultPropsArea"  
+									:load="loadNode" 
+									lazy 
+									node-key="id" 
+									@node-click="handleNodeClickarea01">
+								</el-tree>
+							</div>
+						</div>
+					</div>
+					<ul class="btn-group" v-if="treeIdComputed != 0">
+						<li>
+							<button @tap='close' type="button" class="gray">取消</button>
+						</li>
+						<li>
+							<button @tap='ok' type="button" class="red">确定</button>
+						</li>
+					</ul>
+				</div>
+			</aside>
+			<div class="mui-inner-wrap">
+				<header id="header" class="mui-bar mui-bar-nav">
+					<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+					<h1 class="mui-title">{{title}}</h1>
+					<!--<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" style="display: none;">通过</button>-->
+				</header>
+				<nav id="bottom-tab" v-show="viewFlag" class="mui-bar mui-bar-tab">
+					<a @tap="save" class="mui-tab-item">
+						<span class="mui-icon mui-icon-checkmarkempty"></span>
+						<span class="mui-tab-label">保存</span>
+					</a>
+				</nav>
+				<div id="videoPlayDiv" v-show="videoIsPlay">
+					<div id="videoPlayTitle">
+						<span @tap="closeVideo" class="mui-icon mui-icon-left-nav"></span>
+						视频播放 
+					</div>
+					<video v-if="src" controls="controls" style="max-width: 100%; max-height:100%;">
+						<source :src="src" type="video/mp4">
+							your browser does not support the video tag
+						</source>
+					</video>
+				</div>
+				<div id="vue-dom" class="mui-scroll-wrapper mui-content">
+					<div class="mui-scroll">
+						<form>
+							<div class="mui-card">
+								<ul class="mui-table-view">
+									<li class="mui-table-view-cell">
+										<div class="mui-table">
+											<div class="mui-table-cell mui-col-xs-3">单行文本</div>
+											<div class="mui-table-cell mui-col-xs-9 my-input">
+												<input v-if="viewFlag == 'set'" type="text" v-model="data.s01" class=""></input>
+												<span v-else class="my-content">{{data.s01}}</span>
+											</div>
+										</div>
+									</li>
+								    <li class="mui-table-view-cell">
+										<div class="mui-table">
+											<div class="mui-table-cell mui-col-xs-3">多行文本</div>
+											<div class="mui-table-cell mui-col-xs-9 my-input">
+												<textarea v-if="viewFlag == 'set'" v-model="data.s02" class=""></textarea>
+												<span v-else class="my-content">{{data.s02}}</span>
+											</div>
+										</div>
+									</li>
+									<!--下拉框-->
+								    <li class="mui-table-view-cell">
+										<div class="mui-table">
+											<div class="mui-table-cell mui-col-xs-3">下拉选项</div>
+											<div class="mui-table-cell mui-col-xs-9 my-input">
+												<select v-if="viewFlag == 'set'" class="" v-model="data.s03">
+													<template v-for="(row, index) in dict.yes_no">
+														<option v-if="data.s03 == row.member" selected="selected" :value="row.member" >{{row.memberName}}</option>
+														<option v-else :value="row.member" >{{row.memberName}}</option>
+													</template>
+												</select>
+												<span v-else class="my-content">{{getValueByDict('yes_no',data.s03)}}</span>
+											</div>
+										</div>
+									</li>
+									<!--单选-->
+								    <li class="mui-table-view-cell">
+										<div class="mui-table">
+											<div class="mui-table-cell mui-col-xs-3">单选</div>
+											<div class="mui-table-cell mui-col-xs-9 my-input">
+												<template v-if="viewFlag == 'set'">
+													<div class="mui-input-row mui-radio mui-left" v-for="(row, index) in dict.yes_no">
+														<label>{{row.memberName}}</label>
+														<input v-model="data.s04" :value="row.member" name="s04" type="radio">
+													</div>
+												</template>
+												<span v-else class="my-content">{{getValueByDict('yes_no',data.s04)}}</span>
+											</div>
+										</div>
+									</li>
+								  <!--日期选择-->
+								    <li class="mui-table-view-cell">
+										<div class="mui-table">
+											<div class="mui-table-cell mui-col-xs-3">日期</div>
+											<div class="mui-table-cell mui-col-xs-9 my-input">
+												<input v-if="viewFlag == 'set'" v-model="data.d01" @tap="datePicker($event,data.d01)" data-model="d01" data-options='{"type":"date"}' class="mui-input-clear " type="text">
+												<span v-else class="my-content">{{data.d01}}</span>
+											</div>
+										</div>
+									</li>
+									<!--多选checkbox-->
+								    <li class="mui-table-view-cell">
+										<div class="mui-table">
+											<div class="mui-table-cell mui-col-xs-3">复选</div>
+											<div class="mui-table-cell mui-col-xs-9 my-input">
+												<template v-if="viewFlag == 'set'">
+													<div class="mui-input-row mui-checkbox mui-left" v-for="(row, index) in dict.yes_no">
+														<label>{{row.memberName}}</label>
+														<input v-model="data.c01" :value="row.member" name="c01" type="checkbox" >
+													</div>
+												</template>
+												<span v-else class="my-content">{{getValueByDictForCheckbox('yes_no',data.c01)}}</span>
+											</div>
+										</div>
+									</li>
+									<!--单选树-->
+								    <li class="mui-table-view-cell">
+										<div class="mui-table">
+											<div class="mui-table-cell mui-col-xs-3">人员选择</div>
+											<div v-if="viewFlag == 'set' && data.user01" @tap="open('singleuser01Tree','选择人员选择',data.user01.id)" class="mui-table-cell mui-col-xs-9 my-input tree">
+												<input type="text" v-model="data.user01.name" class="" readonly="readonly">
+												<span class="mui-icon mui-icon-search"></span>
+											</div>
+											<div v-else class="mui-table-cell mui-col-xs-9 my-input">
+												<span class="my-content">{{data.user01 ? data.user01.name : ''}}</span>
+											</div>
+										</div>
+									</li>
+									<!--多选树 用户-->
+								    <li class="mui-table-view-cell">
+										<div class="mui-table">
+											<div class="mui-table-cell mui-col-xs-3">人员多选</div>
+											<div v-if="viewFlag == 'set' && data.users01" @tap="open('users01Tree','选择人员多选',data.users01.id)" class="mui-table-cell mui-col-xs-9 my-input tree">
+												<input type="text" v-model="data.users01.name" readonly="readonly" class="">
+												<span class="mui-icon mui-icon-search"></span>
+											</div>
+											<div v-else class="mui-table-cell mui-col-xs-9 my-input">
+												<span class="my-content">{{data.users01 ? data.users01.name : ''}}</span>
+											</div>
+										</div>
+									</li>
+									<!--单选树-->
+								    <li class="mui-table-view-cell">
+										<div class="mui-table">
+											<div class="mui-table-cell mui-col-xs-3">部门选择</div>
+											<div v-if="viewFlag == 'set' && data.office01" @tap="open('singleoffice01Tree','选择部门选择',data.office01.id)" class="mui-table-cell mui-col-xs-9 my-input tree">
+												<input type="text" v-model="data.office01.name" class="" readonly="readonly">
+												<span class="mui-icon mui-icon-search"></span>
+											</div>
+											<div v-else class="mui-table-cell mui-col-xs-9 my-input">
+												<span class="my-content">{{data.office01 ? data.office01.name : ''}}</span>
+											</div>
+										</div>
+									</li>
+								    <li class="mui-table-view-cell">
+										<div class="mui-table">
+											<div class="mui-table-cell mui-col-xs-3">区域选择</div>
+											<div v-if="viewFlag == 'set' && data.area01" @tap="open('singlearea01Tree','选择区域选择',data.area01.id)" class="mui-table-cell mui-col-xs-9 my-input tree">
+												<input type="text" v-model="data.area01.name" class="" readonly="readonly">
+												<span class="mui-icon mui-icon-search"></span>
+											</div>
+											<div v-else class="mui-table-cell mui-col-xs-9 my-input">
+												<span class="my-content">{{data.area01 ? data.area01.name : ''}}</span>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</form>
+					</div>
+				</div>
+
+				<!-- off-canvas backdrop -->
+				<div class="mui-off-canvas-backdrop"></div>
+			</div>
+		</div>
+		<script type="text/javascript" src="../../../static/app/js/mui.js"></script>
+		<script type="text/javascript" src="../../../static/app/js/app.js"></script>
+		<script type="text/javascript" src="../../../static/app/js/vue.js"></script>
+		<script type="text/javascript" src="../../../static/app/js/pace.min.js"></script>
+		<script type="text/javascript" src="../../../static/app/js/mui.picker.min.js"></script>
+		<script type="text/javascript" src="../../../static/app/js/element-ui.js"></script>
+		<script type="text/javascript" src="../../../static/app/js/PinYin.js" ></script>
+		
+		<script type="text/javascript" src="../../../static/app/js/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript" src="../../../static/plugin/webuploader-0.1.5/webuploader.js"></script>
+		<script type="text/javascript" src="../../../static/app/js/mui.zoom.js"></script>
+		<script type="text/javascript" src="../../../static/app/js/mui.previewimage.js"></script>
+		
+		<script type="text/javascript" src="content.js"></script>
+	</body>
+</html>

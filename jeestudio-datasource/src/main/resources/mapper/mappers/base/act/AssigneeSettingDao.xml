@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.act.AssigneeSettingDao">
+    
+	<sql id="assigneeSettingColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.owner_code AS "ownerCode",
+		a.begin_time AS "beginTime",
+		a.end_time AS "endTime",
+		a.assignee AS "assignee.id",
+		a.process_scope AS "processScope",
+		a.remarks AS "remarks",
+		assignee.name AS "assignee.name"
+	</sql>
+	
+	<sql id="assigneeSettingJoins">
+		LEFT JOIN sys_user assignee ON assignee.id = a.assignee
+	</sql>
+
+	<select id="get" resultType="AssigneeSetting" >
+		SELECT 
+			<include refid="assigneeSettingColumns"/>
+		FROM oa_assignee_setting a
+		<include refid="assigneeSettingJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="AssigneeSetting" >
+		SELECT 
+			<include refid="assigneeSettingColumns"/>
+		FROM oa_assignee_setting a
+		<include refid="assigneeSettingJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+			<if test="beginEndTime != null and endEndTime != null and beginEndTime != '' and endEndTime != ''">
+				AND a.end_time BETWEEN #{beginEndTime} AND #{endEndTime}
+			</if>
+			<if test="assignee != null and assignee.id != null and assignee.id != ''">
+				<bind name="assigneeLike" value="'%' + assignee.id + '%'" />
+				AND a.assignee LIKE '${assigneeLike}'
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="AssigneeSetting" >
+		SELECT 
+			<include refid="assigneeSettingColumns"/>
+		FROM oa_assignee_setting a
+		<include refid="assigneeSettingJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO oa_assignee_setting(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			owner_code,
+			begin_time,
+			end_time,
+			assignee,
+			process_scope,
+			remarks
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{ownerCode},
+			#{beginTime},
+			#{endTime},
+			#{assignee.id},
+			#{processScope},
+			#{remarks}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE oa_assignee_setting SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			owner_code = #{ownerCode},
+			begin_time = #{beginTime},
+			end_time = #{endTime},
+			assignee = #{assignee.id},
+			process_scope = #{processScope},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM oa_assignee_setting
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE oa_assignee_setting SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="findUniqueByProperty" resultType="AssigneeSetting" statementType="STATEMENT">
+		SELECT * FROM oa_assignee_setting WHERE ${propertyName} = '${value}'
+	</select>
+	
+	<select id="getAssigneeListByUserId" resultType="AssigneeSetting" >
+		SELECT 
+			<include refid="assigneeSettingColumns"/>
+			,su.login_name AS "createBy.loginName"
+		FROM oa_assignee_setting a
+			<include refid="assigneeSettingJoins"/>
+			LEFT JOIN sys_user su ON su.id = a.create_by
+		<where>
+			a.del_flag = '0'
+			AND a.assignee = #{userId}
+		</where>
+	</select>
+</mapper>

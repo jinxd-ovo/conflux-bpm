@@ -1,0 +1,166 @@
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div id="body-div" class="layui-card-body">
+        	<form id="searchForm" class="searchForm form-inline">
+        		<div class="searchDiv positionSpc">
+				</div>
+        	</form>
+        	<div id="toolbar" class="toolbar">
+				<!--<div class="pull-right">
+					<a id="searchBtn" class="btn btn-success btn-bordered btn-sm"><i class="fa fa-search"></i> <font>查询</font></a>
+					<a id="resetBtn" class="btn btn-success btn-bordered btn-sm"><i class="fa fa-refresh"></i> <font>重置</font></a>
+					<a id="easySearch" class="btn btn-success btn-bordered btn-sm" style="display: none;"><i class="fa fa-backward"></i> <font>返回</font></a>
+					<a id="hardSearch" class="btn btn-success btn-bordered btn-sm" style="display: inline-block;"><i class="fa fa-search-plus"></i> <font>高级查询</font></a>
+				</div>-->
+			</div>
+            <form id="editTableForm">
+				<table id="table-list"></table>
+			</form>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['common', 'view', 'admin', 'laytpl'], function () {
+        var $ = layui.$
+            , R = layui.common
+            , view = layui.view
+            , admin = layui.admin
+            , laytpl = layui.laytpl;
+
+        var getTime = "-" + new Date().getTime();
+        $("#body-div").attr("id", "body-div" + getTime);
+        $("#table-list").attr("id","table-list" + getTime);
+        var btnsStr = LayerUtil.getBtnsStrFromMenuData();
+
+		var bootstrapTableUtil = new BootstrapTableUtil(getTime);
+		bootstrapTableUtil.init({
+			url: admin.formPath + '/form/ureport/data',
+			method: 'post',
+			columns: [
+                {
+					checkbox: true
+				},
+				{
+					field: 'name',
+					title: '报表名称',
+					sortable: true,
+					
+				},
+				{
+					field: 'updateDate',
+					title: '更新时间',
+					sortable: true,
+					formatter:function(value, row , index){
+						return value == null ? "" : moment(value).format("YYYY-MM-DD HH:mm:ss");
+					},
+					
+				},
+                {
+                	title: layui.admin.lang() ? 'Operation' : '操作',
+                	width: '45px',
+					"class": 'center must',
+					events: {
+						'click .view': function (e, value, row, index) {
+							viewForm({name: row.name})
+						},
+						'click .edit': function (e, value, row, index) {
+							editUreport({
+								name: row.name
+							})
+						},
+						'click .del': function (e, value, row, index) {
+							delFuc(row);
+						},
+					},
+					formatter: function(value, row, index) {
+						var html = '<div class="show-btn-group"><i class="fa fa-ellipsis-v" aria-hidden="true"></i><div class="hide-btn-group">'+
+						'<a class="btn view" dealname="预览">预览</a>'+
+						'<a class="btn edit" dealname="设计">设计</a>'+
+						'<a class="btn del" dealname="删除">删除</a></div></div>';
+						return html;
+					},
+                },
+            ],
+		},"demo_list");
+
+
+		$("#body-div"+getTime).find("#addBtn").on("click",function(){
+			addOrEdit();
+		});
+
+		$("#body-div"+getTime).find("#removeBtn").on("click",function(){
+			var ids = bootstrapTableUtil.getMultiId();
+			if(ids){
+				LayerUtil.confirm(layui.admin.lang() ? "Are you sure?" : "确定删除吗？", function(){
+					LayerUtil.ajax({
+						type: 'post',
+		        		url: admin.basePath + '/dynamic/zform/delete?formNo=demo_list&ids=' + ids,
+		        		success: function(res){
+		        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+                			bootstrapTableUtil.refresh();
+		        		}
+		        	})
+				})
+	       	}
+		});
+		
+		function viewForm(initData) {
+			top.layer.open({
+	 	   	    type: 2,  
+	 	   	    area: ['100%', '100%'],
+	 	   	    title: '预览报表',
+	 	   	    auto: false,
+	 	   	    maxmin: true, //开启最大化最小化按钮
+	 	   	    content: admin.formPath + '/ureport/preview?_u=file:'+initData.name ,
+	 	   	    btn: ['返回'],
+	 	   	    cancel: function(index){ }
+	 	  }); 
+		}
+
+		function addOrEdit(initData) {
+			top.layer.open({
+		  		type: 2,
+		        title: '设计报表',
+				area: ['100%', '100%'],
+		        maxmin: true,
+		    	shadeClose: false,
+		      	content: admin.formPath + '/ureport/designer',
+		      	btn:['关闭'],
+		      	btn1: function (index, layero){
+		      		top.layer.close(index);
+		      		bootstrapTableUtil.refresh();
+		      	}
+		    });
+		}
+		
+		function editUreport(initData) {
+			top.layer.open({
+		  		type: 2,
+		        title: '设计报表',
+				area: ['100%', '100%'],
+		        maxmin: true,
+		    	shadeClose: false,
+		      	content: admin.formPath + '/ureport/designer?_u=file:'+initData.name,
+		      	btn:['关闭'],
+		      	btn1: function (index, layero){
+		      		top.layer.close(index);
+		      		bootstrapTableUtil.refresh();
+		      	}
+		   });
+		}
+
+		function delFuc(row){
+    		LayerUtil.confirm(layui.admin.lang() ? 'Are you sure you want to delete?':'确认要删除吗？', function() {
+				LayerUtil.ajax({
+					url: admin.formPath + '/form/ureport/delete?id=file:'+row.name,
+					type:'get',
+	        		shade:true,
+					success: function(res){
+	        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+                			bootstrapTableUtil.refresh();
+	        		}
+				});
+			});
+    	}
+    });
+</script>

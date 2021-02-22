@@ -1,0 +1,53 @@
+.gantt-div .noprint {
+  display:none !important;
+}
+
+/*BODY, TBODY {
+  font-family: arial;
+  font-size: 12px;
+  margin: 0;
+  color: #000;
+}
+*/
+.gantt-div .mainColumn{
+  width:98% !important;
+}
+
+
+.gantt-div #workSpace{
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+  width: auto !important;
+  height: auto !important;
+  border:none !important;
+}
+
+.gantt-div .splitterContainer{
+  width: auto !important;
+  height: auto !important;
+}
+.gantt-div .splitElement{
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  top:0 !important;
+  left: 0 !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+}
+
+.gantt-div .vSplitBar,.gantt-div .emptyRow{
+  display: none !important;
+}
+
+.gantt-div .gdfTable{
+   width: 0 !important;
+ }
+
+.gantt-div .splitBox2{
+  page-break-before: always !important;
+}
+
+.gantt-div .fixHead{
+  display: none !important;
+}

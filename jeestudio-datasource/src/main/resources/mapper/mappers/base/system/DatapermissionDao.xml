@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.system.DatapermissionDao">
+    
+	<sql id="datapermissionColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.name AS "name",
+		a.main_table AS "mainTable",
+		a.expression AS "expression",
+		a.sort AS "sort",
+		a.remarks AS "remarks"
+	</sql>
+	
+	<sql id="datapermissionJoins">
+	</sql>
+	
+	<select id="get" resultType="Datapermission" >
+		SELECT 
+			<include refid="datapermissionColumns"/>
+		FROM sys_datapermission a
+		<include refid="datapermissionJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Datapermission" >
+		SELECT 
+			<include refid="datapermissionColumns"/>
+		FROM sys_datapermission a
+		<include refid="datapermissionJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+			<if test="name != null and name != ''">
+				<bind name="nameLike" value="'%' + name + '%'" />
+				AND a.name LIKE '${nameLike}'
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.sort ASC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findListByUserId" resultType="Datapermission" >
+		SELECT
+		<include refid="datapermissionColumns"/>
+		FROM sys_datapermission a
+		<include refid="datapermissionJoins"/>
+		INNER JOIN sys_datarole_datapermission d ON d.datapermission_id = a.id
+		INNER JOIN sys_datarole b ON b.id = d.datarole_id
+		INNER JOIN sys_user_datarole c ON c.datarole_id = b.id
+		<where>
+			a.del_flag = '0'
+			AND c.user_id = #{userId}
+		</where>
+		ORDER BY a.sort ASC
+	</select>
+	
+	<select id="findAllList" resultType="Datapermission" >
+		SELECT 
+			<include refid="datapermissionColumns"/>
+		FROM sys_datapermission a
+		<include refid="datapermissionJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.sort ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sys_datapermission(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			name,
+			main_table,
+			sort,
+			expression,
+			remarks
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{name},
+			#{mainTable},
+			#{sort},
+			#{expression},
+			#{remarks}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE sys_datapermission SET
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			name = #{name},
+			main_table = #{mainTable},
+			sort = #{sort},
+			expression = #{expression},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		DELETE FROM sys_datapermission
+		WHERE id = #{id}
+	</update>
+
+	<update id="deleteByLogic">
+		UPDATE sys_datapermission SET
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+	<select id="findUniqueByProperty" resultType="Datapermission" statementType="STATEMENT">
+		SELECT * FROM sys_datapermission WHERE ${propertyName} = '${value}'
+	</select>
+
+	<select id="getPermission" resultType="java.lang.String">
+        SELECT a.datapermission_id
+		FROM sys_datarole_datapermission a
+		WHERE a.datarole_id = #{id}
+    </select>
+
+	<delete id="deletePermissionById">
+        DELETE FROM sys_datarole_datapermission WHERE datarole_id = #{id}
+    </delete>
+
+	<insert id="savePermission">
+		INSERT IGNORE INTO sys_datarole_datapermission(
+		datarole_id,
+		datapermission_id
+		)VALUES
+		<foreach collection="asList" item="datapermissionId" separator=",">
+			(#{id},#{datapermissionId})
+		</foreach>
+	</insert>
+</mapper>

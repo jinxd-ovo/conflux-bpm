@@ -1,0 +1,183 @@
+.layout{
+	table-layout: fixed;
+}
+.tr-num td{
+	text-align: right !important;
+	padding-right: 5px;
+}
+.td-center, .tr-num .td-center{
+	text-align: center !important;
+	padding: 0px;
+}
+.fl{
+	float: left;
+}
+.fr {
+	float: right;
+}
+ul.li5{
+	padding-left: 5px;
+	text-align: left;
+	margin: 0px;
+}
+ul.li5 li{
+	width: 19%;
+	display: inline-block;
+}
+ul.li4{
+	padding-left: 5px;
+	text-align: left;
+	margin: 0px;
+}
+ul.li4 li{
+	width: 24%;
+	display: inline-block;
+}
+
+.box {
+	margin: auto;
+	max-width: 210mm;
+	position: relative;
+	left: 0;
+	right: 0;
+	font-family: "宋体";
+}
+.title-box .title {
+	font-size: 18px;
+	line-height: 25px;
+	text-align: center;
+	font-weight: 600;
+}
+.title-box ul {
+	padding: 0px;
+	margin: 10px 0px 0px 0px;
+}
+.title-box ul li {
+	font-size: 12px;
+	display: inline-block;
+	vertical-align: top;
+	margin-right:20px;
+}
+.table-box {
+	box-sizing: border-box;
+	font-size: 0px;
+}
+.table-box table {
+	width: 33%;
+	display: inline-table;
+	border-collapse: collapse;
+}
+.table-box table thead {
+	font-size: 12px;
+	font-weight: 500;
+}
+.table-box table tr td {
+	border: 1px solid #000;
+	border-left-width: 0px;
+	text-align: center;
+	line-height: 20px;
+	font-size: 12px;
+    height: 22px;
+    box-sizing: border-box;
+    
+    word-wrap:break-word;
+}
+.table-box table tr td+td {
+	border-left: 1px solid #000;
+}
+.table-box table.first tr td {
+	border-left: 1px solid #000;
+}
+
+
+.box-horizontal {
+	margin: auto;
+	max-width: 285mm;
+	position: relative;
+	left: 0;
+	right: 0;
+	font-family: "宋体";
+}
+.box-horizontal .title-box .title {
+    font-size: 16px;
+    line-height: 25px;
+}
+.box-horizontal .title-box ul li {
+    font-size: 12px;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 20px;
+}
+.box-horizontal .table-box table {
+	width: 100%;
+	display: table;
+	border-collapse: collapse;
+}
+.box-horizontal .table-box table tr td {
+	border-left-width: 1px;
+}
+.box-horizontal table thead tr td {
+	font-size: 12px;
+}
+.box-horizontal table tbody tr td {
+	font-size: 12px;
+}
+.box-horizontal table tbody tr.fz9 td {
+	font-size: 12px;
+}
+.box-horizontal .foot {
+	margin-top: 5px;
+	font-size: 12px;
+}
+
+
+.box-vertical{
+	margin: auto;
+	max-width: 210mm;
+	position: relative;
+	left: 0;
+	right: 0;
+	font-family: "宋体";
+}
+.box-vertical .title-box .title {
+    font-size: 18px;
+    line-height: 25px;
+}
+.box-vertical .title-box ul li {
+    font-size: 12px;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 20px;
+}
+.box-vertical .table-box table {
+	width: 100%;
+	display: table;
+	border-collapse: collapse;
+}
+.box-vertical .table-box table tr td {
+	border-left-width: 1px;
+}
+.box-vertical table thead tr td {
+	font-size: 12px;
+}
+.box-vertical table tbody tr td {
+	font-size: 12px;
+}
+
+thead{
+	 page-break-before: always;
+}
+/*thead{
+	display: table-header-group;
+}
+tfoot{
+	display: table-footer-group;
+}*/
+
+
+
+@media print {
+	.listPoint .title-box .title {
+		font-size: 30px !important;
+	}
+}

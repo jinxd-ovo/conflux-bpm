@@ -1,0 +1,126 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal">
+		<div class="col-md-6 col-sm-6 adapt">
+			<!--<label>流程分类</label>
+			<fieldset class="set">
+				<select name="category" component-type="select" component-id="act-category" class="form-control">
+					<option value=""></option>
+					<option value="test_pro_tlz">工作流拖拉拽</option>
+						
+					<option value="supply_process">综合办公用品</option>
+				
+					<option value="Ctest">Ctest</option>
+				
+					<option value="1">办公流程</option>
+				
+					<option value="A Test">A Test</option>
+				
+					<option value="test_category">测试流程</option>
+				
+					<option value="测试0109">测试0109</option>
+				
+					<option value="2">常用流程</option>
+				
+					<option value="edocDistribute">分发</option>
+				
+					<option value="10">发文</option>
+				
+					<option value="20">收文</option>
+				</select>
+			</fieldset>-->
+			<label>流程分类</label>
+	  		<fieldset class="set" style="display: flex;">
+	  			<select id="category" name="category" component-type="select" component-id="act-category" class="form-control " style="flex: 1;">
+				</select>
+				<button id="addCategoryDict" class="btn btn-sm btn-success" style="border-radius: 0px 3px 3px 0px;"><i class="fa fa-plus"></i></button>
+	  		</fieldset>
+		</div>
+		<div class="col-md-6 col-sm-6 adapt">
+			<label>模型名称</label>
+			<fieldset class="set">
+				<input name="name" component-type="input" class="form-control required" type="text" value="" maxlength="50">
+			</fieldset>
+		</div>
+		<div class="col-md-12 col-sm-12 adapt">
+			<label>模型描述</label>
+			<fieldset class="set">
+				<textarea name="metaInfo.description" component-type="metaInfo.description" rows="3" class="form-control"></textarea>
+			</fieldset>
+		</div>
+		<div class="col-md-6 col-sm-6 adapt">
+			<label>机构选择</label>
+			<fieldset class="set">
+				<div name="office" component-type="treeSelectOffice" actionUrl="/system/office/viewData" sync="false" check="false" chooseParent="true" class="tag-div">
+					<input name="office.id" type="hidden">
+					<input name="office.name" readonly="readonly" class="form-control" type="text" value="">
+					<a class="tag-div-button"><i class="fa fa-search"></i></a>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col-md-6 col-sm-6 adapt">
+			<label>表单路径</label>
+			<fieldset class="set">
+				<input name="metaInfo.scope" component-type="input" class="form-control" type="text" value="" maxlength="50">
+			</fieldset>
+		</div>
+	</form>
+</div>
+
+<script>
+	//表单页自执行方法
+	window.formFuction = function(res,layero){
+        var getTime = "-" + new Date().getTime();
+		//这段必须写，防止id重复
+        $(layero).find("#body-div").attr("id", "body-div" + getTime);
+        
+        layui.use(['laytpl','layer', 'element', 'admin'], function() {
+			var laytpl = layui.laytpl;
+			var element = layui.element;
+			var admin = layui.admin;
+			
+			LayerUtil.ajax({
+				type:'get',
+				url: admin.basePath + "/sys/dict/dictList?type=261f40db1acd423f89e3f86a736ef3fa",
+	    		shade:true,
+				success: function(result){
+					var html  = "<option></option>";
+					$.each(result.data.dict, function(i,obj){
+						html += "<option value='"+obj.member+"'>"+obj.memberName+"</option>"
+					});
+					$("#category").append(html);
+					myHelper.initSelect2($("#category"));
+				}
+			})
+		})
+        $(document).on("click","#inputForm #addCategoryDict",function(){
+			LayerUtil.openDialog({
+				title : layui.admin.lang() ? 'Form ' : '添加流程分类',
+				formLay : 'categoryAdd',
+				width: '400px',
+				height: '160px',
+				url: 'admin/processCenter/categoryAdd',
+				setDataWithoutAjax:true,
+				btn: ['保存', '关闭'],
+				btn_EN: ['save', 'close'],
+				func1:function(index,layero){
+					var dialogDom = $(layero).find("#inputForm");
+					var data = {
+						name: $(dialogDom).find("input[name='name']").val()
+					}
+					LayerUtil.ajax({
+						url: layui.admin.basePath + '/sys/dict/saveProcessCategory',
+						data: data,
+						success: function(res){
+							$("input[name='name']").val(data.name);
+							$("#category").append("<option value='" + data.name + "'>" + data.name + "</option>")
+							$("select[name='category']").val(data.name);
+							$("select[name='category']").trigger("change");
+							layui.layer.close(index)
+						}
+					});
+				}
+			})
+			return false;
+		})
+	}
+</script>

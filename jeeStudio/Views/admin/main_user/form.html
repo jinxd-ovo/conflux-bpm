@@ -1,0 +1,59 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal" style="overflow: auto;">
+		<input name="id" type="hidden" id="id"/>
+			<input name="formNo" type="hidden" id="formNo"/>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>归属机构</label>
+	  		<fieldset class="set">
+				<div name="parent.id" component-type="treeSelect" actionUrl="/dynamic/zform/treeData?parentId=0&traceFlag=1&formNo=main_office" sync="false" check="false" chooseParent="true" class="tag-div required"></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>用户编码</label>
+	  		<fieldset class="set">
+				<input name="s02" component-type="input" type="text"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>登录名</label>
+	  		<fieldset class="set">
+				<input name="s01" component-type="input" type="text"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>姓名</label>
+	  		<fieldset class="set">
+				<input name="s04" component-type="input" type="text"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>性别</label>
+	  		<fieldset class="set">
+	  			<select name="s03" component-type="select" component-id="sex" class="form-control ">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>密级</label>
+	  		<fieldset class="set">
+	  			<select name="s06" component-type="select" component-id="sys_sec_level" class="form-control ">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>手机</label>
+	  		<fieldset class="set">
+				<input name="s05" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>排序</label>
+	  		<fieldset class="set">
+				<input name="sort" component-type="input" type="text"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	</form>
+</div>
+

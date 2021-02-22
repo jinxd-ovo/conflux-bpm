@@ -1,0 +1,164 @@
+/**
+
+ @Name：layuiAdmin 登入注册页
+ @Author：贤心
+ @Site：http://www.layui.com/admin/
+ @License：GPL-2
+ 
+ */
+ 
+html,body,#LAY_app{height:100%;}
+.layui-layout-body{overflow: auto;}
+ 
+#LAY-user-login,
+.layadmin-user-display-show{display: block !important;} 
+.layadmin-user-login{position: relative; left: 0; top: 0; padding: 300px 0; min-height: 100%; box-sizing: border-box;}
+.layadmin-user-login-main{width: 375px; margin: 0 auto; box-sizing: border-box;}
+.layadmin-user-login-box{padding: 20px;}
+.layadmin-user-login-header{text-align: center;}
+.layadmin-user-login-header h2{margin-bottom: 10px; font-weight: 300; font-size: 30px; color: #000;}
+.layadmin-user-login-header p{font-weight: 300; color: #999;}
+
+.layadmin-user-login-body .layui-form-item{position: relative;}
+.layadmin-user-login-icon{position: absolute; left: 1px; top: 1px; width: 38px; line-height: 36px; text-align: center; color: #d2d2d2;}
+.layadmin-user-login-body .layui-form-item .layui-input{padding-left: 38px;}
+.layadmin-user-login-codeimg{max-height: 38px; width: 100%; cursor: pointer; box-sizing: border-box;}
+
+.layadmin-user-login-other{position: relative; font-size: 0; line-height: 38px; padding-top: 20px;}
+.layadmin-user-login-other>*{display: inline-block; vertical-align: middle; margin-right: 10px; font-size: 14px;}
+.layadmin-user-login-other .layui-icon{position: relative; top: 2px; font-size: 26px;}
+.layadmin-user-login-other a:hover{opacity: 0.8;}
+
+.layadmin-user-jump-change{float: right;}
+
+.layadmin-user-login-footer{position: absolute; left: 0; bottom: 0; width: 100%; line-height: 30px; padding: 20px; text-align: center; box-sizing: border-box; color: rgba(0,0,0,.5)}
+.layadmin-user-login-footer span{padding: 0 5px;}
+.layadmin-user-login-footer a{padding: 0 5px; color: rgba(0,0,0,.5);}
+.layadmin-user-login-footer a:hover{color: rgba(0,0,0,1);}
+
+/* 有背景图时 */
+.layadmin-user-login-main[bgimg]{background-color: #fff; box-shadow: 0 0 5px rgba(0,0,0,0.05);}
+
+/* 主题背景 */
+.ladmin-user-login-theme{position: fixed; bottom: 0; left: 0; width: 100%; text-align: center;}
+.ladmin-user-login-theme ul{display: inline-block; padding: 5px; background-color: #fff;}
+.ladmin-user-login-theme ul li{display: inline-block; vertical-align: top; width: 64px; height: 43px; cursor: pointer; transition: all .3s; -webkit-transition: all .3s; background-color: #f2f2f2;}
+.ladmin-user-login-theme ul li:hover{opacity: 0.9}
+
+@media screen and (max-width: 768px) {
+  .layadmin-user-login{padding-top: 60px;}
+  .layadmin-user-login-main{width: 300px;}
+  .layadmin-user-login-box{padding: 10px;}
+}
+
+
+/* 新增部分 */
+.layadmin-user-login{background:url(res/loginBg.png) no-repeat; background-size: 100% 100%;}
+.layadmin-user-login-main{ background: url(res/loginBoxBg.png) no-repeat; width: 380px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.1); background-size: 100% 100%; }
+.layadmin-user-login-header{}
+.layadmin-user-login-body .layui-form-item .layui-input{ height: 50px; line-height: 50px; border-radius: 25px; box-shadow: 0 0 20px rgba(0,0,0,0.15); border: 0;}
+.layadmin-user-login-body .layadmin-user-login-icon{height: 50px; line-height: 50px;}
+.layadmin-user-login-body .layui-btn{height: 50px; line-height: 50px; background: url(res/buttonBg.png) no-repeat; background-size: 100%; border-radius: 25px;box-shadow: 0 0 20px rgba(0,0,0,0.05);}
+
+/*wy new login css*/
+.bpm-login-body{
+	font-family: "微软雅黑";
+	height: 100%;
+	background-image: url(res/bpm-login-body.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+.bpm-login-body-bg{
+	height: 100%;
+	background-image: url(res/bpm-login-body-bg.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+    opacity: 0.3;
+}
+.bpm-login-div-bg{
+	height: 340px;
+	line-height: 340px;
+	padding-top: 20px;
+	position: fixed;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	width: 100%;
+	background-image: url(res/bpm-login-div-bg.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+.bpm-login-div{
+	width: 1100px;
+	margin: 0 auto;
+	background-image: url(res/bpm-suo.png);
+	background-repeat: no-repeat;
+	background-position: left center;
+	padding-left: 120px;
+}
+.bpm-login-form{
+	position: relative;
+	float: right;
+	width: 500px;
+	height: 300px;
+	background: #fff;
+	border-radius: 5px;
+	padding:40px 70px;
+	line-height: normal;
+}
+.bpm-login-form .dl{
+	color: #0099CC;
+	font-size: 28px;
+}
+.bpm-login-form .name{
+	display: table;
+	width: 100%;
+	margin-top: 10px;
+}
+.bpm-login-form .name span{
+	width: 75px;
+	text-align: center;
+	line-height: 30px;
+	display: table-cell;
+	color: #999999;
+	font-size: 16px;
+}
+.bpm-login-form.en .name span{
+	width: 100px;
+}
+.bpm-login-form .name input{
+	display: table-cell;
+}
+.bpm-login-button{
+	margin-top: 25px;
+	line-height: 40px;
+	text-align: center;
+	font-size: 18px;
+	color: #fff;
+	background-color: #3399ff;
+	border-radius: 5px;
+    border: none;
+    width: 100%;
+}
+.bpm-login-button:hover{
+	background-color: #1179ff;
+}
+
+#bpm-ladp-div{
+}
+.bpm-ladp{
+	position: absolute;top: -15px;left: 0px;width: 100%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    overflow: hidden;
+}
+.bpm-ladp>.flex>li{
+    text-align: center;
+    background-color: #cbcbcb;
+    line-height: 40px;
+    color: #fff;
+    font-size: 16px;
+}
+.bpm-ladp>.flex>li.active{
+	background-color:#3399ff;
+}

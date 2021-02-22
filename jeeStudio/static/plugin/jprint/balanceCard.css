@@ -1,0 +1,16 @@
+.table-box table tr td{
+	height: 20px;
+}
+ul{
+	padding: 0px;
+	margin: 0px !important;
+	overflow: auto;
+}
+ul.li3 li{
+	text-align: left;
+	width: 32%;
+	display: inline-block;
+}
+#table,.table-box{
+	clear: both;
+}

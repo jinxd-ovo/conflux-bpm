@@ -1,0 +1,299 @@
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div id="body-div" class="layui-card-body">
+        	<form id="searchForm" class="searchForm form-inline">
+        		<div class="searchDiv positionSpc">
+				</div>
+        	</form>
+        	<div id="toolbar" class="toolbar">
+				<div class="pull-right">
+				</div>
+			</div>
+            <form id="editTableForm">
+				<table id="table-list"></table>
+			</form>
+            <script type="text/html" id="treeTableTpl">
+				<td >
+					{{d.row.s01 ? d.row.s01 : ""}}
+				</td>
+				<td >
+					{{d.row.sort ? d.row.sort : ""}}
+				</td>
+				<td nowrap="nowrap" class="center" style="width: 45px;" data-json='{{d.row.json}}'>
+					{{d.row.btns}}
+				</td>
+			</script>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['common', 'view', 'admin', 'laytpl'], function () {
+        var $ = layui.$
+            , R = layui.common
+            , view = layui.view
+            , admin = layui.admin
+            , laytpl = layui.laytpl;
+
+        var getTime = "-" + new Date().getTime();
+        $("#body-div").attr("id", "body-div" + getTime);
+        $("#table-list").attr("id","table-list" + getTime);
+        var btnsStr = LayerUtil.getBtnsStrFromMenuData();
+
+		var treetableUtil = new TreetableUtil(getTime);
+       	var $treeTable = treetableUtil.init({
+			url: admin.basePath + '/dynamic/zform/data?path=path&traceFlag=&formNo=demo_tree',
+			expandLevel : 1,
+			sync: true, 
+			callback:function(item) {
+				var _this = this;
+				$.each(_this.thead,function(i,obj){
+					if(item.hasOwnProperty(obj.field)){
+						if(typeof obj.formatter == "function"){
+							item[obj.field] = obj.formatter(item[obj.field]);
+						}
+					}
+				});
+				var treeTableTpl = $("#body-div"+getTime).find("#treeTableTpl").html();
+				item.json = JSON.stringify(item);
+				var width = 0;
+	    		$(btnsStr.tableBtnsStr).find(".btn").each(function(index,obj){
+	    			var count = $(obj).text().length;
+	    			if(layui.admin.lang()){
+	    				width += count * 8 + 10;
+	    			}else{
+	    				width += count * 15 + 10;
+	    			}
+	    		})
+	    		var html = $(btnsStr.tableBtnsStr);
+	    		html.find(".hide-btn-group").width(width);
+				item.btns = html.prop("outerHTML");
+				var result = laytpl(treeTableTpl).render({
+					row: item
+				});
+				return result;
+			},
+			thead:[
+				{
+					field: 's01',
+					title: '名称',
+				},
+				{
+					field: 'sort',
+					title: '排序',
+				},
+    			{
+					field: 'operation', width: '45px',
+					title: layui.admin.lang() ? 'Operation' : '操作',
+					events: {
+						'click .edit': function (row) {
+							addOrEdit({
+								id: row.id
+								,hashKey: row.hashKey
+							})
+						},
+						'click .del' : function (row){
+							delFuc(row);
+						},
+						'click .view' : function (row){
+							viewForm({
+								id: row.id
+								,hashKey: row.hashKey
+							})
+						},
+						'click .lowerlevel' : function(row){
+							addChild({
+								parent:{
+									id: row.id,
+									name: row.s01
+								}
+							})
+						},
+					},
+				},
+			]
+		},'demo_tree');
+
+
+		$("#body-div"+getTime).find("#addBtn").on("click",function(){
+			addOrEdit({});
+		});
+		$("#body-div"+getTime).find("#importBtn").on("click",function(){
+			LayerUtil.openDialog({
+				title: '导入',
+				formLay : 'demo_tree',
+				height:"300px",
+				setDataWithoutAjax : true,
+				url: 'admin/import',
+	            btn: ['上传', '关闭'],
+	            btn_EN: ['import', 'close'],
+	            loading: false,
+	            func1:function(index,layero){
+					var validateForm = $(layero).find("#inputForm").validate({});
+	            	if(validateForm.form()){
+						var data = myHelper.composeData($(layero).find("#inputForm"));
+						LayerUtil.ajax({
+							url : admin.basePath + '/dynamic/zform/impdata?parentFormNo=&uniqueId=&toCompany=&parentId=&formNo=demo_tree'+'&fileId='+data.importExcel+'&loginName='+localStorage.getItem('bpmUser'),
+							type : 'post',
+							shade: true,
+							success : function(res) {
+								LayerUtil.success(res[LayerUtil.getMsgLang()]);
+								bootstrapTableUtil.refresh();
+								layui.layer.close(index);
+							}
+						});
+	            	}
+	            }
+			})
+		});
+		$("#body-div"+getTime).find("#exportBtn").on("click",function(){
+			var str = $("#body-div"+getTime).find("#searchForm").serialize();
+			var dataH = myHelper.formParamsToObject(str);
+			window.open(admin.basePath + '/dynamic/zform/expdata?path=path&traceFlag=&formNo=demo_tree&parentId=&zformString=' + encodeURI(JSON.stringify(dataH)));
+			return;
+		});
+
+		$("#body-div"+getTime).find("#removeBtn").on("click",function(){
+			var ids = bootstrapTableUtil.getMultiId();
+			if(ids){
+				LayerUtil.confirm(layui.admin.lang() ? "Are you sure?" : "确定删除吗？", function(){
+					LayerUtil.ajax({
+						type: 'post',
+		        		url: admin.basePath + '/dynamic/zform/delete?formNo=demo_tree&ids=' + ids,
+		        		success: function(res){
+		        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+                			treetableUtil.refresh();
+		        		}
+		        	})
+				})
+	       	}
+		});
+
+		function addOrEdit(initData) {
+			var id = initData ? initData.id : '';
+			LayerUtil.openDialog({
+				title : layui.admin.lang() ? 'New ' : '添加树表演示',
+				formLay : 'demo_tree',
+				initData : initData,
+				setDataWidthAjax : true,
+				actionDataName : 'data',
+				url : 'admin/demo_tree/form',
+				actionUrl : admin.basePath + '/dynamic/zform/getZform?formNo=demo_tree&id=' + id,
+	            btn : ['保存', '取消'],
+	            btn_EN : ['Save', 'Cancel'],
+	            func1 : function(index,layero) {
+	            	var validateForm = $(layero).find("#inputForm").validate({});
+	            	if(validateForm.form()){
+						var data = myHelper.composeData($(layero).find("#inputForm"));
+						LayerUtil.ajax({
+							url : admin.basePath + '/dynamic/zform/save',
+							type : 'post',
+							data : JSON.stringify(data),
+							shade: true,
+							success : function(res) {
+								LayerUtil.success(res[LayerUtil.getMsgLang()]);
+								
+								var current_id = data.id;
+								var current_parent_id = data.parent.id;
+								var target = treetableUtil.getTarget(current_id);
+								var old_parent_id = target.attr("pid") == undefined?'0':target.attr("pid");
+								
+								if(old_parent_id == current_parent_id){
+									if(current_parent_id == '0'){
+										//添加根节点
+										treetableUtil.refreshPoint(-1);
+									}else{
+										//编辑当前叶子节点
+										treetableUtil.refreshPoint(current_parent_id);
+									}
+								}else{
+									//添加叶子节点 编辑叶子节点的父节点
+									treetableUtil.del(current_id);//刷新删除旧节点
+									treetableUtil.initParents(res.data.data);
+								}
+//								treetableUtil.refresh();
+								layui.layer.close(index);
+							}
+						});
+	            	}
+	            }
+			})
+		}
+
+		function addChild(initData) {
+			var id = initData ? initData.id : '';
+			LayerUtil.openDialog({
+				title : layui.admin.lang() ? 'New ' : '添加树表演示',
+				formLay : 'demo_tree',
+				initData : initData,
+				setDataWithoutAjax : true,
+				actionDataName : 'data',
+				url : 'admin/demo_tree/form',
+	            btn : ['保存', '取消'],
+	            btn_EN : ['Save', 'Cancel'],
+	            func1 : function(index,layero) {
+	            	var validateForm = $(layero).find("#inputForm").validate({});
+	            	if(validateForm.form()){
+						var data = myHelper.composeData($(layero).find("#inputForm"));
+						LayerUtil.ajax({
+							url : admin.basePath + '/dynamic/zform/save',
+							type : 'post',
+							data : JSON.stringify(data),
+							shade: true,
+							success : function(res) {
+								LayerUtil.success(res[LayerUtil.getMsgLang()]);
+								
+								var current_id = data.id;
+								var current_parent_id = data.parent.id;
+								var target = treetableUtil.getTarget(current_id);
+								var old_parent_id = target.attr("pid") == undefined?'0':target.attr("pid");
+								
+								if(old_parent_id == current_parent_id){
+									if(current_parent_id == '0'){
+										//添加根节点
+										treetableUtil.refreshPoint(-1);
+									}else{
+										//编辑当前叶子节点
+										treetableUtil.refreshPoint(current_parent_id);
+									}
+								}else{
+									//添加叶子节点 编辑叶子节点的父节点
+									treetableUtil.del(current_id);//刷新删除旧节点
+									treetableUtil.initParents(res.data.data);
+								}
+//								treetableUtil.refresh();
+								layui.layer.close(index);
+							}
+						});
+					}
+	            }
+			})
+		}
+
+		function viewForm(initData) {
+			LayerUtil.openDialogView({
+				title : layui.admin.lang() ? 'View ' : '查看树表演示',
+				initData : initData,
+				formLay : 'demo_tree',
+				url : 'admin/demo_tree/form',
+				actionUrl : admin.basePath + '/dynamic/zform/getZform?formNo=demo_tree&id=' + initData.id,
+				actionDataName : 'data',
+				setDataWidthAjax : true,
+			})
+		}
+
+		function delFuc(row){
+    		LayerUtil.confirm(layui.admin.lang() ? 'Are you sure you want to delete?':'确认要删除吗？', function() {
+				LayerUtil.ajax({
+					url: admin.basePath + '/dynamic/zform/delete?formNo=demo_tree&ids=' + row.id,
+					type:'post',
+	        		shade:true,
+					success: function(res){
+	        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+                			treetableUtil.del(row.id);
+//              			treetableUtil.refresh();
+	        		}
+				});
+			});
+    	}
+    });
+</script>

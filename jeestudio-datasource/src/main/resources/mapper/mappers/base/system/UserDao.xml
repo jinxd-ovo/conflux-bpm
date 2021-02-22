@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.system.UserDao">
+
+    <sql id="userColumns">
+    	a.id,
+    	a.company_id AS "company.id",
+    	a.office_id AS "office.id",
+    	a.login_name AS "loginName",
+    	a.password,
+    	a.des_password AS "desPassword",
+    	a.no,
+		a.name,
+		a.email,
+		a.phone,
+		a.mobile,
+		a.user_type AS "userType",
+		a.login_ip AS "loginIp",
+		a.login_date AS "loginDate",
+		a.remarks,
+		a.login_flag AS "loginFlag",
+		a.photo,
+		a.qrcode,
+		a.sign,
+		a.create_by AS "createBy.id",
+		a.create_date,
+		a.update_by AS "updateBy.id",
+		a.update_date,
+		a.del_flag,
+		a.sso_login_flag AS "ssoLoginFlag",
+		a.useable,
+		a.sort AS "sortIndex",
+		a.sso_des_password AS "ssoDesPassword",
+		a.is_sys AS "isSys",
+		a.user_type AS "secLevel",
+		a.login_exception_count AS "loginExceptionCount",
+		a.password_expired_date AS "passwordExpiredDate",
+		a.iim_status AS "status",
+    	c.name AS "company.name",
+    	c.code AS "company.code",
+    	o.name AS "office.name",
+    	o.code AS "office.code"
+    </sql>
+
+    <sql id="userJoins">
+		LEFT JOIN sys_office c ON c.id = a.company_id
+		LEFT JOIN sys_office o ON o.id = a.office_id
+    </sql>
+
+	<select id="get" resultType="User">
+		SELECT
+		<include refid="userColumns"/>
+		FROM sys_user a
+		<include refid="userJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+    <select id="getByLoginName" resultType="User" parameterType="User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM sys_user a
+        <include refid="userJoins"/>
+        WHERE a.login_name = #{loginName} AND a.del_flag = #{DEL_FLAG_NORMAL}
+    </select>
+
+	<select id="findUserListByOfficeIdList" resultType="User">
+		SELECT
+		<include refid="userColumns"/>
+		FROM sys_user a
+		<include refid="userJoins"/>
+		WHERE 1=2
+		<foreach collection="officeIdList" item="officeId">
+			or o.parent_ids like '%,${officeId},%'<!-- jinxd -->
+		</foreach>
+		or a.office_id in
+		<foreach collection="officeIdList" item="officeId" open="(" separator="," close=")">
+			#{officeId}
+		</foreach>
+	</select>
+
+	<select id="findUserListByLevelIdList" resultType="User">
+		SELECT
+		<include refid="userColumns"/>
+		FROM sys_user a
+		<include refid="userJoins"/>
+		WHERE a.level_id IN
+		<foreach collection="levelIdList" item="levelId" open="(" separator="," close=")">
+			#{levelId}
+		</foreach>
+	</select>
+
+	<select id="findUserListByPostIdList" resultType="User">
+		SELECT
+		<include refid="userColumns"/>
+		FROM sys_user a
+		<include refid="userJoins"/>
+		WHERE a.post_id IN
+		<foreach collection="postIdList" item="postId" open="(" separator="," close=")">
+			#{postId}
+		</foreach>
+	</select>
+
+	<select id="findUserListByRoleIdList" resultType="User">
+		SELECT
+		<include refid="userColumns"/>
+		FROM sys_user a
+		<include refid="userJoins"/>
+		LEFT JOIN sys_user_role ur ON a.id = ur.user_id
+		WHERE ur.role_id IN
+		<foreach collection="roleIdList" item="roleId" open="(" separator="," close=")">
+			#{roleId}
+		</foreach>
+	</select>
+
+	<select id="findUserListByUserIdList" resultType="User">
+		SELECT
+		<include refid="userColumns"/>
+		FROM sys_user a
+		<include refid="userJoins"/>
+		WHERE a.id IN
+		<foreach collection="userIdList" item="userId" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</select>
+
+	<select id="findUserListByLoginNameList" resultType="User">
+		SELECT
+		<include refid="userColumns"/>
+		FROM sys_user a
+		<include refid="userJoins"/>
+		WHERE a.login_name IN
+		<foreach collection="assgineeList" item="assginee" open="(" separator="," close=")">
+			#{assginee}
+		</foreach>
+	</select>
+
+	<select id="findUserListByOrgIdList" resultType="User">
+		SELECT
+		<include refid="userColumns"/>
+		FROM sys_user a
+		<include refid="userJoins"/>
+		LEFT JOIN sys_org_user sou ON a.id = sou.user_id
+		WHERE sou.org_id in
+		<foreach collection="orgIdList" item="orgId" open="(" separator="," close=")">
+			#{orgId}
+		</foreach>
+	</select>
+
+	<delete id="deleteUserRole">
+		DELETE FROM sys_user_role WHERE user_id = #{id}
+	</delete>
+
+	<select id="findUserTagTree" resultType="TagTree">
+		SELECT
+		a.id AS "id",
+		a.office_id AS "parentId",
+		a.name AS "name"
+		FROM sys_user a
+		WHERE a.useable = #{useable}
+		<if test="office != null and office.id != null and office.id != ''">AND a.office_id = #{office.id}</if>
+	</select>
+
+	<select id="findUserTagTreeAll" resultType="TagTree">
+	SELECT
+	a.id AS "id",
+	a.office_id AS "parentId",
+	a.name AS "name",
+	a.login_name AS "loginName"
+	FROM sys_user a
+	WHERE a.useable = #{useable}
+	<if test="loginName != 'admin'">
+		AND a.is_sys != '1'
+	</if>
+	</select>
+
+	<select id="findUserForFlow" resultType="User">
+		SELECT a.id, a.name, a.login_name, a.is_sys
+		FROM sys_user a
+		LEFT JOIN sys_user_role b ON a.id = b.user_id
+		WHERE a.del_flag = '0'
+		${condition}
+		ORDER BY a.name
+	</select>
+
+	<select id="getUserView" resultType="UserView">
+		SELECT
+			a.id,
+			a.company_id AS "company.id",
+			a.office_id AS "office.id",
+			a.login_name AS "loginName",
+			a.no,
+			a.name,
+			a.email,
+			a.phone,
+			a.mobile,
+			a.user_type AS "userType",
+			a.login_ip AS "loginIp",
+			a.login_date AS "loginDate",
+			a.remarks,
+			a.login_flag AS "loginFlag",
+			a.create_by AS "createBy.id",
+			a.create_date,
+			a.update_by AS "updateBy.id",
+			a.update_date,
+			a.del_flag,
+			a.sso_login_flag AS "ssoLoginFlag",
+			a.useable,
+			a.sort AS "sortIndex",
+			a.is_sys AS "isSys",
+			a.sec_level AS "secLevel",
+			a.login_exception_count AS "loginExceptionCount",
+			a.password_expired_date AS "passwordExpiredDate",
+			a.iim_status AS "status"
+		FROM sys_user a
+		WHERE a.del_flag = '0'
+		AND a.id = #{userId}
+	</select>
+
+	<select id="findUserViewByName" resultType="UserView">
+		SELECT
+			a.id,
+			a.company_id AS "company.id",
+			a.office_id AS "office.id",
+			a.login_name AS "loginName",
+			a.no,
+			a.name,
+			a.email,
+			a.phone,
+			a.mobile,
+			a.user_type AS "userType",
+			a.login_ip AS "loginIp",
+			a.login_date AS "loginDate",
+			a.remarks,
+			a.login_flag AS "loginFlag",
+			a.create_by AS "createBy.id",
+			a.create_date,
+			a.update_by AS "updateBy.id",
+			a.update_date,
+			a.del_flag,
+			a.sso_login_flag AS "ssoLoginFlag",
+			a.useable,
+			a.sort AS "sortIndex",
+			a.is_sys AS "isSys",
+			a.sec_level AS "secLevel",
+			a.login_exception_count AS "loginExceptionCount",
+			a.password_expired_date AS "passwordExpiredDate",
+			a.iim_status AS "status"
+		FROM sys_user a
+		WHERE a.del_flag = '0'
+		<if test="name != null and name != ''">
+			<bind name="nameLike" value="'%' + name + '%'" />
+			AND a.name LIKE '${nameLike}'
+		</if>
+		<if test="name == null or name == ''">
+			AND 1 = 0
+		</if>
+	</select>
+
+	<select id="getLoginExceptionCount" resultType="Integer">
+		SELECT login_exception_count
+		FROM sys_user
+		WHERE login_name = '${loginName}'
+	</select>
+
+	<update id="clearLoginExceptionCount">
+		update sys_user
+		set login_exception_count = 0
+		WHERE login_name = '${loginName}'
+	</update>
+
+	<select id="isPasswordExpired" resultType="Date">
+		SELECT password_expired_date
+		FROM sys_user
+		WHERE login_name = '${loginName}'
+	</select>
+
+	<update id="unlockUser">
+		update sys_user
+		set login_flag = '1',
+		login_exception_count = 0
+		WHERE login_name = '${loginName}'
+	</update>
+
+	<update id="lockUser">
+		update sys_user
+		set login_flag = '0'
+		WHERE login_name = '${loginName}'
+	</update>
+
+	<update id="addLoginExceptionCount">
+		update sys_user
+		set login_exception_count = login_exception_count + 1
+		WHERE login_name = '${loginName}'
+	</update>
+
+	<update id="changePassword">
+		update sys_user
+		set password = #{password}, password_expired_date = #{passwordExpiredDate}
+		WHERE login_name = #{loginName}
+	</update>
+
+	<update id="updateByMasterData">
+		UPDATE sys_user SET
+			login_name = #{loginName},
+			name = #{name},
+			user_type = #{userType},
+			mobile = #{mobile}
+		WHERE no = #{no}
+	</update>
+</mapper>

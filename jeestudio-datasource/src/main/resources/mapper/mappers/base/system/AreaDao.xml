@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.system.AreaDao">
+
+    <select id="findAreaTagTree" resultType="TagTree">
+        SELECT
+        a.id AS "id",
+        a.parent_id AS "parentId",
+        a.name AS "name"
+        FROM sys_area a
+        <if test="parent != null and parent.id != null and parent.id != ''">
+            WHERE a.parent_id = #{parent.id}
+        </if>
+    </select>
+
+    <select id="findAreaTagTreeAll" resultType="TagTree">
+        SELECT
+        a.id AS "id",
+        a.parent_id AS "parentId",
+        a.name AS "name"
+        FROM sys_area a
+    </select>
+</mapper>

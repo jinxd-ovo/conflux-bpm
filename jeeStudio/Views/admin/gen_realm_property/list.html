@@ -1,0 +1,220 @@
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div id="body-div" class="layui-card-body">
+        	<form id="searchForm" class="searchForm form-inline">
+        		<div class="searchDiv positionSpc">
+				</div>
+        	</form>
+        	<div id="toolbar" class="toolbar">
+				<div class="pull-right">
+				</div>
+			</div>
+            <form id="editTableForm">
+				<table id="table-list"></table>
+			</form>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['common', 'view', 'admin', 'laytpl'], function () {
+        var $ = layui.$
+            , R = layui.common
+            , view = layui.view
+            , admin = layui.admin
+            , laytpl = layui.laytpl;
+
+        var getTime = "-" + new Date().getTime();
+        $("#body-div").attr("id", "body-div" + getTime);
+        $("#table-list").attr("id","table-list" + getTime);
+        var btnsStr = LayerUtil.getBtnsStrFromMenuData();
+
+		var bootstrapTableUtil = new BootstrapTableUtil(getTime);
+		bootstrapTableUtil.init({
+			url: admin.basePath + '/dynamic/zform/data?path=path&traceFlag=&formNo=gen_realm_property',
+			method: 'post',
+			columns: [
+                {
+					checkbox: true
+				},
+				{
+					field: 's01',
+					title: '名称',
+					sortable: true,
+					sortName: 'a.name',
+					
+					formatter:function(value, row , index){
+						if(!value){
+							value = "";
+						}
+						return "<a href='javascript:;' class='view'>"+value+"</a>";
+					},
+					events: {
+						'click .view': function (e, value, row, index) {
+							viewForm({
+								id: row.id
+							})
+						}
+					},
+				},
+				{
+					field: 's02',
+					title: '说明',
+					sortable: true,
+					sortName: 'a.comments',
+					
+				},
+				{
+					field: 's03',
+					title: '物理类型',
+					sortable: true,
+					sortName: 'a.jdbc_type',
+					
+					formatter:function(value, row , index){
+						return myHelper.getValueFromDictionary("oa_physical_type",value);
+					},
+				},
+				{
+					field: 's04',
+					title: '表单类型',
+					sortable: true,
+					sortName: 'a.show_type',
+					
+					formatter:function(value, row , index){
+						return myHelper.getValueFromDictionary("oa_form_type",value);
+					},
+				},
+                {
+                	title: layui.admin.lang() ? 'Operation' : '操作',
+                	width: '45px',
+					"class": 'center must',
+					events: {
+						'click .view': function (e, value, row, index) {
+							viewForm({id: row.id})
+						},
+						'click .edit': function (e, value, row, index) {
+							addOrEdit({
+								id: row.id
+							})
+						},
+						'click .del': function (e, value, row, index) {
+							delFuc(row);
+						},
+					},
+					formatter: function(value, row, index) {
+						return btnsStr.tableBtnsStr;
+					},
+                },
+            ],
+		},"gen_realm_property");
+
+
+		$("#body-div"+getTime).find("#addBtn").on("click",function(){
+			addOrEdit({});
+		});
+
+		$("#body-div"+getTime).find("#removeBtn").on("click",function(){
+			var ids = bootstrapTableUtil.getMultiId();
+			if(ids){
+				LayerUtil.confirm(layui.admin.lang() ? "Are you sure?" : "确定删除吗？", function(){
+					LayerUtil.ajax({
+						type: 'post',
+		        		url: admin.basePath + '/dynamic/zform/delete?formNo=gen_realm_property&ids=' + ids,
+		        		success: function(res){
+		        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+                			bootstrapTableUtil.refresh();
+		        		}
+		        	})
+				})
+	       	}
+		});
+
+		function addOrEdit(initData) {
+			var id = initData ? initData.id : '';
+			LayerUtil.openDialog({
+				title : layui.admin.lang() ? 'New ' : '添加领域属性',
+				formLay : 'gen_realm_property',
+				initData : initData,
+				setDataWidthAjax : true,
+				actionDataName : 'data',
+				url : 'admin/gen_realm_property/form',
+				actionUrl : admin.basePath + '/dynamic/zform/getZform?formNo=gen_realm_property&id=' + id,
+	            btn : ['保存', '取消'],
+	            btn_EN : ['Save', 'Cancel'],
+	            func1 : function(index,layero) {
+	            	var validateForm = $(layero).find("#inputForm").validate({});
+	            	if(validateForm.form()){
+						var data = myHelper.composeData($(layero).find("#inputForm"));
+						LayerUtil.ajax({
+							url : admin.basePath + '/dynamic/zform/save',
+							type : 'post',
+							data : JSON.stringify(data),
+							shade: true,
+							success : function(res) {
+								LayerUtil.success(res[LayerUtil.getMsgLang()]);
+								bootstrapTableUtil.refresh();
+								layui.layer.close(index);
+							}
+						});
+	            	}
+	            }
+			})
+		}
+
+		function addChild(initData) {
+			var id = initData ? initData.id : '';
+			LayerUtil.openDialog({
+				title : layui.admin.lang() ? 'New ' : '添加领域属性',
+				formLay : 'gen_realm_property',
+				initData : initData,
+				setDataWithoutAjax : true,
+				actionDataName : 'data',
+				url : 'admin/gen_realm_property/form',
+	            btn : ['保存', '取消'],
+	            btn_EN : ['Save', 'Cancel'],
+	            func1 : function(index,layero) {
+	            	var validateForm = $(layero).find("#inputForm").validate({});
+	            	if(validateForm.form()){
+						var data = myHelper.composeData($(layero).find("#inputForm"));
+						LayerUtil.ajax({
+							url : admin.basePath + '/dynamic/zform/save',
+							type : 'post',
+							data : JSON.stringify(data),
+							shade: true,
+							success : function(res) {
+								LayerUtil.success(res[LayerUtil.getMsgLang()]);
+								bootstrapTableUtil.refresh();
+								layui.layer.close(index);
+							}
+						});
+					}
+	            }
+			})
+		}
+
+		function viewForm(initData) {
+			LayerUtil.openDialogView({
+				title : layui.admin.lang() ? 'View ' : '查看领域属性',
+				initData : initData,
+				formLay : 'gen_realm_property',
+				url : 'admin/gen_realm_property/form',
+				actionUrl : admin.basePath + '/dynamic/zform/getZform?formNo=gen_realm_property&id=' + initData.id,
+				actionDataName : 'data',
+				setDataWidthAjax : true,
+			})
+		}
+
+		function delFuc(row){
+    		LayerUtil.confirm(layui.admin.lang() ? 'Are you sure you want to delete?':'确认要删除吗？', function() {
+				LayerUtil.ajax({
+					url: admin.basePath + '/dynamic/zform/delete?formNo=gen_realm_property&ids=' + row.id,
+					type:'post',
+	        		shade:true,
+					success: function(res){
+	        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+                			bootstrapTableUtil.refresh();
+	        		}
+				});
+			});
+    	}
+    });
+</script>

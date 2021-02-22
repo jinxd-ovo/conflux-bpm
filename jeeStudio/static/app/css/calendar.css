@@ -1,0 +1,507 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0px;
+}
+
+html {
+    -ms-text-size-adjust: 100%;
+}
+body {
+    color: #333;
+    background-color: #fff;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+
+
+.btn {
+    display: inline-block;
+    height: 30px;
+    line-height: 1.5;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    margin-bottom: 0;
+
+    background: #fff;
+    color: #333;
+    border: 0px solid #ccc;
+    border-radius: 3px;
+}
+.btn-group, .btn-group-vertical {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}
+.btn-group>.btn {
+    position: relative;
+    float: left;
+}
+.btn-group>.btn:first-child:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.btn-group>.btn:last-child:not(:first-child){
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.btn-group>.btn:first-child {
+    margin-left: 0;
+}
+.btn-group .btn+.btn, .btn-group .btn+.btn-group, .btn-group .btn-group+.btn, .btn-group .btn-group+.btn-group {
+    margin-left: -1px;
+}
+
+
+.form-control {
+    display: inline-block;
+    width: auto;
+    height: 30px;
+    line-height: 30px;
+
+    padding: 0px 10px;
+    font-size: 14px;
+    color: #555;
+
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/*头部条*/
+#headRow{
+    height: 53px;
+    text-align: center;
+    /*border-bottom: 1px solid #c6421c;*/
+}
+
+
+#headRow .btn-group .form-control{
+    border-radius: 0px;
+    float: left;
+}
+#yearsSelect{
+    float: left;
+}
+#backToday{
+    float: right;
+}
+
+/*星期行*/
+#weekRow th{
+    height: 44px;
+    border-left: none;
+    border-right: none;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle !important;
+}
+
+/*日历Table*/
+.notCurrentMonth{
+    opacity: 0.13;
+    -moz-opacity:0.13;
+    -khtml-opacity: 0.13;
+    filter:alpha(opacity=13); /*IE的写法*/
+}
+
+.notCurPage{
+    opacity: 0.35;
+    -moz-opacity:0.35;
+    -khtml-opacity: 0.35;
+    filter:alpha(opacity=35); /*IE的写法*/
+}
+
+#calendar{
+    /*margin: 6% auto 0 auto;*/
+    padding: 0;
+    /*border-top: 3px solid #c6421c;*/
+    /*box-shadow: 0px 3px 15px #d0d0d0;*/
+   border-bottom: 1px solid #d0d0d0;
+    overflow: hidden;
+
+    width: 560px;
+
+    /*垂直居中*/
+    position: relative;
+        top:0;
+        left: 0;
+        right: 0px;
+
+
+    /*-webkit-perspective: 10000px;*/
+    /*-webkit-perspective-origin: 50% 50%;*/
+    /*-webkit-transform-style: preserve-3d;*/
+}
+
+/*日期部分*/
+#dateTbody #tr2{
+    height: 260px;
+}
+
+/*装日期的最外面的单元格*/
+#view{
+    position: relative;
+
+}
+/*每一页日期的div*/
+.pageDiv{
+    position: absolute;
+    top:0;
+    left:0;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 10px;
+    transition: opacity 300ms linear;
+}
+.pageTable{
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+}
+
+
+/*日期每一天中的div*/
+.dayBox{
+    padding-top: 3px !important;
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    line-height: 20px;
+    font-size: 22px;
+    text-align: center;
+    padding: 1px 0px;
+    border: 3px solid transparent;
+    border-radius: 24px;
+    position: relative;
+    cursor: pointer;
+    font-weight: normal !important;
+    font-family: Arial !important;
+}
+.dayBox .tip{
+    position: absolute;
+    width: 116px;
+    height: 58px;
+    text-align: center;
+    border-radius: 4%;
+    box-shadow: 2px 2px 6px #aaa;
+    background: #c94520;
+    left: 50%;
+    margin-left: -58px;
+    bottom: 100%;
+    margin-bottom: 16px;
+    transition: all 0.35s;
+    animation: tipShow 0.39s 1 normal forwards;
+    display: none;
+}
+
+@keyframes tipShow {
+    0%{
+        opacity: 0;
+        -webkit-transform: translate3d(0,20px,0);
+    }
+    100%{
+        opacity: 0.9;
+        -webkit-transform: translate3d(0,0,0);
+    }
+}
+/*tip正面*/
+.weatherText{
+    color: azure;
+    display: block;
+    padding: 4px 5px;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    width: 100%;
+    height: 100%;
+    line-height: 25px;
+}
+/*tip城市名那一整行*/
+.city{
+    color: #81e7ff;
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+/*翻转tip的按钮*/
+.flip{
+    display: block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    /*border: 1px solid black;*/
+    text-align: center;
+    position: absolute;
+    right: -6px;
+    top:-6px;
+    color: #fcff9d;
+    font-weight: bolder;
+    font-size: 13px;
+
+    /*transform: rotateX(130deg) rotateZ(135deg);*/
+    /*-webkit-transform: rotateX(130deg) rotateZ(135deg);	!* Safari 和 Chrome *!*/
+    /*-moz-transform: rotateX(130deg) rotateZ(135deg);*/
+}
+/*tip农历那一面的翻转按钮*/
+.lunarText .flip{
+    font-size: 16px;
+    right: -8px;
+    top:-4.5px;
+}
+/*tip城市名*/
+.cityName{
+    text-decoration: underline;
+}
+/*tip温度*/
+.temperature{
+    font-size: 10px;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+/*tip背面*/
+.lunarText{
+    color: white;
+    display: block;
+    padding: 4px 5px;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    width: 95%;
+    height: 100%;
+    padding-right: 5%;
+    line-height: 25px;
+}
+
+/*tip箭头*/
+.dayBox .tip .arrow{
+    color: #c94520;
+    position: absolute;
+    top: 100%;
+    margin-left: -5px;
+    text-shadow: 0px 2px 6px #aaa;
+}
+/*右tip*/
+.dayBox .rTip{
+    left:0%;
+    margin-left: -80px;
+}
+/*右箭头*/
+.dayBox .rArrow{
+    left:70%;
+}
+/*左tip*/
+.dayBox .lTip{
+    left:0%;
+    margin-left: 6px;
+}
+/*左箭头*/
+.dayBox .lArrow{
+    left:20%;
+}
+
+
+/*放假、加班 标识*/
+.holiday,.workday{
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    font-size: 10px;
+    font-weight: normal;
+    position: absolute;
+    top:-8px;
+    right: -4px;
+}
+/*假*/
+.holiday{
+    background: #eb4c49;  /* eba819 */
+    color: white;
+}
+/*班*/
+.workday{
+    background: #949093;
+    color: white;
+}
+/*日期格中的农历*/
+.lunar{
+    width: 100%;
+    overflow: visible;
+    color: #333;
+    font-size: 10px;
+    font-weight: normal;
+    white-space: nowrap;
+    text-align: center;
+}
+/*节日、节气*/
+.cTerm{
+    color: #e6a600;
+}
+
+/*被选中的日期*/
+#dateTbody .current{
+    background: #3f97f9;
+    color: #fff;
+}
+#dateTbody .current .lunar{
+	color: #fff;
+}
+/*今天*/
+/*#dateTbody .today{
+    background-color: #c94520;
+    color: #f1dc7f;
+}
+.today .lunar{
+    color: #f1dc7f;
+}*/
+
+
+/*周末*/
+.weekend{
+    color: #c6421c;
+}
+
+/*每一天下面的天气图标*/
+.weather{
+    position: absolute;
+    top:100%;
+    margin-top: -5px;
+    width: 100%;
+    height:20px;
+
+    filter:alpha(opacity=85);
+    -moz-opacity:0.85;
+    -khtml-opacity: 0.85;
+    opacity: 0.85;
+}
+.weatherImg{
+    width: auto;
+    height: 100%;
+}
+
+
+/*背景*/
+#bac{
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    background: rgba(8,8,8,0.3);
+    /*opacity: 0.6;*/
+}
+/*省市弹窗*/
+#cityPop{
+    /*display: none;*/
+    background: #c94520;
+    position: absolute;
+    width: 268px;
+    height: 42px;
+    line-height: 39px;
+    border-radius: 6px;
+    top: 50%;
+    margin-top: -80px;
+    left: 50%;
+    margin-left: -134px;
+    /*padding-top: 6px;*/
+    /*box-shadow: 2px 3px 10px #6a6a6a;*/
+}
+/*省份*/
+#pro{
+    border: 1px solid gold;
+    background-color: transparent;
+    font-size: 10px;
+    margin: 0 3px;
+    width: 132px;
+    height: 30px;
+}
+/*城市*/
+#city{
+    border: 1px solid gold;
+    background-color: transparent;
+    font-size: 10px;
+    margin-left: 3px;
+    width: 88px;
+    height: 30px;
+}
+
+
+/*@media screen and (max-height: 768px) and (min-width: 900px) {
+    #calendar{
+        position: relative;
+        top: 0;
+        margin-top: 5%;
+    }
+}*/
+
+
+/*小屏公共*/
+@media screen and (max-width: 560px){
+    #calendar{
+        position: relative;
+        width: 100%;
+        top:0;
+        left: 0;
+        margin: 0 auto;
+    }
+    .weather{
+        height: 18px;
+    }
+    #weekRow th {
+        height: 34px !important;
+    }
+    #headRow{
+        height: 26px;
+    }
+    #weekRow{
+    }
+}
+
+/*iphone6 plus 之类的大屏手机*/
+@media screen and (max-width: 560px) and (min-width: 376px){
+    .dayBox{
+        width: 42px;
+        height: 42px;
+        border-radius: 21px;
+        font-size: 18px;
+        line-height: 16px;
+    }
+
+}
+/*iphone6及以下小屏手机*/
+@media screen and (max-width: 375px){
+    #dateTbody #tr2{
+        height: 260px;
+    }
+    .dayBox{
+        width: 41px;
+        height: 41px;
+        border-radius: 20.5px;
+        font-size: 18px;
+        line-height: 16px;
+    }
+}
+
+
+
+.time-circle{
+    position: absolute;
+    left: -5px;
+    top: 0;
+    z-index: 10;
+	width: 20px;
+	height: 20px;
+	border-radius: 100%;
+	border: 1px solid #3f97f9;
+	background: #fff;
+}

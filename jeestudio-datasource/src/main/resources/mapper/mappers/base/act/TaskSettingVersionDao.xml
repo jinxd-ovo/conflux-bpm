@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.act.TaskSettingVersionDao">
+    
+	<sql id="taskSettingVersionColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.user_task_id AS "userTaskId",
+		a.user_task_name AS "userTaskName",
+		a.proc_def_id AS "procDefId",
+		a.setting_value AS "settingValue",
+		a.permission_type AS "permissionType",
+		a.permission AS "permission",
+		a.rule_args AS "ruleArgs"
+	</sql>
+	
+	<sql id="taskSettingVersionJoins">
+	</sql>
+	
+    <resultMap type="TaskSettingVersion" id="TaskSettingVersionResult" autoMapping="true">
+    </resultMap>
+    
+	<select id="get" resultMap="TaskSettingVersionResult" >
+		SELECT 
+			<include refid="taskSettingVersionColumns"/>
+		FROM oa_task_setting_version a
+		<include refid="taskSettingVersionJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultMap="TaskSettingVersionResult" >
+		SELECT 
+			<include refid="taskSettingVersionColumns"/>
+		FROM oa_task_setting_version a
+		<include refid="taskSettingVersionJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+			<if test="procDefId != null and procDefId != ''">
+				AND a.proc_def_id = #{procDefId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultMap="TaskSettingVersionResult" >
+		SELECT 
+			<include refid="taskSettingVersionColumns"/>
+		FROM oa_task_setting_version a
+		<include refid="taskSettingVersionJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO oa_task_setting_version(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			user_task_id,
+			user_task_name,
+			proc_def_id,
+			setting_value,
+			permission_type,
+			permission,
+			rule_args
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{userTaskId},
+			#{userTaskName},
+			#{procDefId},
+			#{settingValue},
+			#{permissionType},
+			#{permission},
+			#{ruleArgs}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE oa_task_setting_version SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			user_task_id = #{userTaskId},
+			user_task_name = #{userTaskName},
+			proc_def_id = #{procDefId},
+			setting_value = #{settingValue},
+			permission_type = #{permissionType},
+			permission = #{permission},
+			rule_args = #{ruleArgs}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM oa_task_setting_version
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteByLogic">
+		UPDATE oa_task_setting_version SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="findUniqueByProperty" resultType="TaskSettingVersion" statementType="STATEMENT">
+		select * FROM oa_task_setting_version  where ${propertyName} = '${value}'
+	</select>
+	
+	<insert id="batchSave">
+		insert into oa_task_setting_version(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			user_task_id,
+			user_task_name,
+			proc_def_id,
+			setting_value,
+			permission_type,
+			permission,
+			rule_args
+		) VALUES
+		<foreach collection="taskSettingVersionList" item="list" separator=",">
+		(
+			#{list.id},
+			#{list.createBy.id},
+			#{list.createDate},
+			#{list.updateBy.id},
+			#{list.updateDate},
+			#{list.remarks},
+			#{list.delFlag},
+			#{list.userTaskId},
+			#{list.userTaskName},
+			#{list.procDefId},
+			#{list.settingValue},
+			#{list.permissionType},
+			#{list.permission},
+			#{list.ruleArgs}
+		)
+		</foreach>
+	</insert>
+	
+	<select id="getTaskSettingVersionByAct" resultMap="TaskSettingVersionResult" >
+		SELECT 
+			<include refid="taskSettingVersionColumns"/>
+		FROM oa_task_setting_version a
+		<include refid="taskSettingVersionJoins"/>
+		<where>
+			a.proc_def_id = #{act.procDefId}
+			AND a.user_task_id = #{act.taskDefKey}
+		</where>		
+	</select>
+	
+	<select id="getByPermission" resultMap="TaskSettingVersionResult" >
+		SELECT 
+			<include refid="taskSettingVersionColumns"/>
+		FROM oa_task_setting_version a
+		<include refid="taskSettingVersionJoins"/>
+		<where>
+			a.del_flag = '0'
+			<if test="permission != null and permission != ''">
+				AND a.permission = #{permission} 
+			</if>		
+			<if test="procDefId != null and procDefId != ''">
+				AND a.proc_def_id = #{procDefId}
+			</if>
+		</where>
+		ORDER BY a.create_date
+	</select>
+	
+	<update id="updateActByte">
+		UPDATE ACT_GE_BYTEARRAY SET BYTES_ = #{bytes, jdbcType=BLOB} 
+		WHERE DEPLOYMENT_ID_ = #{deploymentId} 
+		AND NAME_ LIKE '%.bpmn%'
+	</update>
+	
+	<update id="updateHistoricTask">
+		UPDATE ACT_HI_TASKINST SET
+			EXECUTION_ID_ = #{newTaskEntity.executionId, jdbcType=VARCHAR},
+        	PROC_INST_ID_ = #{newTaskEntity.processInstanceId, jdbcType=VARCHAR},
+			PROC_DEF_ID_ = #{newTaskEntity.processDefinitionId, jdbcType=VARCHAR}
+		where ID_ = #{newTaskEntity.id}
+	</update>
+	
+</mapper>

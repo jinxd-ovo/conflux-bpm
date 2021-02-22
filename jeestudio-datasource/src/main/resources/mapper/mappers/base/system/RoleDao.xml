@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.system.RoleDao">
+
+    <resultMap id="roleResult" type="Role">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="enname" column="enname" />
+        <result property="sysData" column="sysData" />
+        <result property="useable" column="useable" />
+        <result property="remarks" column="remarks" />
+        <collection property="menuList" ofType="Menu">
+            <id property="id" column="menuList.id" />
+        </collection>
+    </resultMap>
+
+    <sql id="roleColumns">
+    	a.id,
+    	a.name,
+    	a.enname,
+		a.remarks,
+		a.create_by AS "createBy.id",
+		a.create_date,
+		a.update_by AS "updateBy.id",
+		a.update_date,
+		a.del_flag,
+		a.is_sys AS sysData,
+    	a.useable AS useable
+    </sql>
+
+    <select id="findList" resultMap="roleResult">
+        SELECT
+        <include refid="roleColumns"/>
+        FROM sys_role a
+        LEFT JOIN sys_user_role ur ON ur.role_id = a.id
+        LEFT JOIN sys_user u ON u.id = ur.user_id
+        WHERE a.del_flag = #{DEL_FLAG_NORMAL}  AND a.useable=#{useable}
+        <if test="user != null and user.id != null and user.id != ''">
+            AND u.id = #{user.id}
+        </if>
+        <if test="user != null and user.loginName != null and user.loginName != ''">
+            AND u.login_name = #{user.loginName}
+        </if>
+        <if test="name != null and name != ''">
+            <bind name="nameLike" value="'%' + name + '%'" />
+            AND a.name LIKE '${nameLike}'
+        </if>
+        <if test="enname != null and enname != ''">
+            <bind name="ennameLike" value="'%' + enname + '%'" />
+            AND a.enname LIKE '${ennameLike}'
+        </if>
+        ${sqlMap.dsf}
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.name
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getAuth" resultType="java.lang.String">
+        SELECT a.menu_id
+        FROM sys_role_menu a
+        WHERE a.role_id = #{id}
+    </select>
+
+    <insert id="saveAuth">
+        INSERT IGNORE INTO sys_role_menu(
+            role_id,
+            menu_id
+        )VALUES 
+        <foreach collection="asList" item="menuId" separator=",">
+            (#{id},#{menuId})
+        </foreach>
+    </insert>
+
+    <select id="getAssign" resultType="java.lang.String">
+        SELECT a.user_id
+        FROM sys_user_role a
+        WHERE  a.role_id = #{id}
+    </select>
+
+    <select id="getDataAssign" resultType="java.lang.String">
+        SELECT a.user_id
+        FROM sys_user_datarole a
+        WHERE  a.datarole_id = #{id}
+    </select>
+
+    <insert id="saveAssign">
+        INSERT IGNORE INTO sys_user_role(
+        role_id,
+        user_id
+        )VALUES
+        <foreach collection="asList" item="userId" separator=",">
+            (#{id},#{userId})
+        </foreach>
+    </insert>
+
+    <insert id="saveDataAssign">
+        INSERT IGNORE INTO sys_user_datarole(
+        datarole_id,
+        user_id
+        )VALUES
+        <foreach collection="asList" item="userId" separator=",">
+            (#{id},#{userId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteAuthById">
+        DELETE FROM sys_role_menu WHERE role_id = #{id}
+    </delete>
+
+    <delete id="deleteAssignById">
+        DELETE FROM sys_user_role WHERE role_id = #{id}
+    </delete>
+
+    <delete id="deleteDataAssignById">
+        DELETE FROM sys_user_datarole WHERE datarole_id = #{id}
+    </delete>
+</mapper>

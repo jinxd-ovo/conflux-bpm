@@ -1,0 +1,52 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal" style="overflow: auto;">
+		<input name="id" type="hidden" id="id"/>
+			<input name="parent.id" type="hidden"/>
+		<input name="formNo" type="hidden" id="formNo"/>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>站点编号</label>
+	  		<fieldset class="set">
+				<input name="s02" component-type="input" type="text" maxlength="50"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>站点名称</label>
+	  		<fieldset class="set">
+				<input name="s01" component-type="input" type="text" maxlength="50"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>站点HTTP</label>
+	  		<fieldset class="set">
+				<input name="s03" component-type="input" type="text" maxlength="100"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>关键字</label>
+	  		<fieldset class="set">
+				<input name="s04" component-type="input" type="text" maxlength="50"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>资源位置</label>
+	  		<fieldset class="set">
+				<input name="s05" component-type="input" type="text" maxlength="50"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>状态</label>
+	  		<fieldset class="set">
+	  			<select name="status" component-type="select" component-id="sys_useable" class="form-control required">
+					<option></option>
+				</select>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>排序</label>
+	  		<fieldset class="set">
+				<input name="sort" component-type="input" type="text"    class="form-control  required"/>
+	  		</fieldset>
+	  	</div>
+	</form>
+</div>
+

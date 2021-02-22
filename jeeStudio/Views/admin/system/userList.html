@@ -1,0 +1,165 @@
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <form class="layui-form layui-card-header layuiadmin-card-header-auto" id="system-user-search-form" lay-filter="system-user-search-form">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label"></label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="UserNo" condition="like" compare="UserNo,UserName,UserName_EN" placeholder="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label"></label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="Mobile" condition="like" compare="Mobile" placeholder="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label"></label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="Email" condition="like" compare="Email" placeholder="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    
+                    <div class="layui-inline">
+                        <label class="layui-form-label">
+                            <script type="text/html" template>
+                                {{layui.admin.setFormSelectTitleLang('system-user-search-form','Role')||''}}
+                            </script>
+                        </label>
+                        <div class="layui-input-inline">
+                           <!-- <script type="text/html" template lay-url="/Admin/getRoleSelect" 
+                                    lay-data="{order: 'RoleName'+layui.admin.lang()}"  lay-type="post" 
+                                    lay-done="layui.form.render('select', 'system-user-search-form')">-->
+                            <select id="getRoleSelect" name="Role" condition="=" compare="DefaultRoleID">
+                            </select>
+                            <script type="text/html" id="getRoleSelectTpl">
+                                <option value="">{{layui.admin.setFormSelectLang('system-user-search-form','Role')||''}}</option>
+                                {{#  layui.each(d.data, function(index, item){ }}
+                                <option value="{{ item.RoleID }}">{{ item['RoleName'+layui.admin.lang()] }}</option>
+                                {{#  }); }}
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <table id="system-user-table" lay-filter="system-user-table"></table>
+
+            <script type="text/html" id="system-user-toolbar">
+                {{#
+                var html=layui.admin.getPageToolbarBtn('system-user', { 'Sign': ['edit'] });
+                html+=layui.admin.getPageToolbarBtn('system-user', { 'Sign': 'resetPass' });
+                if(d.UserNo !== 'admin'&&d.UserNo !== 'develop')
+                    html+=layui.admin.getPageToolbarBtn('system-user', { 'Sign': 'del' });
+
+                    return html;
+                }}
+
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['common', 'view', 'admin', 'laytpl'], function () {
+        var $ = layui.$
+            , R = layui.common
+            , view = layui.view
+            , admin = layui.admin
+            , laytpl = layui.laytpl;
+
+        var UserName = 'UserName' + R.lang(), RoleName = 'RoleName' + R.lang();
+        
+        //wy修改
+		admin.req({
+            url: admin.basePath + '/getRoleSelect.json'
+            , success: function (res) {
+            	var getTpl = document.getElementById("getRoleSelectTpl").innerHTML
+				,view = document.getElementById('getRoleSelect');
+				laytpl(getTpl).render(res, function(html){
+				  	view.innerHTML = html;
+				});
+				layui.form.render('select', 'system-user-search-form')
+            }
+	 	});
+
+        R.initTable({
+            tableId: 'system-user'
+            , autoToolbar: false
+            , idField: 'UserID'
+            , tableOptions: {
+                /*url: '/Admin/getUserList'*/
+               url: admin.basePath + '/getUserList.json'
+               , method: "get"
+                , where: { order: 'UserNo'}
+                , initSort: { field: 'UserNo', type: 'asc' }
+                , cellMinWidth: 140
+                , cols: [[
+                    { type: 'numbers' }
+                    , { field: 'UserNo', title: '登录账号', sort: true }
+                    , { field: 'UserName', title: '用户姓名', sort: true }
+                    , { field: 'UserName_EN', title: '英文名', sort: true }
+                    , { field: 'Mobile', title: '手机', sort: true, align: 'center' }
+                    , { field: 'Email', title: '邮箱', sort: true }
+                    , { field: RoleName, title: '角色', sort: true }
+                    , {
+                        field: "CreatedOn", title: "创建时间", "sort": true, width: 160, align: 'center'
+                        , templet: function (d) { return R.timeFormat_YMDHMS(d[this.field]) }
+                    }
+                    , {
+                        field: "LastLoginTime", title: "最近登录时间", "sort": true, width: 160, align: 'center'
+                        , templet: function (d) { return R.timeFormat_YMDHMS(d[this.field]) }
+                    }
+                    //, { field: "CreatedBy", title: "创建者", "sort": true, align: 'center' }
+                    , { title: R.operationCell, width: 180, align: 'left', fixed: 'right', toolbar: '#system-user-toolbar' }
+                ]]
+            }
+            , delUrl: '/Admin/delUser'
+            , toolfun: {
+                add_success: function (res) {
+                    R.popupForm({
+                        title: layui.admin.lang() ? 'Account Password' : '账号密码'
+                        , formLay: 'system-user-password-form'
+                        , url: 'admin/system/userPasswordForm'
+                        , subUrl: ''
+                        , initData: $.extend(res.data, {Source:1})
+                        , tipOk: false
+                    })
+                }
+            }
+            , toolbarfun: {
+                resetPass: function (d) {
+                    view.confirm('', {
+                        title: admin.getToolbarFormTitle('system-user', 'resetPass')
+                        , doyes: function () {
+                            admin.req({
+                                url: '/Admin/resetUserPassword'
+                                , type: 'post'
+                                , data: { userId: d.UserID }
+                                , loading: true
+                                , tipOk: false
+                                , done: function (res) {
+                                    R.popupForm({
+                                        title: layui.admin.lang() ? 'Account Password' : '账号密码'
+                                        , formLay: 'system-user-password-form'
+                                        , url: 'admin/system/userPasswordForm'
+                                        , subUrl: ''
+                                        , initData: $.extend(res.data, { Source: 2 })
+                                        , tipOk: false
+                                    })
+
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+            , formOptions: {
+                url: 'admin/system/userForm'
+                , subUrl: '/Admin/saveUser'
+            }
+        });
+    });
+</script>

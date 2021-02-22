@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.system.OrganizationDao">
+    
+	<sql id="organizationColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.owner_code AS "ownerCode",
+		a.org_number AS "orgNumber",
+		a.org_name AS "orgName",
+		a.primaryperson_id AS "primaryPerson.id",
+		a.org_effect AS "orgEffect",
+		a.org_sequence_number AS "orgSequenceNumber",
+		primaryPerson.name AS "primaryPerson.name"
+	</sql>
+	
+	<sql id="organizationJoins">
+		LEFT JOIN sys_user primaryPerson ON primaryPerson.id = a.primaryperson_id
+	</sql>
+	
+    <sql id="userColumns">
+    	a.id,
+    	a.company_id AS "company.id",
+    	a.office_id AS "office.id",
+    	a.login_name AS "loginName",
+    	a.is_sys AS "isSys",
+    	a.password,
+    	a.des_password AS "desPassword",
+    	a.no,
+		a.name,
+		a.email,
+		a.phone,
+		a.mobile,
+		a.user_type AS "userType",
+		a.login_ip AS "loginIp",
+		a.login_date AS "loginDate",
+		a.remarks,
+		a.login_flag AS "loginFlag",
+		a.photo,
+		a.qrcode,
+		a.sign,
+		a.create_by AS "createBy.id",
+		a.create_date,
+		a.update_by AS "updateBy.id",
+		a.update_date,
+		a.del_flag,
+		a.sso_login_flag AS "ssoLoginFlag",
+		a.post_id AS "post.id",
+		a.part_post_id AS "partPost.id",
+		a.level_id AS "level.id",
+		a.useable,
+		a.sort,
+		a.sso_des_password AS "ssoDesPassword",
+    	c.name AS "company.name",
+    	c.parent_id AS "company.parent.id",
+    	c.parent_ids AS "company.parentIds",
+    	ca.id AS "company.area.id",
+    	ca.name AS "company.area.name",
+    	ca.parent_id AS "company.area.parent.id",
+    	ca.parent_ids AS "company.area.parentIds",
+    	o.name AS "office.name",
+    	o.parent_id AS "office.parent.id",
+    	o.parent_ids AS "office.parentIds",
+    	oa.id AS "office.area.id",
+    	oa.name AS "office.area.name",
+    	oa.parent_id AS "office.area.parent.id",
+    	oa.parent_ids AS "office.area.parentIds",
+    	cu.id AS "company.primaryPerson.id",
+    	cu.name AS "company.primaryPerson.name",
+    	cu2.id AS "company.deputyPerson.id",
+    	cu2.name AS "company.deputyPerson.name",
+    	ou.id AS "office.primaryPerson.id",
+    	ou.name AS "office.primaryPerson.name",
+    	ou2.id AS "office.deputyPerson.id",
+    	ou2.name AS "office.deputyPerson.name",
+    	post.name AS "post.name",
+    	partPost.name AS "partPost.name",
+    	syslevel.name AS "level.name"
+    </sql>
+    
+    <sql id="userJoins">
+		LEFT JOIN sys_office c ON c.id = a.company_id
+		LEFT JOIN sys_area ca ON ca.id = c.area_id
+		LEFT JOIN sys_office o ON o.id = a.office_id
+		LEFT JOIN sys_area oa ON oa.id = o.area_id
+		LEFT JOIN sys_user cu ON cu.id = c.primary_person
+		LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person
+		LEFT JOIN sys_user ou ON ou.id = o.primary_person
+		LEFT JOIN sys_user ou2 ON ou2.id = o.deputy_person
+		LEFT JOIN sys_post post ON post.id = a.post_id
+		LEFT JOIN sys_post partPost ON partPost.id = a.part_post_id
+		LEFT JOIN sys_level syslevel ON syslevel.id = a.level_id
+    </sql>
+    
+	<select id="get" resultType="Organization" >
+		SELECT 
+			<include refid="organizationColumns"/>
+		FROM sys_organization a
+		<include refid="organizationJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Organization" >
+		SELECT 
+			<include refid="organizationColumns"/>
+		FROM sys_organization a
+		<include refid="organizationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+			<if test="ownerCode != null and ownerCode != ''">
+				<bind name="ownerCodeLike" value="ownerCode + '%'" />
+				AND a.owner_code LIKE '${ownerCodeLike}'
+			</if>
+			<if test="orgName != null and orgName != ''">
+				<bind name="orgNameLike" value="'%' + orgName + '%'" />
+				AND a.org_name LIKE '${orgNameLike}'
+			</if>
+			<if test="primaryPerson != null and primaryPerson.id != null and primaryPerson.id != ''">
+				AND a.primaryperson_id = #{primaryPerson.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.org_sequence_number ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Organization" >
+		SELECT 
+			<include refid="organizationColumns"/>
+		FROM sys_organization a
+		<include refid="organizationJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.org_sequence_number ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sys_organization(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			owner_code,
+			org_number,
+			org_name,
+			primaryperson_id,
+			org_effect,
+			org_sequence_number
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{ownerCode},
+			#{orgNumber},
+			#{orgName},
+			#{primaryPerson.id},
+			#{orgEffect},
+			#{orgSequenceNumber}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sys_organization SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			owner_code = #{ownerCode},
+			org_number = #{orgNumber},
+			org_name = #{orgName},
+			primaryperson_id = #{primaryPerson.id},
+			org_effect = #{orgEffect},
+			org_sequence_number = #{orgSequenceNumber}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sys_organization
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteByLogic">
+		UPDATE sys_organization SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="findUniqueByProperty" resultType="Organization" statementType="STATEMENT">
+		SELECT * FROM sys_organization WHERE ${propertyName} = '${value}'
+	</select>
+	
+	<select id="findUserToOrg" resultType="com.jeestudio.common.entity.system.User">
+		SELECT
+			<include refid="userColumns"/>
+		FROM sys_user a
+		<include refid="userJoins"/>
+		WHERE a.id IN (SELECT ou.user_id FROM sys_org_user ou WHERE ou.org_id = #{id})
+	</select>
+	
+	<insert id="insertUserToOrg">
+		INSERT INTO sys_org_user (
+			org_id,
+			user_id
+		)VALUES(
+			#{organization.id},
+			#{user.id}
+		)
+	</insert>
+	
+	<delete id="deleteUserToOrg">
+		DELETE FROM sys_org_user
+		WHERE  user_id = #{userId}
+	</delete>
+	
+	<select id="findOrgNumberBy" resultType="int" >
+		SELECT 
+			count(*)
+		FROM sys_organization a
+		WHERE a.org_number = #{org}
+	</select>
+	
+	<select id="findListByUser" resultType="Organization">
+		SELECT 
+			<include refid="organizationColumns"/>
+		FROM sys_organization a
+		<include refid="organizationJoins"/>
+		LEFT JOIN sys_org_user sou ON a.id = sou.org_id
+		<where>
+			a.del_flag = '0' 
+			${org.sqlMap.dsf}
+		</where>		
+		ORDER BY a.update_date DESC
+	</select>
+	
+	<select id="getCountByOrgAndUser" resultType="int" >
+		SELECT 
+			count(*)
+		FROM sys_org_user a
+		WHERE a.org_id = #{orgId} AND a.user_id = #{userId} 
+	</select>
+
+	<select id="getAssign" resultType="java.lang.String">
+        SELECT a.user_id
+        FROM sys_org_user a
+        WHERE  a.org_id = #{id}
+    </select>
+
+	<insert id="saveAssign">
+		INSERT IGNORE INTO sys_org_user(
+		org_id,
+		user_id
+		)VALUES
+		<foreach collection="asList" item="userId" separator=",">
+			(#{id},#{userId})
+		</foreach>
+	</insert>
+
+	<delete id="deleteAssignById">
+        DELETE FROM sys_org_user WHERE org_id = #{id}
+    </delete>
+</mapper>

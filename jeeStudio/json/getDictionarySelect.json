@@ -1,0 +1,689 @@
+{
+	"code": 0,
+	"data": {
+		"dict": [
+			{
+				"dictionaryID": "wytest1",
+				"member": "wytest-list",
+				"memberName": "列表1",
+				"memberName_EN": "Table1",
+				"parentType": "page-table-cell",
+				"type": "page-table-cell"
+			},
+			{
+				"dictionaryID": "wytest11",
+				"member": "userNo",
+				"memberName": "登录账号",
+				"memberName_EN": "UserNo",
+				"parentType": "wytest-list",
+				"type": "page-table-cell"
+			},
+			{
+				"dictionaryID": "wytest11",
+				"member": "userName",
+				"memberName": "用户姓名",
+				"memberName_EN": "UserName",
+				"parentType": "wytest-list",
+				"type": "page-table-cell"
+			},
+			{
+				"dictionaryID": "wytest11",
+				"member": "userName_EN",
+				"memberName": "英文名",
+				"memberName_EN": "UserName_EN",
+				"parentType": "wytest-list",
+				"type": "page-table-cell"
+			},
+			{
+				"dictionaryID": "wytest11",
+				"member": "mobile",
+				"memberName": "手机",
+				"memberName_EN": "Mobile",
+				"parentType": "wytest-list",
+				"type": "page-table-cell"
+			},
+			{
+				"dictionaryID": "wytest11",
+				"member": "email",
+				"memberName": "邮箱",
+				"memberName_EN": "Email",
+				"parentType": "wytest-list",
+				"type": "page-table-cell"
+			},
+			{
+				"dictionaryID": "wytest11",
+				"member": "roleName",
+				"memberName": "角色",
+				"memberName_EN": "RoleName",
+				"parentType": "wytest-list",
+				"type": "page-table-cell"
+			},
+			{
+				"dictionaryID": "wytest11",
+				"member": "createdOn",
+				"memberName": "创建时间",
+				"memberName_EN": "CreatedOn",
+				"parentType": "wytest-list",
+				"type": "page-table-cell"
+			},
+			{
+				"dictionaryID": "wytest11",
+				"member": "lastLoginTime",
+				"memberName": "最近登录时间",
+				"memberName_EN": "LastLoginTime",
+				"parentType": "wytest-list",
+				"type": "page-table-cell"
+			},
+			
+			{
+				"dictionaryID": "wytest2",
+				"member": "wytest-form",
+				"memberName": "表单1",
+				"memberName_EN": "Form1",
+				"parentType": "page-form-field",
+				"type": "page-form-field"
+			},
+			{
+				"dictionaryID": "wytest21",
+				"member": "name",
+				"memberName": "姓名",
+				"memberName_EN": "Name",
+				"parentType": "wytest-form",
+				"type": "page-form-field"
+			},
+			{
+				"dictionaryID": "wytest21",
+				"member": "roleName",
+				"memberName": "角色",
+				"memberName_EN": "RoleName",
+				"parentType": "wytest-form",
+				"type": "page-form-field"
+			},
+			{
+				"dictionaryID": "wytest21",
+				"member": "processClassification",
+				"memberName": "流程分类",
+				"memberName_EN": "ProcessClassification",
+				"parentType": "wytest-form",
+				"type": "page-form-field"
+			},
+			{
+				"dictionaryID": "wytest21",
+				"member": "hobby",
+				"memberName": "爱好",
+				"memberName_EN": "Hobby",
+				"parentType": "wytest-form",
+				"type": "page-form-field"
+			},
+			{
+				"dictionaryID": "wytest21",
+				"member": "sex",
+				"memberName": "性别",
+				"memberName_EN": "Sex",
+				"parentType": "wytest-form",
+				"type": "page-form-field"
+			},
+			{
+				"dictionaryID": "wytest21",
+				"member": "date",
+				"memberName": "日期",
+				"memberName_EN": "Date",
+				"parentType": "wytest-form",
+				"type": "page-form-field"
+			},
+			{
+				"dictionaryID": "wytest21",
+				"member": "startDate",
+				"memberName": "开始日期",
+				"memberName_EN": "StartDate",
+				"parentType": "wytest-form",
+				"type": "page-form-field"
+			},
+			{
+				"dictionaryID": "wytest21",
+				"member": "endDate",
+				"memberName": "结束日期",
+				"memberName_EN": "SndDate",
+				"parentType": "wytest-form",
+				"type": "page-form-field"
+			},
+			{
+				"dictionaryID": "wytest21",
+				"member": "textarea",
+				"memberName": "文本框",
+				"memberName_EN": "Textarea",
+				"parentType": "wytest-form",
+				"type": "page-form-field"
+			},
+			{
+				"dictionaryID": "wytest21",
+				"member": "area",
+				"memberName": "区域选择",
+				"memberName_EN": "Area",
+				"parentType": "wytest-form",
+				"type": "page-form-field"
+			},
+			
+			{
+				"dictionaryID": "wytest3",
+				"member": "wytest-roleName",
+				"memberName": "角色",
+				"memberName_EN": "RoleName",
+				"parentType": "data-params",
+				"type": "data-params"
+			},
+			{
+				"dictionaryID": "wytest31",
+				"member": "1",
+				"memberName": "系统管理员",
+				"memberName_EN": "Admin",
+				"parentType": "wytest-roleName",
+				"type": "data-params"
+			},
+			{
+				"dictionaryID": "wytest31",
+				"member": "2",
+				"memberName": "开发维护",
+				"memberName_EN": "Develop",
+				"parentType": "wytest-roleName",
+				"type": "data-params"
+			},
+		
+
+			{
+				"dictionaryID": "wytest4",
+				"member": "hobby",
+				"memberName": "爱好",
+				"memberName_EN": "Hobby",
+				"parentType": "data-params",
+				"type": "data-params"
+			},
+			{
+				"dictionaryID": "wytest41",
+				"member": "football",
+				"memberName": "足球",
+				"memberName_EN": "Football",
+				"parentType": "hobby",
+				"type": "data-params"
+			},
+			{
+				"dictionaryID": "wytest41",
+				"member": "basketball",
+				"memberName": "篮球",
+				"memberName_EN": "Basketball",
+				"parentType": "hobby",
+				"type": "data-params"
+			},
+			
+			{
+				"dictionaryID": "wytest5",
+				"member": "wytest-processClassification",
+				"memberName": "流程分类",
+				"memberName_EN": "ProcessClassification",
+				"parentType": "data-params",
+				"type": "data-params"
+			},
+			{
+				"dictionaryID": "wytest51",
+				"member": "1",
+				"memberName": "加班申请",
+				"memberName_EN": "OvertimeApplication",
+				"parentType": "wytest-processClassification",
+				"type": "data-params"
+			},
+			{
+				"dictionaryID": "wytest52",
+				"member": "2",
+				"memberName": "立项申请",
+				"memberName_EN": "ItemApplication",
+				"parentType": "wytest-processClassification",
+				"type": "data-params"
+			},
+			{
+				"dictionaryID": "wytest61",
+				"member": "modelDescription",
+				"memberName": "模型描述",
+				"memberName_EN": "ModelDescription",
+				"parentType": "wytest-form",
+				"type": "page-form-field"
+			},
+			{
+				"dictionaryID": "wytest62",
+				"member": "modelName",
+				"memberName": "模型名称",
+				"memberName_EN": "ModelName",
+				"parentType": "wytest-form",
+				"type": "page-form-field"
+			},
+			{
+				"dictionaryID": "wytest63",
+				"member": "scope",
+				"memberName": "表单路径",
+				"memberName_EN": "Scope",
+				"parentType": "wytest-form",
+				"type": "page-form-field"
+			},
+
+			{
+				"dictionaryID": "04c0cce07f17417faeec665034503bc1",
+				"member": "u0026gt;",
+				"memberName": "u0026gt;",
+				"parentType": "gen_querytype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "075f21c7dae44c3eb3ea73b6c942e8cb",
+				"member": "normal",
+				"memberName": "普通",
+				"parentType": "gen_form_type",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "07cd7fc10c6d43039c884a917b2d4648",
+				"member": "sys_sec_level",
+				"memberName": "密级",
+				"parentType": "data-params",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "0b877616c93c4f73b869e31d33d3e965",
+				"member": "officeselectTree",
+				"memberName": "部门选择",
+				"parentType": "gen_showtype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "0c3f6905a2c2488e9dbf13edb2eb90f2",
+				"member": "checkbox",
+				"memberName": "复选框",
+				"parentType": "gen_showtype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "1000ec7c4c824edf887dd0c16edb2123",
+				"member": "sign",
+				"memberName": "签报",
+				"parentType": "gen_form_type",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "12351eec7fab4c8898ccc4c090cb70f2",
+				"member": "treeselectRedio",
+				"memberName": "人员选择",
+				"parentType": "gen_showtype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "153b7ef0fcac4d299c558f44d52259d7",
+				"member": "Between",
+				"memberName": "Between",
+				"parentType": "gen_querytype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "190d9eacc0004e969db5869139c92086",
+				"member": "2",
+				"memberName": "废止",
+				"parentType": "sys_useable",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "1e98b5487cd94aa0aaf78cf795ee00ba",
+				"member": "VIDEO",
+				"memberName": "视频",
+				"parentType": "sys_file_type",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "221bebd0756b479e95fdeadcc6772bc0",
+				"member": "send",
+				"memberName": "发文",
+				"parentType": "gen_form_type",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "277a356e07164d2fbdffe7c2ba1de07f",
+				"member": "AUDIO",
+				"memberName": "音频",
+				"parentType": "sys_file_type",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "27c00da7679a49c5a58f55bd7de3454a",
+				"member": "sys_useable",
+				"memberName": "启用停用状态",
+				"parentType": "data-params",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "2a1dc437f974425091292ce3a380746f",
+				"member": "sys_office_type",
+				"memberName": "机构类型",
+				"parentType": "data-params",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "2ddecb2944ea47d4a56fdd1a4bc37de9",
+				"member": "gen_querytype",
+				"memberName": "领域查询类型",
+				"parentType": "data-params",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "2efc24681c574c5f9c54dbd5d01aa046",
+				"member": "yellow",
+				"memberName": "黄色",
+				"parentType": "color",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "30d1d5d4f19b4b7b992a3d2cc45ae269",
+				"member": "l18",
+				"memberName": "18岁以下",
+				"parentType": "age",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "335525cf43ab4ecdb48d24c84bafc31c",
+				"member": "gen_showtype",
+				"memberName": "领域显示类型",
+				"parentType": "data-params",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "33a2ea078861446ca751de87aae3ed3e",
+				"member": "input",
+				"memberName": "单行文本",
+				"parentType": "gen_showtype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "38f6fbeb114f41ae973b48ec252c9a36",
+				"member": "blue",
+				"memberName": "蓝色",
+				"parentType": "color",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "396533991bc844438e55bcaf005a9b68",
+				"member": "normalwithoutact",
+				"memberName": "普通（非工作流",
+				"parentType": "gen_form_type",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "433e829eccaa4ca084f7e17a8f8c685c",
+				"member": "gen_release_type",
+				"memberName": "是否发布",
+				"parentType": "data-params",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "499677bb9c16480b82043d48c8a0063c",
+				"member": "sys_file_type",
+				"memberName": "附件类型",
+				"parentType": "data-params",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "4a996cc5c5c04b56869a6f5ec9f91485",
+				"member": "approval_process",
+				"memberName": "是否走工作流",
+				"parentType": "data-params",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "4cc5fd515e1f4174bfe600f52167451a",
+				"member": "1",
+				"memberName": "启用",
+				"parentType": "sys_status",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "4e34435dfa564c2abc232822d6556682",
+				"member": "fileselectsec",
+				"memberName": "文件上传(加密)",
+				"parentType": "gen_showtype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "60e51ae9e9374c759dd98c504ce4581b",
+				"member": "sys_status",
+				"memberName": "状态",
+				"parentType": "data-params",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "67a763bf1ddb41b3875e0652b8a15971",
+				"member": "r18",
+				"memberName": "18岁以上",
+				"parentType": "age",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "6b1430bdbba442d4ac1842d157c04ba5",
+				"member": "man",
+				"memberName": "男",
+				"memberName_EN": "Man",
+				"parentType": "sex",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "6c002703a83f410f951e7733be9d0fe0",
+				"member": "color",
+				"memberName": "颜色值",
+				"parentType": "data-params",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "7029ef23c9414cb79cc9b522cc065db4",
+				"member": "PIC",
+				"memberName": "图片",
+				"parentType": "sys_file_type",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "7163e7c1a9a94a2faa5d0bceaf255a05",
+				"member": "green",
+				"memberName": "绿色",
+				"parentType": "color",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "74fc2dd4130e476682819e572356c9ae",
+				"member": "1",
+				"memberName": "已发布",
+				"parentType": "gen_release_type",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "76a6dca4125045d28bebd0b4463015e1",
+				"member": "gridselect",
+				"memberName": "grid选择框(自定义java对象)",
+				"parentType": "gen_showtype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "788c1ffe3d3c404b9d791f74479f8d02",
+				"member": "like",
+				"memberName": "Like",
+				"parentType": "gen_querytype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "8171904610be495cbab72919a082058b",
+				"member": "treeselectCheck",
+				"memberName": "人员多选",
+				"parentType": "gen_showtype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "84990de3adbe4636a579389910e24b38",
+				"member": "false",
+				"memberName": "否",
+				"parentType": "approval_process",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "88d1826a60064fcbaefca79234a62dbe",
+				"member": "dynamic",
+				"memberName": "物理表动态表单",
+				"parentType": "gen_form_type",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "89ddb548afa545c9bb817b9e2be06a7c",
+				"member": "age",
+				"memberName": "年龄",
+				"parentType": "data-params",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "8b50c4f18f08411c9bceabae66080b1c",
+				"member": "1",
+				"memberName": "启用",
+				"parentType": "sys_useable",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "95070861322341dd91e338111a538b8a",
+				"member": "receive",
+				"memberName": "收文",
+				"parentType": "gen_form_type",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "963739617d454f17a98acbec7085cd3f",
+				"member": "red",
+				"memberName": "红色",
+				"parentType": "color",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "97b24f34dfc548b8bb5d10a8c8754fbf",
+				"member": "bill",
+				"memberName": "单据",
+				"parentType": "gen_form_type",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "980cc3c40bba4303b0accb70f90646d9",
+				"member": "u0026gt;u003d",
+				"memberName": "u0026gt;u003d",
+				"parentType": "gen_querytype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "9c23ce0e8afb4913ad814c20112edb08",
+				"member": "umeditor",
+				"memberName": "富文本编辑器",
+				"parentType": "gen_showtype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "9ed84ec444b44f86a2db991a7d42ccd4",
+				"member": "5",
+				"memberName": "无",
+				"parentType": "sys_sec_level",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "a332a51f83e1436eb673b7687a8e9335",
+				"member": "2",
+				"memberName": "停用",
+				"parentType": "sys_status",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "a4ad2af767f0484996d230cfb9687268",
+				"member": "3",
+				"memberName": "小组",
+				"parentType": "sys_office_type",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "b272327321e44e98ac41152720fdf1cb",
+				"member": "4",
+				"memberName": "其它",
+				"parentType": "sys_office_type",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "bb6e813aba3c477ab1ec059925bf12c4",
+				"member": "FILE",
+				"memberName": "文件",
+				"parentType": "sys_file_type",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "bc6e7bac140e445c88cd37f593c7b335",
+				"member": "gen_form_type",
+				"memberName": "gen表单类型",
+				"parentType": "data-params",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "c1413a15ef9442aab42a9fa4fdd8bc7e",
+				"member": "u0026lt;u003d",
+				"memberName": "u0026lt;u003d",
+				"parentType": "gen_querytype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "c46af083633a4239a22e8fb2adfffcce",
+				"member": "7",
+				"memberName": "机密★",
+				"parentType": "sys_sec_level",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "c5b764d656d44391baaa20d20eb98442",
+				"member": "6",
+				"memberName": "秘密★",
+				"parentType": "sys_sec_level",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "c8c7dccb358d46a281f519bcc1c6c6c9",
+				"member": "woman",
+				"memberName": "女",
+				"memberName_EN": "Woman",
+				"parentType": "sex",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "d560b2f261924a3883980fcab363dc03",
+				"member": "treeselect",
+				"memberName": "树选择控件",
+				"parentType": "gen_showtype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "d571a2ffd03a48bcb047db48fc1f8395",
+				"member": "0",
+				"memberName": "停用",
+				"parentType": "sys_useable",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "d76e5630281d48bab47e39d86ebb2962",
+				"member": "Left Like",
+				"memberName": "Left Like",
+				"parentType": "gen_querytype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "d772c5c26e204482b1f10063aa8907a6",
+				"member": "1",
+				"memberName": "单位",
+				"parentType": "sys_office_type",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "d7d3bb5ad6a24011a021bd59c60786c0",
+				"member": "true",
+				"memberName": "是",
+				"parentType": "approval_process",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "d9b3b8467bba454c92602d166e3f616d",
+				"member": "2",
+				"memberName": "部门",
+				"parentType": "sys_office_type",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "e439e116dc324acfa3025817bcd65775",
+				"member": "u0026lt;",
+				"memberName": "u0026lt;",
+				"parentType": "gen_querytype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "e4c48e6b38d94e8a8c2b7e1a5c36f40e",
+				"member": "weboffice",
+				"memberName": "WebOffice插件",
+				"parentType": "gen_showtype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "ea2ec280be0f4b50a01830ba7868fa9d",
+				"member": "0",
+				"memberName": "未发布",
+				"parentType": "gen_release_type",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "f60b61f5751c4c9897741e21d8a541c3",
+				"member": "orange",
+				"memberName": "橙色",
+				"parentType": "color",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "f6f411882c6344169af5085af0b4acb3",
+				"member": "sex",
+				"memberName": "性别",
+				"parentType": "data-params",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "fba2a4beceb2449db1045ebd895f054c",
+				"member": "u003d",
+				"memberName": "u003d",
+				"parentType": "gen_querytype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "fbda9916971e4e98852bfbbaf7fc8e1c",
+				"member": "Right Like",
+				"memberName": "Right Like",
+				"parentType": "gen_querytype",
+				"type": "data-params"
+			}, {
+				"dictionaryID": "fe38252152ca49af877965b3ec7cf752",
+				"member": "!u003d",
+				"memberName": "!u003d",
+				"parentType": "gen_querytype",
+				"type": "data-params"
+			}
+		]
+	},
+	"msg": "获取字典成功",
+	"msg_en": "Get Dict successfully",
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJBUFAiLCJpc3MiOiJTZXJ2aWNlIiwiZXhwIjoxNTc4NDgwMjMyLCJ1c2VySWQiOiIxIiwiaWF0IjoxNTc4NDc5MzMyLCJ1c2VybmFtZSI6ImFkbWluIn0.n9U3kDxYaxCAGZ4EuLGHED1Fw8BSY5muzRkY9Nyt0Xw"
+}

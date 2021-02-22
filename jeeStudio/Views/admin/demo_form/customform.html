@@ -1,0 +1,42 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal" style="overflow: auto;">
+		<input name="id" type="hidden" id="id"/>
+		<input name="formNo" type="hidden" id="formNo"/>
+<table id="report-table" class="border tdborder" style="width: 800px; height: 228px;">
+<tbody>
+<tr style="height: 25px;">
+<td class="td-name" style="height: 25px;"><span>名称</span></td>
+<td style="height: 25px;">
+<div class="adapt"><fieldset class="set"> <input component-type="input" name="s01" class="form-control  " type="text" value=""> </fieldset></div>
+</td>
+<td class="td-name" style="height: 25px;"><span>行政区</span></td>
+<td style="height: 25px;">
+<div class="adapt"><fieldset class="set"> <div component-type="treeSelect" name="area01.id" class="tag-div " actionurl="/sys/tagTree/areaTreeAsync?id=0" sync="true" check="false" chooseparent="true"></div> </fieldset></div>
+</td>
+</tr>
+<tr style="height: 25px;">
+<td class="td-name" style="height: 25px;"><span>注册日期</span></td>
+<td style="height: 25px;">
+<div class="adapt"><fieldset class="set"> <input component-type="datePicker" name="d01" readonly="readonly" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="Wdate form-control " type="text" value=""> </fieldset></div>
+</td>
+<td class="td-name" style="height: 25px;"><span>负责人</span></td>
+<td style="height: 25px;">
+<div class="adapt"><fieldset class="set"> <div component-type="treeSelect" name="user01.id" class="tag-div " actionurl="/sys/tagTree/userTree" sync="false" check="false" chooseparent="false"></div> </fieldset></div>
+</td>
+</tr>
+<tr style="height: 25px;">
+<td class="td-name" style="height: 25px;"><span>是否有效</span></td>
+<td colspan="3" style="height: 25px;">
+<div class="adapt"><fieldset class="set"> <select component-type="select" component-id="yes_no" name="s03" class="form-control m-b "> <option></option> </select> </fieldset></div>
+</td>
+</tr>
+<tr style="height: 153px;">
+<td class="td-name" style="height: 153px;"><span>备注信息</span></td>
+<td colspan="3" style="height: 153px;">
+<div class="adapt"><fieldset class="set"> <textarea component-type="textarea" rows="3" name="remarks" class="form-control " type="text" value=""> </textarea> </fieldset></div>
+</td>
+</tr>
+</tbody>
+</table>
+	</form>
+</div>

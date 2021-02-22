@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.oa.MeetingCalendarDao">
+
+    <select id="getCalendarDate" resultType="java.util.Date" >
+        SELECT DISTINCT
+         start_time
+        FROM oa_work_calendar
+        WHERE start_time LIKE ${month}
+    </select>
+
+    <select id="getMeetingDate" resultType="java.util.Date" >
+        SELECT DISTINCT
+         meeting_start
+        FROM oa_work_meeting
+        WHERE meeting_start LIKE ${month}
+    </select>
+
+    <select id="getCalendarByDay" resultType="WorkCalendarView" >
+        SELECT
+        *
+        FROM oa_work_calendar
+        WHERE start_time LIKE ${day}
+    </select>
+
+    <select id="getMeetingByDay" resultType="MeetingView" >
+        SELECT
+        *
+        FROM oa_work_meeting
+        WHERE meeting_start LIKE ${day}
+    </select>
+
+    <select id="getCalendarByYear" resultType="WorkCalendarView" >
+        SELECT
+        *
+        FROM oa_work_calendar
+        WHERE start_time LIKE ${year}
+    </select>
+
+    <select id="getMeetingByYear" resultType="MeetingView" >
+        SELECT
+        *
+        FROM oa_work_meeting
+        WHERE meeting_start LIKE ${year}
+    </select>
+
+</mapper>

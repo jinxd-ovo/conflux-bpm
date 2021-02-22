@@ -1,0 +1,231 @@
+
+<script type="text/html" template>
+    <link rel="stylesheet" href="{{ layui.setter.base }}style/login.css?v={{ layui.admin.v }}" media="all">
+</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$.ajax({
+	    	type:"get",
+	    	url:layui.admin.basePath + '/getSsoSwitch',
+	    	async:true,
+	    	success:function(data){
+	    		if(data == "true") {
+	    			$.ajax({
+				    	type:"get",
+				    	url:layui.admin.basePath + '/getSsoServerUrl',
+				    	async:true,
+				    	success:function(data){
+				    		document.location.href=data;
+				    	}
+				    });
+	    		}
+	    	}
+	    });
+		$.ajax({
+    		type:"get",
+    		url:layui.admin.basePath + '/createCharacter',
+    		async:true,
+    		success:function(data){
+    			$("#validateCode").html(data);
+    		}
+    	});
+    	$.ajax({
+    		type:"get",
+    		url:layui.admin.basePath + '/showValidateCode',
+    		async:true,
+    		success:function(data){
+    			if (data.data.showValidateCode) {
+    				$("#showValidateCode").css("display","");
+    			}
+    		}
+    	});
+	})
+</script>
+<div class="bpm-login-body">
+	<div class="bpm-login-body-bg">
+	</div>
+	<div class="bpm-login-div-bg">
+		<div class="bpm-login-div">
+			<img src="js/src/style/res/bpm-text.png" />
+			<div class="bpm-login-form">
+				<div id="bpm-ladp-div" class="bpm-ladp">
+					<ul class="flex">
+						<li class="autoWidth active">账号密码登陆</li>
+						<li class="autoWidth">域控登陆</li>
+					</ul>
+				</div>
+				<div id="dl" class="dl">用户登录</div>
+				<div class="name" style="margin-top: 30px;">
+					<span id="yhm">用户名</span>
+					<input type="text" value="" name="loginAccount" id="admin-login-form-loginAccount" fieldname="LoginAccount" placeholder="请输入用户名" lay-verify="required" minlen="5" maxlen="50" autocomplete="off" class="layui-input">
+				</div>
+				<div class="name">
+					<span id="mm">密&emsp;码</span>
+					<input type="password" value="" name="loginPassword" id="admin-login-form-loginPassword" fieldname="LoginPassword" placeholder="请输入密码" lay-verify="required" minlen="6" maxlen="30" autocomplete="off" class="layui-input">
+				</div>
+				<div class="name" id="showValidateCode" style="display: none;">
+					<span id="yzm">验证码</span>
+					<input type="text" value="" name="loginValidate" id="admin-login-form-loginValidate" fieldname="LoginValidate" lay-verify="required" minlen="6" maxlen="30" autocomplete="off" class="layui-input">
+					<span id="validateCode"></span>
+					<button type="button" id="validate-btn">换一个</button>
+				</div>
+				<button type="button" id="login-btn" class="bpm-login-button">登&ensp;录</button>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade layui-model" id="updatePasswordModal" data-backdrop="static" 
+		tabindex="-1" role="dialog" aria-labelledby="updatePasswordModal" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                <h4 class="modal-title" id="myModalLabel">修改密码</h4>
+	            </div>
+	            <div class="modal-body" style="overflow: hidden;">
+	            	<form id="updatePasswordModal-inputForm" class="form-horizontal">
+		            	<div class="col-md-12 half-line col-sm-12 adapt">
+					  		<label>原密码</label>
+					  		<fieldset class="set">
+								<input name="oldPassword" type="password" class="form-control required"/>
+					  		</fieldset>
+					  	</div>
+					  	<div class="col-md-12 half-line col-sm-12 adapt">
+					  		<label>新密码</label>
+					  		<fieldset class="set">
+								<input id="newPassword" name="newPassword" type="password" class="form-control required"/>
+					  		</fieldset>
+					  	</div>
+					  	<div class="col-md-12 half-line col-sm-12 adapt">
+					  		<label>确认密码</label>
+					  		<fieldset class="set">
+								<input name="checkPassword" type="password" class="form-control required"/>
+					  		</fieldset>
+					  	</div>
+					</form>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-save">修改</button>
+	            </div>
+	        </div><!-- /.modal-content -->
+	    </div><!-- /.modal -->
+	</div>
+	
+</div>
+
+<script>
+    layui.use(['view', 'admin', 'common'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , R = layui.common
+            , router = layui.router()
+            , search = router.search
+            , view = layui.view;
+
+        R.setFormLang('LAY-user-login');
+
+        admin.clearSessionData();
+        admin.initSessionData();
+		
+		if(layui.admin.lang()){
+			$(".bpm-login-body .bpm-login-form").addClass("en");
+		}
+        $(".bpm-login-body #dl").html(layui.admin.lang() ? 'User login' : '用户登录');
+        $(".bpm-login-body #yhm").html(layui.admin.lang() ? 'User name' : '用户名');
+        $(".bpm-login-body #mm").html(layui.admin.lang() ? 'Password' : '密&emsp;码');
+        $(".bpm-login-body #yzm").html(layui.admin.lang() ? 'Validate' : '验证码');
+        $(".bpm-login-body #validate-btn").html(layui.admin.lang() ? 'Another' : '换一个');
+        $(".bpm-login-body #login-btn").html(layui.admin.lang() ? 'Login' : '登&ensp;录');
+        
+        
+        $(document).on("click","#bpm-ladp-div li",function(){
+    		$("#bpm-ladp-div li").removeClass("active");
+    		$(this).addClass("active");
+    	})
+    	$.ajax({
+    		type:"get",
+    		url:layui.admin.basePath + '/getLdapSwitch',
+    		async:false,
+    		success:function(status){
+    			if(status){
+    				$("#bpm-ladp-div").show();
+    			}else{
+    				$("#bpm-ladp-div").hide();
+    			}
+    		}
+    	});
+        
+        $("#login-btn").on("click",function(){
+        	var index = $("#bpm-ladp-div li.active").index()
+        	var data = {
+        		validateCode: $("#admin-login-form-loginValidate").val()
+        	}
+        	if(index===0){
+        		data.username = $("#admin-login-form-loginAccount").val();
+        		data.password = $("#admin-login-form-loginPassword").val();
+        	}else if(index===1){
+        		data.ldapusername = $("#admin-login-form-loginAccount").val();
+        		data.ldappassword = $("#admin-login-form-loginPassword").val();
+        	}
+        	 admin.req({
+				url: admin.basePath + '/login',
+				type: 'post'
+				, data: data
+                , loading: true
+                , showMsg: false
+                , success: null
+                , done:  function(res){
+                	if(res.data.secLevel){
+                		layui.admin.sessionData({ secLevel: res.data.secLevel  });
+                	}else{
+                		layui.admin.sessionData({ secLevel: null  });
+                	}
+                	localStorage.setItem('officeCode',res.data.officeCode);
+                	localStorage.setItem('companyCode',res.data.companyCode);
+					localStorage.setItem('bpmUser',$('#admin-login-form-loginAccount').val());
+                	location.href = search.redirect ? decodeURIComponent(search.redirect) : 'index.html';
+                }
+                , errorFuc: function(res){
+                	if(res.data.passwordExpired){
+                		$("#updatePasswordModal").modal();
+                	}
+                }
+            });
+        })
+        $("#validate-btn").on("click",function(){
+        	$.ajax({
+        		type:"get",
+        		url:admin.basePath + '/createCharacter',
+        		async:true,
+        		success:function(data){
+        			$("#validateCode").html(data);
+        		}
+        	});
+        })
+        $("#updatePasswordModal .btn-save").on("click",function(){
+        	var validateForm = $("#updatePasswordModal-inputForm").validate({
+        	});
+			
+        	if(validateForm.form()){
+        		var data = myHelper.composeData($("#updatePasswordModal-inputForm"));
+				
+				if (data.newPassword == data.oldPassword){
+					 return view.warn(layui.admin.lang() ? 'The new password is the same as the old one. Please change it.' : '新密码与旧密码相同，请修改。'), false;
+				}
+                else if (data.newPassword != data.checkPassword){
+                	  return view.warn(layui.admin.lang() ? 'The two passwords are inconsistent.' : '两次密码不一致。'), false;
+                }else{
+                	LayerUtil.ajax({
+						url : layui.admin.basePath + '/sys/user/changePassword?oldPassword='+data.oldPassword+'&newPassword='+data.newPassword,
+						type : 'post',
+						shade: true,
+						success : function(res) {
+							LayerUtil.success(res[LayerUtil.getMsgLang()]);
+							$("#updatePasswordModal").modal('hide');
+						}
+					});
+                }
+        	}
+        })
+    })
+</script>

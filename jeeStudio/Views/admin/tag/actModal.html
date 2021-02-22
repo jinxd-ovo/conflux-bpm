@@ -1,0 +1,234 @@
+<div id="modal-backgroup"></div>
+<!-- BEGIN --><!-- 选择用户 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" style="width: 800px;">
+		<div class="modal-content" style="width: 800px;">
+				
+			<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+				<ul class="layui-tab-title" id="chooseUserUl">
+					<li class="layui-this">推荐用户</li>
+					<li id="officeUserLi">全部用户</li>
+					<div style="float: right; margin:10px 15px;">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-tab-item layui-show" id="less">
+						<div id="userSelectDiv">
+						</div>
+					</div>
+					<div class="layui-tab-item" id="all">
+						<div id="singleUserSelect" style="margin: 20px 5px; display:none;width: 100%;" class="adapt">
+							<div name="singleUserSelect.id" component-type="treeSelectSetValue" actionurl="/sys/tagTree/userTree" class="tag-div" check="false" >
+								<input id="singleUserSelectCustom" name="singleUserSelect.id" type="hidden">
+								<input name="singleUserSelect.name" readonly="readonly" class="form-control " type="text" value="">
+								<a class="tag-div-button"><i class="fa fa-search"></i></a>
+							</div>
+						</div>
+						<div id="multiUserSelect" style="margin: 20px 5px; display:none;width: 100%;" class="adapt">
+							<div name="multiUserSelectCustom.id" component-type="treeSelectSetValue" actionurl="/sys/tagTree/userTree" class="tag-div" check="true" >
+								<input id="multiUserSelectCustom" name="multiUserSelectCustom.id" type="hidden">
+								<input name="multiUserSelectCustom.name" readonly="readonly" class="form-control " type="text" value="">
+								<a class="tag-div-button"><i class="fa fa-search"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+				
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" onclick="ProcUtil.checkSelected();">提交</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END --><!-- 选择用户 -->
+
+<!-- BEGIN --><!-- 选择分支 -->
+<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button id="modalBtn3Close" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">选择分支</h4>
+			</div>
+			<div id="pathSelectDiv" class="modal-body">
+				<select id="pathSelect" class="form-control required"></select>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" onclick="ProcUtil.pathSubmit();">提交</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END --><!-- 选择分支 -->
+
+<!-- BEGIN --><!-- 选择节点 -->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">选择节点</h4>
+			</div>
+			<div id="nodeSelectDiv" class="modal-body">
+				<!-- <select id="nodeSelect" class="form-control " onchange="$('#tempNodeKey').val(this.value)">
+            	</select> -->
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" onclick="ProcUtil.realSubmit();">提交</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END --><!-- 选择节点 -->
+
+<!-- BEGIN --><!-- 加签 -->
+<input type="hidden" id="assigneeHidden">
+<input type="hidden" id="permissionHidden">
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">选择用户</h4>
+			</div>
+			<div id="assigneeSelectDiv" class="adapt modal-body" style="width: 100%;">
+				<div name="assigneeSelect.id" component-type="treeSelectSetValue" actionurl="/sys/tagTree/userTree" class="tag-div" check="true" >
+					<input id="assigneeSelect" name="assigneeSelect.id" type="hidden">
+					<input name="assigneeSelect.name" readonly="readonly" class="form-control " type="text" value="">
+					<a class="tag-div-button"><i class="fa fa-search"></i></a>
+				</div>
+			</div>
+			<!-- <div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">选择权限</h4>
+			</div>
+			<div id="permissionSelectDiv" class="modal-body"></div> -->
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">节点名称</h4>
+			</div>
+			<div class="modal-body">
+				<input id="taskNameInput" class="form-control">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" onclick="ProcUtil.createNode();">提交</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END --><!-- 加签 -->
+
+<!-- BEGIN --><!-- 知会节点 -->
+<div id="notifyModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">选择用户</h4>
+			</div>
+			<div class="adapt modal-body" style="width: 100%;">
+				<div name="notifyUsers.id" component-type="treeSelectSetValue" actionurl="/sys/tagTree/userTree" class="tag-div" check="true" >
+					<input id="notifyUsers" name="notifyUsers.id" type="hidden">
+					<input name="notifyUsers.name" readonly="readonly" class="form-control " type="text" value="">
+					<a class="tag-div-button"><i class="fa fa-search"></i></a>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" onclick="ProcUtil.notifyNode()">提交</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END --><!-- 知会节点 -->
+
+<!-- BEGIN --><!-- 分发节点 -->
+<div id="distributeModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">选择用户</h4>
+			</div>
+			<div class="adapt modal-body" style="width: 100%;">
+				<div name="distributeUsers.id" component-type="treeSelectSetValue" actionurl="/sys/tagTree/userTree" class="tag-div" check="true" >
+					<input id="distributeUsers" name="distributeUsers.id" type="hidden">
+					<input name="distributeUsers.name" readonly="readonly" class="form-control " type="text" value="">
+					<a class="tag-div-button"><i class="fa fa-search"></i></a>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" onclick="ProcUtil.distributeNode();">提交</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END --><!-- 分发节点 -->
+
+
+
+	
+<!-- BEGIN --><!-- 转收文 -->
+<div style="display: none;">
+	<a id="modalBtnToReceive" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalToReceive"></a>
+</div>
+<div class="modal fade" id="myModalToReceive" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">选择流程</h4>
+			</div>
+			<div id="receiveProcessSelectDiv" class="modal-body">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" onclick="openNewReceiveForm($('#receiveProcDefListSelect').val());">提交</button>
+			</div>
+			<iframe src="" style="position: absolute; left: 0; top: 0; z-index:-1; width: 100%; height: 100%; filter='progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0)';" frameborder="0"></iframe>
+		</div>
+	</div>
+</div>
+<!-- END --><!-- 转收文-->
+	
+<!-- BEGIN --><!-- 转发文 -->
+<div style="display: none;">
+	<a id="modalBtnToSend" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalToSend"></a>
+</div>
+<div class="modal fade" id="myModalToSend" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">选择流程</h4>
+			</div>
+			<div id="sendProcessSelectDiv" class="modal-body">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" onclick="openNewSendForm($('#sendProcDefListSelect').val());">提交</button>
+			</div>
+			<iframe src="" style="position: absolute; left: 0; top: 0; z-index:-1; width: 100%; height: 100%; filter='progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0)';" frameborder="0"></iframe>
+		</div>
+	</div>
+</div>
+<!-- END --><!-- 转发文-->
+	
+<!-- BEGIN --><!-- 转分发 -->
+<div style="display: none;">
+	<a id="modalBtnToDistribute" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalToDistribute"></a>
+</div>
+<div class="modal fade" id="myModalToDistribute" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">选择流程</h4>
+			</div>
+			<div id="distributeProcessSelectDiv" class="modal-body">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" onclick="openNewDistributeForm($('#distributeProcDefListSelect').val());">提交</button>
+			</div>
+			<iframe src="" style="position: absolute; left: 0; top: 0; z-index:-1; width: 100%; height: 100%; filter='progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0)';" frameborder="0"></iframe>
+		</div>
+	</div>
+</div>
+<!-- END --><!-- 转分发-->

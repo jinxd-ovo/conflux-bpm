@@ -1,0 +1,216 @@
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div id="body-div" class="layui-card-body">
+        	<form id="searchForm" class="searchForm form-inline">
+        		<div class="searchDiv positionSpc">
+        			<div class="form-group pull-left important">
+						<span>姓名</span>
+						<input name="name" component-type="input" class="form-control" type="text" value="" maxlength="50">
+					</div>
+        			<div class="form-group pull-left">
+						<span>角色</span>
+						<select name="roleName" component-type="select" component-id="wytest-roleName" class="form-control">
+							<option value=""></option>
+						</select>
+					</div>
+        			<div class="form-group pull-left">
+						<span>爱好</span>
+						<div name="hobby" component-type="checkbox" component-id="hobby" class="i-checks-div"></div>
+					</div>
+					<div class="form-group pull-left">
+						<span>性别</span>
+						<div name="sex" component-type="radio" component-id="sex" class="i-checks-div"></div>
+					</div>
+					<div class="form-group pull-left">
+						<span>日期</span>
+						<input name="date" component-type="datePicker" readonly="readonly" onclick="WdatePicker()" class="Wdate form-control" type="text" value="">
+					</div>
+					<div class="form-group pull-left">
+						<span>开始日期</span>
+						<input name="startDate" component-type="datePicker" readonly="readonly" onclick="WdatePicker({maxDate:'#F{$dp.$D(\'endId\')}'})" id="startId" class="Wdate form-control" type="text" value="">
+					</div>
+					<div class="form-group pull-left">
+						<span>结束日期</span>
+						<input name="endDate" component-type="datePicker" readonly="readonly" onclick="WdatePicker({minDate:'#F{$dp.$D(\'startId\')}'})" id="endId" class="Wdate form-control" type="text" value="">
+					</div>
+					<div class="form-group pull-left">
+						<span>文本框</span>
+						<textarea name="textarea" component-type="textarea" rows="3" class="form-control"></textarea>
+					</div>
+        		</div>
+        	</form>
+        	
+        	<div id="toolbar" class="toolbar">
+				<!--<button id="addBtn" class="btn btn-sm btn-success">
+					<i class="glyphicon glyphicon-plus"></i> 添加
+				</button>
+				<button id="editBtn" class="btn btn-sm btn-primary">
+					<i class="glyphicon glyphicon-edit"></i> 编辑
+				</button>
+				<button id="removeBtn" class="btn btn-sm btn-danger">
+					<i class="glyphicon glyphicon-remove"></i> 删除
+				</button>-->
+				<div class="pull-right">
+					<a id="searchBtn" class="btn btn-success btn-bordered btn-sm"><i class="fa fa-search"></i> <font>查询</font></a>
+					<a id="resetBtn" class="btn btn-success btn-bordered btn-sm"><i class="fa fa-refresh"></i> <font>重置</font></a>
+					<a id="easySearch" class="btn btn-success btn-bordered btn-sm" style="display: none;"><i class="fa fa-backward"></i> <font>返回</font></a>
+					<a id="hardSearch" class="btn btn-success btn-bordered btn-sm" style="display: inline-block;"><i class="fa fa-search-plus"></i> <font>高级查询</font></a>
+				</div>
+			</div>
+
+            <table id="table-list"></table>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['common', 'view', 'admin', 'laytpl'], function () {
+        var $ = layui.$
+            , R = layui.common
+            , view = layui.view
+            , admin = layui.admin
+            , laytpl = layui.laytpl;
+		
+        //这段必须写，防止id重复
+        var getTime = "-" + new Date().getTime();
+        $("#body-div").attr("id", "body-div" + getTime);
+        $("#table-list").attr("id","table-list" + getTime);
+
+        var btnsStr = LayerUtil.getBtnsStrFromMenuData();
+		
+		var bootstrapTableUtil = new BootstrapTableUtil(getTime);
+		bootstrapTableUtil.init({
+			url: admin.host + '/getUserList.json',
+			columns: [
+                {
+					checkbox: true
+				} 
+                , { field: 'userNo', title: '登录账号', sortable: true }
+                , { field: 'userName', title: '用户姓名', sortable: true }
+                , { field: 'userName_EN', title: '英文名', sortable: true }
+                , { field: 'mobile', title: '手机', sortable: true, align: 'center' }
+                , { field: 'email', title: '邮箱', sortable: true }
+                , { field: 'roleName', title: '角色', sortable: true }
+                , {
+                    field: "createdOn", 
+                    title: "创建时间",
+                    formatter: function (value, row, index) { 
+                    	return myHelper.getDate(row.CreatedOn,"day")
+                    }
+                }
+                , {
+                    field: "lastLoginTime", 
+                    title: "最近登录时间",
+                    formatter: function (value, row, index) { 
+                    	return myHelper.getDate(row.LastLoginTime)
+                    }
+                }
+                , { 
+                	title: layui.admin.lang() ? 'Operation' : '操作',
+                	width: '45px',
+					"class": 'center',
+					events: {
+						'click .view': function (e, value, row, index) {
+							view({id: row.id})
+						},
+						'click .edit': function (e, value, row, index) {
+							addOrEdit({
+								id: row.id
+							})
+						},
+						'click .del': function (e, value, row, index) {
+							delFuc(row);
+						}
+					},
+					formatter: function(value, row, index) {
+						//return btnsStr.tableBtnsStr;
+						return '<div class="show-btn-group"><i class="fa fa-cog" aria-hidden="true"></i><div class="hide-btn-group"><a class="btn null" dealname="添加">添加</a><a class="btn null" dealname="删除">删除</a><a class="btn edit" dealname="编辑">编辑</a><a class="btn view" dealname="查看">查看</a><a class="btn null" dealname="导入">导入</a><a class="btn null" dealname="导出">导出</a></div></div>'
+					}
+                }
+            ]
+		},"wytest-list");
+		
+		$("#body-div"+getTime).find("#addBtn").on("click",function(){
+			addOrEdit();
+    	});
+    	$("#body-div"+getTime).find("#editBtn").on("click",function(){
+			var ids = bootstrapTableUtil.getSingleId();
+			if(ids){
+				addOrEdit({
+					id:ids
+				});
+			}
+		});
+		$("#body-div"+getTime).find("#removeBtn").on("click",function(){
+			var ids = bootstrapTableUtil.getMultiId();
+			if(ids){
+				var loadingIndex = LayerUtil.loading();
+				LayerUtil.confirm(layui.admin.lang() ? "are you sure?" : "确定删除吗？", function(){
+					LayerUtil.ajax({
+		        		url: admin.host + '/true.json',
+		        		data: {
+		        			ids: ids
+		        		},
+		        		success: function(res){
+		        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+		        			bootstrapTableUtil.refresh();
+		        			LayerUtil.close(loadingIndex);
+		        		}
+		        	})
+				})
+	       	}
+		});
+		function addOrEdit(initData){
+			LayerUtil.openDialog({
+				title: layui.admin.lang() ? 'Form' : '表单',
+				formLay: 'wytest-form',
+				initData:initData,
+				url: 'admin/template/form',
+				actionUrl: admin.host + '/GetForm.json',
+		    	actionDataName: 'data',
+				setDataWidthAjax: true,
+	            btn: ['保存', '关闭'],
+	            btn_EN: ['save', 'close'],
+	            func1:function(index,layero){
+	            	var data = $(layero).find("#inputForm").serialize();
+	            	
+	            	console.log(JSON.stringify($(layero).find("#inputForm").serializeArray()))
+	            	LayerUtil.ajax({
+                		url: admin.host + '/true.json',
+                		data: data,
+                		success: function(res){
+                			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+                			bootstrapTableUtil.refresh();
+                			layui.layer.close(index)
+                		}
+                	});
+	            }
+			})
+		}
+		function view(initData){
+			LayerUtil.openDialogView({
+				title: layui.admin.lang() ? 'Form' : '表单',
+				initData:initData,
+				url: 'admin/template/form',
+				actionUrl: layui.admin.host + '/GetForm.json',
+				actionDataName: 'data',
+				setDataWidthAjax: true,
+			})
+		}
+		function delFuc(row){
+    		LayerUtil.confirm('确认要删除' + row.name + '吗？', function() {
+				LayerUtil.ajax({
+					url: admin.host + '/true.json',
+	        		shade:true,
+					data: JSON.stringify({id:row.id}),
+					success: function(res){
+	        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+	        			bootstrapTableUtil.refresh();
+	        		}
+				});
+			});
+    	}
+		
+    });
+</script>

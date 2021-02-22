@@ -1,0 +1,6 @@
+<!-- <input type="text" class="form-control" id="exampleInputName2" ng-if="!property.noValue" placeholder="{{property.value|limitTo:20}}"> -->
+<!-- <input ng-if="!property.noValue" value="{{property.value|limitTo:30}}"/> -->
+<span ng-if="!property.noValue">{{property.value|limitTo:30}}</span>
+<span ng-if="!property.noValue && property.value != null && property.value.length > 30">...</span>
+<span ng-if="property.noValue" translate>PROPERTY.EMPTY</span>
+<!-- <input ng-if="property.noValue" value=""/> -->

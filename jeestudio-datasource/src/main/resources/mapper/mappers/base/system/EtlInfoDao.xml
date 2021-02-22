@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.system.EtlInfoDao">
+	<sql id="etlInfoColumns">
+		a.name AS "name",
+		a.internal AS "internal",
+		a.status AS "status",
+		a.sort AS "sort",
+		a.scriptfile AS "scriptfile",
+		a.remarks AS "remarks",
+		a.host AS "host",
+		a.database_ AS "database",
+		a.pattern_ AS "pattern",
+		a.port AS "port",
+		a.user_name AS "userName",
+		a.password AS "password",
+		a.del_flag AS "delFlag",
+		a.id AS "id",
+		a.log_channel_id AS "logChannelId",
+		a.create_by AS "createBy.id",
+		a.update_by AS "updateBy.id",
+		a.create_date AS "createDate",
+		a.owner_code AS "ownerCode",
+		a.update_date AS "updateDate"
+	</sql>
+	
+	<sql id="etlInfoJoins">
+	</sql>
+	
+    
+	<select id="get" resultType="EtlInfo" >
+		SELECT 
+			<include refid="etlInfoColumns"/>
+		FROM etl_info a
+		<include refid="etlInfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="EtlInfo" >
+		SELECT 
+			<include refid="etlInfoColumns"/>
+		FROM etl_info a
+		<include refid="etlInfoJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+			<if test="internal != null and internal != ''">
+				AND a.internal = #{internal}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.sort
+			</otherwise>
+		</choose>
+	</select>
+</mapper>

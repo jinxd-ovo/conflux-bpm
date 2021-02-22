@@ -1,0 +1,25 @@
+<div class="container" style="width: 100%;">
+	<form id="inputForm" class="form-horizontal" style="overflow: auto;">
+		<input name="id" type="hidden" id="id"/>
+			<input name="formNo" type="hidden" id="formNo"/>
+	  	<div class="col-md-6 half-line col-sm-12 adapt">
+	  		<label>归属合约</label>
+	  		<fieldset class="set">
+	  			<div name="g01.id" component-type="grid" class="tag-div " tableName="con_address" searchKey="contract_name" fieldKeys="s01,s02" fieldLabels="合约名称,合约地址" searchLabel="合约名称" javaField="g01.id|s01"></div>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>键</label>
+	  		<fieldset class="set">
+				<input name="s01" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	  	<div class="col-md-12 all-line col-sm-12 adapt">
+	  		<label>哈希值</label>
+	  		<fieldset class="set">
+				<input name="s02" component-type="input" type="text"    class="form-control  "/>
+	  		</fieldset>
+	  	</div>
+	</form>
+</div>
+

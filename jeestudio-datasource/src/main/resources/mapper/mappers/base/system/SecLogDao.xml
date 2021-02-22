@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.system.SecLogDao">
+
+    <sql id="roleColumns">
+    	a.id,
+    	a.account_,
+		a.content_,
+		a.time_,
+		a.ip_,
+		a.type_,
+		a.result_
+    </sql>
+
+    <insert id="saveSecLog">
+        INSERT INTO sys_sec_log(
+            id,
+            account_,
+            content_,
+            time_,
+            ip_,
+            type_,
+            result_,
+            del_flag
+        )VALUES(
+            #{id},
+            #{account},
+            #{content},
+            #{time},
+            #{ip},
+            #{type},
+            #{result},
+            "0"
+        )
+
+    </insert>
+
+    <select id="getSecLogSpace" resultType="java.lang.String">
+        select count(1) * 0.0002  from sys_sec_log
+    </select>
+</mapper>

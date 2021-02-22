@@ -1,0 +1,4332 @@
+<div id="freeFormBody" class="container-fluid" style="overflow: hidden;background: #fff;padding: 0px;">
+	<input type="hidden" value="" name="formId" id="formId" />
+	<input type="hidden" value="" name="oldName" id="oldName">
+	<input type="hidden" value="" name="tableTypeId" id="tableTypeId"/>
+
+	<div class="layui-tab layui-tab-brief">
+		<ul class="my-tab-title">
+			<li id="freeFrom" class="">表单设计</li>
+			<li id="reportList" class="">自定义表单</li>
+			<li id="freeList" class="">列表设计</li>
+			<li id="appShow" class="">APP预览</li>
+			<li id="process" class="">流程定义</li>
+			<li id="creatMenu" class="">创建菜单</li>
+		</ul>
+
+		<div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+				<div class="container-fluid form-kanban-demo">
+					<div class="row board">
+						<div class="col-md-2 left-menu" style="height: 100%;">
+
+							<div class="title">主表</div>
+							<div class="main-table">
+								<div class="main-table-title">表名：</div>
+								<div><input type="text" id="main-table-name" value=""/></div>
+							</div>
+							<div class="main-table">
+								<div class="main-table-title">说明：</div>
+								<div>
+									<input type="text" id="main-table-comments" value=""/>
+									<span class="fanyi" id="main-table-fanyi" title="自动翻译说明为英文"></span>
+								</div>
+							</div>
+							<div class="main-table">
+								<div class="main-table-title">Comments：</div>
+								<div><input type="text" id="main-table-comments-en" value=""/></div>
+							</div>
+							<div class="main-table">
+								<div class="main-table-title">模块：</div>
+								<div><input type="text" id="main-table-module" value="admin"/></div>
+							</div>
+							<div class="main-table">
+								<div class="main-table-title" style="line-height: 30px;">类型：</div>
+								<div style="vertical-align: top;">
+									<select id="main-table-type">
+									</select>
+								</div>
+							</div>
+							<div class="main-table" id="main-table-tree-div" style="display: none;table-layout: fixed;">
+								<div class="main-table-title" style="line-height: 30px;width: 40px;">左树：</div>
+								<div style="vertical-align: top;">
+									<select id="main-table-tree" class="select2">
+									</select>
+								</div>
+							</div>
+							<div class="main-table">
+								<div class="main-table-title">主表：</div>
+								<div><input type="text" value="" name="parentTable" id="parentTable"/></div>
+							</div>
+							<div class="main-table">
+								<div class="main-table-title">外键：</div>
+								<div><input type="text" id="main-parent-table-fk" value=""/></div>
+							</div>
+							<div class="main-table">
+								<div class="main-table-title" style="line-height: 30px;width: 66px;">合约地址：</div>
+								<div style="vertical-align: top;">
+									<select id="blockChainParam1-mian">
+										<option></option>
+									</select>
+								</div>
+							</div>
+							<div class="main-table">
+								<div class="main-table-title" style="line-height: 30px;width: 66px;">流程上链：</div>
+								<div style="vertical-align: top;">
+									<select id="blockChainParam2-mian">
+										<option></option>
+									</select>
+								</div>
+							</div>
+
+							<div class="title" style="margin-top: 10px;">
+								<i id="fieldChoose" class="fa fa-arrow-right" aria-hidden="true" style="color: #1ab394;cursor: pointer;" title="快速创建"></i>
+								&nbsp;
+								<i id="fieldChoose" style="color: #1ab394;cursor: pointer;font-style:normal;">快速创建</i>
+								&nbsp;
+								<i id="fieldChoose" class="fa fa-arrow-right" aria-hidden="true" style="color: #1ab394;cursor: pointer;" title="快速创建"></i>
+							</div>
+							<div class="data-demo">
+								<div class="item" data-json='{"showType":"input","isOneLine":0,"isNull":1,"comments":"单行文本","comments_EN":"","javaField":"s","maxLength":"","minLength":"","minValue":"","maxValue":"","friendlyJdbcType":"文本","javaType":"String","jdbcType":"varchar(64)","queryType":"=","validateType":"","isForm":1,"isQuery":0,"isList":"0","formSort":1,"searchSort":0,"isReadonly": 0,"defaultValue": "","name":"","blockChainParam1":"0","blockChainParam2":"0","blockChainParam3":"0"}'>
+									<span><i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;单行文本</span>
+								</div>
+								<div class="item" data-json='{"showType":"textarea","isOneLine":1,"isNull":1,"comments":"多行文本","comments_EN":"","javaField":"s","friendlyJdbcType":"文本","javaType":"String","jdbcType":"varchar(255)","queryType":"=","isForm":1,"isQuery":0,"isList":"0","formSort":1,"searchSort":0,"isReadonly":0,"defaultValue":"","name":"","blockChainParam1":"0","blockChainParam2":"0","blockChainParam3":"0"}'>
+									<span><i class="fa fa-file-word-o" aria-hidden="true"></i>&nbsp;多行文本</span>
+								</div>
+								<!--<div class="item">
+										<span>富文本编辑器</span>
+										<span class="friendly">umeditor</span> 
+								</div>-->
+								<div class="item" data-json='{"showType":"select","isOneLine":0,"isNull":1,"comments":"下拉选项","comments_EN":"","javaField":"s","dictType":"","dictList":[],"friendlyJdbcType":"文本","javaType":"String","jdbcType":"varchar(64)","queryType":"=","isForm":1,"isQuery":0,"isList":"0","formSort":1,"searchSort":0,"isReadonly":0,"defaultValue":"","name":""}'>
+									<span><i class="fa fa-caret-down" aria-hidden="true"></i>&nbsp;下拉选项</span>
+								</div>
+								<div class="item" data-json='{"showType":"radiobox","isOneLine":0,"isNull":1,"comments":"单选","comments_EN":"","javaField":"s","dictType":"","dictList":[],"friendlyJdbcType":"文本","javaType":"String","jdbcType":"varchar(64)","queryType":"=","isForm":1,"isQuery":0,"isList":"0","formSort":1,"isReadonly":0,"defaultValue":"","name":""}'>
+									<span><i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;单选按钮</span>
+								</div>
+								<div class="item" data-json='{"showType":"checkbox","isOneLine":0,"isNull":1,"comments":"复选","comments_EN":"","javaField":"c","dictType":"","dictList":[],"friendlyJdbcType":"文本","javaType":"String","jdbcType":"varchar(64)","queryType":"=","isForm":1,"isQuery":0,"isList":"0","formSort":1,"isReadonly":0,"defaultValue":"","name":""}'>
+									<span><i class="fa fa-check-square" aria-hidden="true"></i>&nbsp;复选框</span>
+								</div>
+								<div class="item" data-json='{"showType":"dateselect","isOneLine":0,"isNull":1,"comments":"日期","comments_EN":"","javaField":"d","friendlyJdbcType":"日期","javaType":"java.util.Date","jdbcType":"datetime","queryType":"=","isForm":1,"isQuery":0,"isList":"0","formSort":1,"isReadonly":0,"defaultValue":"","name":"","dateType":"yyyy-MM-dd"}'>
+									<span><i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;日期选择</span>
+								</div>
+							</div>
+							<div class="data-demo">
+								<div class="item" data-json='{"showType":"treeselectRedio","isOneLine":0,"isNull":1,"comments":"人员选择","comments_EN":"","javaField":"user","friendlyJdbcType":"文本","javaType":"com.jeestudio.common.entity.system.User","jdbcType":"varchar(64)","queryType":"=","isForm":1,"isQuery":0,"isList":"0","formSort":1,"isReadonly":0,"defaultValue":"","name":""}'>
+									<span><i class="fa fa-user" aria-hidden="true"></i>&nbsp;人员选择</span>
+								</div>
+								<div class="item" data-json='{"showType":"treeselectCheck","isOneLine":0,"isNull":1,"comments":"人员多选","comments_EN":"","javaField":"users","friendlyJdbcType":"文本","javaType":"com.jeestudio.common.entity.system.User","jdbcType":"varchar(2000)","queryType":"=","isForm":1,"isQuery":0,"isList":"0","formSort":1,"isReadonly":0,"defaultValue":"","name":""}'>
+									<span><i class="fa fa-users" aria-hidden="true"></i>&nbsp;人员多选</span>
+								</div>
+								<div class="item" data-json='{"showType":"officeselectTree","isOneLine":0,"isNull":1,"comments":"部门选择","comments_EN":"","javaField":"office","friendlyJdbcType":"文本","javaType":"com.jeestudio.common.entity.system.Office","jdbcType":"varchar(64)","queryType":"=","isForm":1,"isQuery":0,"isList":"0","formSort":1,"isReadonly":0,"defaultValue":"","name":""}'>
+									<span><i class="fa fa-sitemap" aria-hidden="true"></i>&nbsp;部门选择</span>
+								</div>
+								<div class="item" data-json='{"showType":"areaselect","isOneLine":0,"isNull":1,"comments":"区域选择","comments_EN":"","javaField":"area","friendlyJdbcType":"文本","javaType":"com.jeestudio.common.entity.system.Area","jdbcType":"varchar(64)","queryType":"=","isForm":1,"isQuery":0,"isList":"0","formSort":1,"isReadonly":0,"defaultValue":"","name":""}'>
+									<span><i class="fa fa-map-pin" aria-hidden="true"></i>&nbsp;区域选择</span>
+								</div>
+								<!--<div class="item">
+									<span>树选择控件</span>
+									<span class="friendly">treeselect</span> 
+								</div>-->
+								<div class="item" data-json='{"showType":"treeselect","isOneLine":0,"isNull":1,"comments":"树选择","comments_EN":"","javaField":"t","friendlyJdbcType":"文本","javaType":"com.jeestudio.common.entity.common.Zform","jdbcType":"varchar(64)","queryType":"=","isForm":1,"isQuery":0,"isList":"0","formSort":1,"isReadonly":0,"defaultValue":"","name":"","tableName":""}'>
+									<span><i class="fa fa-search" aria-hidden="true"></i>&nbsp;树选择</span>
+								</div>
+								<div class="item" data-json='{"showType":"gridselect","isOneLine":0,"isNull":1,"comments":"自定义选择","comments_EN":"","javaField":"g","friendlyJdbcType":"文本","javaType":"com.jeestudio.common.entity.common.Zform","jdbcType":"varchar(2000)","queryType":"=","isForm":1,"isQuery":0,"isList":"0","formSort":1,"isReadonly":0,"defaultValue":"","name":"","tableName":"","fieldLabels":"","fieldKeys":"","searchLabel":"","searchKey":""}'>
+									<span><i class="fa fa-search" aria-hidden="true"></i>&nbsp;自定义选择</span>
+								</div>
+								<div class="item" data-json='{"showType":"parentId","isOneLine":0,"isNull":1,"comments":"上级","comments_EN":"","javaField":"parent.id|name","friendlyJdbcType":"文本","javaType":"This","jdbcType":"varchar(64)","queryType":"=","isForm":1,"isQuery":0,"isList":"0","formSort":1,"isReadonly":0,"defaultValue":"","name":"parent_id"}'>
+									<span><i class="fa fa-user" aria-hidden="true"></i>&nbsp;上级</span>
+								</div>
+								<div class="item" data-json='{"showType":"sortInput","isOneLine":0,"isNull":1,"comments":"排序","comments_EN":"","javaField":"sort","maxLength":"","minLength":"","minValue":"","maxValue":"","friendlyJdbcType":"排序","javaType":"Integer","jdbcType":"integer","queryType":"=","validateType":"digits","isForm":1,"isQuery":0,"isList":"0","formSort":1,"searchSort":0,"isReadonly": 0,"defaultValue": "","name":"sort"}'>
+									<span><i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>&nbsp;排序</span>
+								</div>
+							</div>
+							<div class="data-demo">
+								<div class="item" data-json='{"showType":"fileupload","isOneLine":1,"isNull":1,"comments":"普通附件","comments_EN":"","javaField":"s","friendlyJdbcType":"文本","javaType":"String","jdbcType":"longtext","queryType":"=","isForm":1,"isQuery":0,"isList":"0","formSort":1,"isReadonly":0,"defaultValue":"","name":""}'>
+									<span><i class="fa fa-file-o" aria-hidden="true"></i>&nbsp;普通附件</span>
+								</div>
+								<div class="item" data-json='{"showType":"fileuploadsec","isOneLine":1,"isNull":1,"comments":"加密附件","comments_EN":"","javaField":"s","friendlyJdbcType":"文本","javaType":"String","jdbcType":"longtext","queryType":"=","isForm":1,"isQuery":0,"isList":"0","formSort":1,"isReadonly":0,"defaultValue":"","name":""}'>
+									<span><i class="fa fa-file-archive-o" aria-hidden="true"></i>&nbsp;加密附件</span>
+								</div>
+								<div class="item" data-json='{"showType":"fileuploadpic","isOneLine":1,"isNull":1,"comments":"图片附件","comments_EN":"","javaField":"s","friendlyJdbcType":"文本","javaType":"String","jdbcType":"longtext","queryType":"=","isForm":1,"isQuery":0,"isList":"0","formSort":1,"isReadonly":0,"defaultValue":"","name":""}'>
+									<span><i class="fa fa-file-image-o" aria-hidden="true"></i>&nbsp;图片附件</span>
+								</div>
+							</div>
+							<div class="data-demo">
+								<div class="item" data-json='{"showType":"iconselect","isOneLine":0,"isNull":1,"comments":"图标选择","comments_EN":"","javaField":"s","friendlyJdbcType":"文本","javaType":"String","jdbcType":"varchar(64)","queryType":"=","validateType":"","isForm":1,"isQuery":0,"isList":"0","formSort":1,"searchSort":0,"isReadonly": 0,"defaultValue": "","name":""}'>
+									<span><i class="fa fa-user" aria-hidden="true"></i>&nbsp;图标选择</span>
+								</div>
+								<div class="item" data-json='{"showType":"summernote","isOneLine":1,"isNull":1,"comments":"富文本","comments_EN":"","javaField":"s","friendlyJdbcType":"文本","javaType":"String","jdbcType":"longtext","queryType":"=","isForm":1,"isQuery":0,"isList":"0","formSort":1,"searchSort":0,"isReadonly":0,"defaultValue":"","name":""}'>
+									<span><i class="fa fa-file-word-o" aria-hidden="true"></i>&nbsp;富文本</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-8 main-menu">
+							<div>
+								<div style="position: absolute;left: 0px;right: 0px;height: 43px;line-height: 43px; font-size: 14px;color: #333;border-bottom: 1px solid #eee;padding: 0 80px 0 20px;    background-color: #F8F8F8;">
+									自由表单
+									<span class="layui-layer-setwin">
+						  				<a class="layui-layer-min" href="javascript:;"><cite></cite></a>
+						  				<a class="layui-layer-ico layui-layer-max" href="javascript:;"></a>
+						  				<a class="layui-layer-ico layui-layer-close layui-layer-close1" href="javascript:;"></a>
+						  			</span>
+								</div>
+								<div class="board-column-content isShow" style="top: 45px;margin-top: 0px;padding-bottom: 70px;">
+								</div>
+
+								<div class="fatherAndChild">
+									<div class="layui-tab layui-tab-brief">
+										<div><a id="add" class="btn btn-sm btn-white"><i class="glyphicon glyphicon-plus"></i> 添加</a></div>
+										<ul class="fc-tab-title">
+										</ul>
+										<div class="layui-tab-content">
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+							<div style="margin-top: 30px;box-shadow: none;border: 1px solid #eeeeee;background: #fff;">
+								<div style="position: relative;width: 100%;padding-top: 10px;">
+									<div class="site-title">
+										<fieldset><legend><a name="pane">隐藏区域</a></legend></fieldset>
+									</div>
+								</div>
+
+								<div class="board-column-content isHide">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-2 right-menu">
+							<div class="title">
+								属性配置
+								<button id="saveSet" class="btn btn-success btn-sm" style="margin-right: 15px;    margin-top: 2px;float: right;">应用</button>
+							</div>
+							<form id="form">
+								<div id="nameDiv">
+									<div class="right-title">字段名</div>
+									<div>
+										<input name="name" class="form-control " type="text" value="">
+									</div>
+								</div>
+								<div id="commentsDiv">
+									<div class="right-title">说明</div>
+									<div style="position: relative;">
+										<input name="comments" class="form-control " type="text" value="">
+										<span class="fanyi" id="right-menu-fanyi" title="自动翻译说明为英文"></span>
+									</div>
+								</div>
+								<div id="comments_ENDiv">
+									<div class="right-title">Comments</div>
+									<div>
+										<input name="comments_EN" class="form-control " type="text" value="">
+									</div>
+								</div>
+								<div id="isReadonlyDiv">
+									<div class="right-title">是否可编辑</div>
+									<div class="hk-div">
+										<input name="isReadonly" class="hk-input" type="radio" value="0" id="isReadonly-hk1">
+										<label class="hk-label" for="isReadonly-hk1">&times;是</label>
+										<input name="isReadonly" class="hk-input" type="radio" value="1" id="isReadonly-hk2">
+										<label class="hk-label" for="isReadonly-hk2">&times;否</label>
+									</div>
+								</div>
+								<div id="defaultValueDiv">
+									<div class="right-title">默认值</div>
+									<div>
+										<input name="defaultValue" class="form-control " type="text" value="">
+									</div>
+								</div>
+								<div id="javaTypeDiv">
+									<div class="right-title">Java类型</div>
+									<div>
+										<select name="javaType" class="select2">
+											<option value="String" title="" selected="">String</option>
+											<option value="Long" title="">Long</option>
+											<option value="Integer" title="">Integer</option>
+											<option value="Double" title="">Double</option>
+											<option value="java.util.Date" title="">Date</option>
+											<option value="com.jeestudio.common.entity.system.User" title="">User</option>
+											<option value="com.jeestudio.common.entity.system.Office" title="">Office</option>
+											<option value="com.jeestudio.common.entity.system.Area" title="">Area</option>
+											<option value="This" title="生成当前对象">ThisObj</option>
+											<option value="com.jeestudio.common.entity.common.Zform" title="">Zform</option>
+											<option value="" class="newadd">自定义输入</option>
+										</select>
+									</div>
+								</div>
+								<div id="jdbcTypeDiv">
+									<div class="right-title">物理类型</div>
+									<div class="dis-Table">
+										<div style="width: 50%;">
+											<select name="jdbcType" class="select2">
+												<option value="varchar" title="" selected="">文本</option>
+												<option value="integer" title="">整型</option>
+												<option value="double" title="">数字</option>
+												<option value="datetime" title="">日期</option>
+												<option value="longblob" title="">二进制</option>
+												<option value="longtext" title="">长文本</option>
+											</select>
+										</div>
+										<div style="width: 50%;">
+											<input id="jdbcTypeVarchar" class="form-control required" type="number" value="" max="2000" min="1">
+										</div>
+									</div>
+								</div>
+								<div id="dictTypeDiv">
+									<div class="right-title">字典类型</div>
+									<div>
+										<select id="dictType" name="dictType" class="form-control"></select>
+									</div>
+								</div>
+								<div id="dateTypeDiv">
+									<div class="right-title">日期格式</div>
+									<div class="hk-div">
+										<input name="dateType" class="hk-input" type="checkbox" value="yyyy" data="yyyy" id="dateType-hk1">
+										<label class="hk-label" for="dateType-hk1">年</label>
+										<input name="dateType" class="hk-input" type="checkbox" value="-MM" data="MM" id="dateType-hk2">
+										<label class="hk-label" for="dateType-hk2">月</label>
+										<input name="dateType" class="hk-input" type="checkbox" value="-dd" data="dd" id="dateType-hk3">
+										<label class="hk-label" for="dateType-hk3">日</label>
+										<input name="dateType" class="hk-input" type="checkbox" value=" HH" data="HH" id="dateType-hk4">
+										<label class="hk-label" for="dateType-hk4">时</label>
+										<input name="dateType" class="hk-input" type="checkbox" value=":mm" data="mm" id="dateType-hk5">
+										<label class="hk-label" for="dateType-hk5">分</label>
+										<input name="dateType" class="hk-input" type="checkbox" value=":ss" data="ss" id="dateType-hk6">
+										<label class="hk-label" for="dateType-hk6">秒</label>
+									</div>
+								</div>
+								<div id="alignDiv">
+									<div class="right-title">对齐方式</div>
+									<div class="hk-div">
+										<input name="align" class="hk-input" type="radio" value="left" id="align-hk1">
+										<label class="hk-label" for="align-hk1">居左</label>
+										<input name="align" class="hk-input" type="radio" value="center" id="align-hk2">
+										<label class="hk-label" for="align-hk2">居中</label>
+										<input name="align" class="hk-input" type="radio" value="right" id="align-hk3">
+										<label class="hk-label" for="align-hk3">居右</label>
+									</div>
+								</div>
+								<div id="isOneLineDiv">
+									<div class="right-title">窗格</div>
+									<div class="hk-div">
+										<input name="isOneLine" class="hk-input" type="radio" value="1" id="isOneLine-hk1">
+										<label class="hk-label" for="isOneLine-hk1">&times;12</label>
+										<input name="isOneLine" class="hk-input" type="radio" value="0" id="isOneLine-hk2">
+										<label class="hk-label" for="isOneLine-hk2">&times; 6</label>
+									</div>
+								</div>
+								<div id="isNullDiv">
+									<div class="right-title">可空</div>
+									<div class="hk-div">
+										<input name="isNull" class="hk-input" type="radio" value="0" id="isNull-hk1">
+										<label class="hk-label" for="isNull-hk1">必填</label>
+										<input name="isNull" class="hk-input" type="radio" value="1" id="isNull-hk2">
+										<label class="hk-label" for="isNull-hk2">可空</label>
+									</div>
+								</div>
+								<div id="validateTypeDiv">
+									<div class="right-title">校验 </div>
+									<div>
+										<select name="validateType" class="select2">
+											<option value="" title=""></option>
+											<option value="string" title="">字符串</option>
+											<option value="email" title="">电子邮件</option>
+											<option value="url" title="">网址</option>
+											<option value="date" title="">日期</option>
+											<option value="dateISO" title="">日期(ISO)</option>
+											<option value="number" title="">数字</option>
+											<option value="digits" title="">整数</option>
+											<option value="creditcard" title="">信用卡号</option>
+											<option value="mobile" title="">手机号码</option>
+											<option value="phone" title="">电话号码</option>
+											<option value="telephone" title="">联系方式</option>
+											<option value="isQq" title="">QQ号码</option>
+											<option value="fax" title="">传真</option>
+											<option value="zipCode" title="">邮政编码</option>
+											<option value="idCard" title="">身份证号</option>
+											<option value="bankNo" title="">银行卡号</option>
+											<option value="isNumber" title="">数值(整数、小数)</option>
+											<option value="ip" title="">IP</option>
+											<option value="latitude" title="">纬度</option>
+											<option value="longitude" title="">经度</option>
+										</select>
+									</div>
+								</div>
+								<div id="minLengthDiv">
+									<div class="right-title">最小长度</div>
+									<div>
+										<input name="minLength" class="form-control " type="text" value="1">
+									</div>
+								</div>
+								<div id="maxLengthDiv">
+									<div class="right-title">最大长度</div>
+									<div>
+										<input name="maxLength" class="form-control " type="text" value="1">
+									</div>
+								</div>
+								<div id="minValueDiv">
+									<div class="right-title">最小值</div>
+									<div>
+										<input name="minValue" class="form-control " type="text" value="1">
+									</div>
+								</div>
+								<div id="maxValueDiv">
+									<div class="right-title">最大值</div>
+									<div>
+										<input name="maxValue" class="form-control " type="text" value="1">
+									</div>
+								</div>
+								<div id="tableNameDiv">
+									<div class="right-title">Table表名</div>
+									<div>
+										<input name="tableName" class="form-control " type="text" value="1">
+									</div>
+								</div>
+								<div id="fieldLabelsDiv">
+									<div class="right-title">Java属性说明</div>
+									<div>
+										<input name="fieldLabels" class="form-control " type="text" value="1">
+									</div>
+								</div>
+								<div id="fieldKeysDiv">
+									<div class="right-title">Java字段名</div>
+									<div>
+										<input name="fieldKeys" class="form-control " type="text" value="1">
+									</div>
+								</div>
+								<div id="searchLabelDiv">
+									<div class="right-title">检索标签</div>
+									<div>
+										<input name="searchLabel" class="form-control " type="text" value="1">
+									</div>
+								</div>
+								<div id="searchKeyDiv">
+									<div class="right-title">检索Key</div>
+									<div>
+										<input name="searchKey" class="form-control " type="text" value="1">
+									</div>
+								</div>
+								<div id="javaFieldDiv">
+									<div class="right-title">Java属性名称</div>
+									<div>
+										<input name="javaField" class="form-control " type="text" value="">
+									</div>
+								</div>
+								<div id="showTypeDiv">
+									<div class="right-title">显示表单类型 </div>
+									<div>
+										<select name="showType" class="select2">
+											<option value="input" title="">单行文本</option>
+											<option value="textarea" title="">多行文本</option>
+											<option value="umeditor" title="">富文本编辑器</option>
+											<option value="select" title="">下拉选项</option>
+											<option value="radiobox" title="">单选按钮</option>
+											<option value="checkbox" title="">复选框</option>
+											<option value="dateselect" title="">日期选择</option>
+											<option value="treeselectRedio" title="">人员选择</option>
+											<option value="treeselectCheck" title="">人员多选</option>
+											<option value="officeselectTree" title="">部门选择</option>
+											<option value="areaselect" title="">区域选择</option>
+											<option value="treeselect" title="">树选择控件</option>
+											<option value="gridselect" title="">自定义选择(自定义java对象)</option>
+											<option value="fileupload" title="">普通附件</option>
+											<option value="fileuploadsec" title="">加密附件</option>
+											<option value="fileuploadpic" title="">图片附件</option>
+											<option value="parentId" title="">上级</option>
+											<option value="sortInput" title="">排序</option>
+											<option value="iconselect" title="">图标选择</option>
+											<option value="summernote" title="">富文本编辑器</option>
+
+											<!--<option value="fileselectclassic" title="">普通附件-旧</option>
+											<option value="fileselectsec" title="">加密附件-旧</option>
+											<option value="userselect" title="">人员选择-旧</option>
+											<option value="userselectMulti" title="">人员多选-旧</option>
+											<option value="officeselect" title="">部门选择-旧</option>-->
+										</select>
+									</div>
+								</div>
+								<div id="blockChainParam1Div">
+									<div class="right-title">区块链</div>
+									<div class="hk-div">
+										<input name="blockChainParam1" class="hk-input" type="radio" value="1" id="blockChainParam1-hk1">
+										<label class="hk-label" for="blockChainParam1-hk1">是</label>
+										<input name="blockChainParam1" class="hk-input" type="radio" value="0" id="blockChainParam1-hk2">
+										<label class="hk-label" for="blockChainParam1-hk2">否</label>
+									</div>
+								</div>
+								<div id="blockChainParam2Div">
+									<div class="right-title">区块链是否加密</div>
+									<div class="hk-div">
+										<input name="blockChainParam2" class="hk-input" type="radio" value="1" id="blockChainParam2-hk1">
+										<label class="hk-label" for="blockChainParam2-hk1">是</label>
+										<input name="blockChainParam2" class="hk-input" type="radio" value="0" id="blockChainParam2-hk2">
+										<label class="hk-label" for="blockChainParam2-hk2">否</label>
+									</div>
+								</div>
+								<!--<div id="blockChainParam3Div" style="display: none;">
+									<div class="right-title">区块链是否可改</div>
+									<div class="hk-div">
+										<input name="blockChainParam3" class="hk-input" type="radio" value="1" id="blockChainParam3-hk1">
+										<label class="hk-label" for="blockChainParam3-hk1">是</label>
+										<input name="blockChainParam3" class="hk-input" type="radio" value="0" id="blockChainParam3-hk2">
+										<label class="hk-label" for="blockChainParam3-hk2">否</label>
+									</div>
+								</div>-->
+							</form>
+
+							<button id="saveSet" class="btn btn-success btn-block" style="margin-top: 10px;">应用</button>
+						</div>
+					</div>
+					<!--<div style="margin-top: 20px;text-align: center;">
+				  		<button class="btn btn-success" onclick="dosubmit()">提交</button>
+				  	</div>-->
+				</div>
+			</div>
+			<div class="layui-tab-item layui-show">
+				<div style="padding: 10px;">
+					<button id="reportBtn" class="btn btn-sm btn-green">生成自定义表单</button>
+					<input type="checkbox" value="1" class="i-checks" id="isCustom"/>默认打开自定义表单
+					<textarea id="report" class="tinymce-report" name="report" class="form-control  "></textarea>
+				</div>
+			</div>
+			<div class="layui-tab-item layui-show">
+				<div class="container-fluid list-kanban-demo">
+					<div class="row board" style="margin-right: -5px;">
+						<div class="col-md-2 left-menu">
+							<div class="title">数据项</div>
+							<div class="board-column-content">
+							</div>
+						</div>
+						<div class="col-md-10 main-menu">
+							<div style="position: absolute;left: 0px;right: 0px;padding: 14px 15px 7px;font-size: 14px;font-weight: 600;color: #676a6c;border: 1px solid #e7eaec;">
+								自由表单列表
+								<div class="ibox-tools" style="display: inline-block;">
+									<a class="collapse-link">
+										<i class="fa fa-chevron-up"></i>
+									</a>
+									<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+										<i class="fa fa-wrench"></i>
+									</a>
+									<a class="close-link">
+										<i class="fa fa-times"></i>
+									</a>
+								</div>
+							</div>
+
+							<div style="display: table;width: 100%;top: 50px;position: relative;">
+								<div style="display: table-cell;vertical-align: top;">
+									<div class="board-column-content form-inline" style="margin-top: 0px;min-height: ;">
+									</div>
+								</div>
+								<div style="display: table-cell;width: 130px;vertical-align: top;">
+									<div class="form-group pull-right">
+										<a id="search" class="btn btn-green btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 查询</a>
+										<a id="reset" class="btn btn-green btn-rounded  btn-bordered btn-sm"><i class="fa fa-refresh"></i> 重置</a>
+									</div>
+								</div>
+							</div>
+
+							<div class="bootstrap-table-div">
+								<div id="toolbar" style="padding-bottom: 10px;padding-top: 10px;">
+									<a id="add" class="btn btn-sm btn-green"><i class="glyphicon glyphicon-plus"></i> 添加</a>
+									<button id="edit" class="btn btn-sm btn-success">
+										<i class="glyphicon glyphicon-edit"></i> 编辑
+									</button>
+									<button id="remove" class="btn btn-sm btn-danger">
+										<i class="glyphicon glyphicon-remove"></i> 删除
+									</button>
+									<input type="checkbox" name="isBuildImport" id="isBuildImport" class="i-checks" value="1" /> 导入
+									<input type="checkbox" name="isBuildExport" id="isBuildExport" class="i-checks" value="1" /> 导出
+									<input name="importList" id="importList" type="hidden" />
+									<input name="exportList" id="exportList" type="hidden" />
+									<input name="exportTemplatePath" id="exportTemplatePath" type="hidden" />
+									规则：<input name="exportRuleName" id="exportRuleName" component-type="input" class="form-control" style="width: 100px;display: inline-block;" type="text" value="" maxlength="255">
+								</div>
+
+								<div id="tableSetDiv" style="position: absolute;top: 15px;right: 120px;">
+									<input type="checkbox" name="isScroll" id="isScroll" class="i-checks" value="1" /> 表格滚动
+									<input type="checkbox" name="isRowedit" id="isRowedit" class="i-checks" value="1" /> 表格行编辑
+									<input type="checkbox" name="isBuildSecret" id="isBuildSecret" class="i-checks" value="1" /> +密级
+								</div>
+
+								<div id="setColumn">
+									<i class="fa fa-list-ol" aria-hidden="true"></i>
+									列定制
+								</div>
+
+								<table id="table" class="table table-hover" >
+								</table>
+							</div>
+						</div>
+					</div>
+					<!--<div style="margin-top: 20px;text-align: center;">
+				  		<button class="btn btn-green" onclick="dosubmit()">提交</button>
+				  	</div>-->
+				</div>
+			</div>
+			<div class="layui-tab-item">
+				<div style="font-size: 14px;padding: 5px;line-height: 25px;"  id="isMobileDiv">
+					<input id="isMobile" type="checkbox" name="isMobile" class="i-checks" value="1"/>生成移动端代码
+				</div>
+				<div>
+					<input type="hidden" id="mobileIcon" name="mobileIcon" value='' />
+					<sys:fileuploadpicFree input="mobileIcon" uploadPath="/oa/dynamic/zform"></sys:fileuploadpicFree>
+					<span id="imageError" style="display:none;color:red;"></span>
+					<img alt="应用图片" src="" id="mobileBase" style="display:none;height:118px;width:118px;">
+				</div>
+				<div class="row board">
+					<div class="col-md-6 listDiv">
+						<div style="width: 375px;height: 667px;position: relative;left: 0;right: 0;margin: auto;box-shadow: 1px 1px 20px rgba(0,0,0,.3);">
+							<header id="header" class="mui-bar mui-bar-nav">
+								<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+								<h1 class="mui-title">列表</h1>
+							</header>
+							<div id="vue-dom" class="mui-content" style="position: absolute; margin: auto; top: 74px; bottom: 0px; width: 100%;background-color: #fff;">
+								<div id="title-scroll" class="mui-scroll-wrapper">
+									<div class="mui-scroll">
+										<div class="title" class="mui-scroll-wrapper">
+											<div class="mui-input-row mui-search">
+												<input type="search" v-model="searchName" placeholder="搜索">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="refreshContainer" class="mui-scroll-wrapper">
+									<div class="mui-scroll">
+										<ul class="mui-table-view" style="margin-top: 1px;">
+											<li class="mui-table-view-cell mui-media">
+												<div class="mui-slider-right mui-disabled">
+													<a class="mui-btn mui-btn-red">删除</a>
+												</div>
+												<div class="mui-slider-handle">
+													<a>
+														<div class="mui-media-body">
+															<div class="mui-media-body">
+																<ul class="dis-table">
+																	<li>
+																		<div>
+																			<img src="data:image/png;base64,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" />
+																		</div>
+																	</li>
+																	<li id="listLi">
+																	</li>
+																	<li>
+																		<!--时间-->
+																	</li>
+																</ul>
+															</div>
+														</div>
+													</a>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 formDiv">
+						<div style="width: 375px;height: 667px;position: relative;left: 0;right: 0;margin: auto;    box-shadow: 1px 1px 20px rgba(0,0,0,.3);">
+							<header id="header" class="mui-bar mui-bar-nav">
+								<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+								<h1 class="mui-title">表单</h1>
+							</header>
+
+							<nav id="bottom-tab" class="mui-bar mui-bar-tab" style="background: #fff;">
+								<a class="mui-tab-item">
+									<span class="mui-icon mui-icon-locked"></span>
+									<span class="mui-tab-label">暂存</span>
+								</a>
+								<a class="mui-tab-item" href="#popover">
+									<span class="mui-icon mui-icon-checkmarkempty"></span>
+									<span class="mui-tab-label">提交</span>
+								</a>
+								<a class="mui-tab-item">
+									<span class="mui-icon mui-icon-back"></span>
+									<span class="mui-tab-label">回退</span>
+								</a>
+								<!--<a class="mui-tab-item" href="#popover">
+									<span class="mui-icon mui-icon-arrowthinleft"></span>
+									<span class="mui-tab-label">指定回退</span>
+								</a>-->
+								<!--<a class="mui-tab-item">
+									<span class="mui-icon mui-icon-minus"></span>
+									<span class="mui-tab-label">终止</span>
+								</a>-->
+							</nav>
+
+							<div id="vue-dom" class="mui-scroll-wrapper mui-content" style="background: #F8F8F8;">
+								<div class="mui-scroll" style="top: 74px;">
+									<form>
+										<div class="mui-card" v-if="data.ruleArgs">
+											<ul class="mui-table-view" id="formUl">
+
+											</ul>
+										</div>
+									</form>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-tab-item">
+				<div style="margin: 15px;">
+					<div class="form-inline" style="padding-bottom: 10px;">
+						<div class="form-group">
+							<span>已选流程：</span>
+							<input id="processName" class=" form-control input-sm" type="text" value="" maxlength="50" disabled="disabled">
+							<input id="processId" type="hidden">
+							<i id="clearProcess" class="fa fa-times" aria-hidden="true" title="清空流程"></i>
+						</div>
+					</div>
+					<div class="row" style="margin-bottom: 15px;">
+						<div class="col-sm-6">
+							<div class="pull-left" id="process-btn-div">
+								<!--<shiro:hasPermission name="act:model:list">
+									<button class="btn btn-green btn-sm" data-toggle="tooltip" data-placement="left" onclick="addProcess()" title="添加"><i class="fa fa-plus"></i> 添加</button>
+								</shiro:hasPermission>
+						       	<button class="btn btn-white btn-sm " data-toggle="tooltip" data-placement="left" onclick="refreshProcessTable()" title="刷新"><i class="glyphicon glyphicon-repeat"></i> 刷新</button>-->
+								<span style="line-height: 30px;color: #ccc;display: inline-block;">(点击行可选择流程)</span>
+							</div>
+						</div>
+					</div>
+					<table id="processTable"></table>
+				</div>
+			</div>
+			<div class="layui-tab-item">
+				<div style="margin: 15px;">
+					<div id="toolbar-menu" class="toolbar" style="margin-top: 10px;margin-bottom: 10px;">
+						<button id="addBtn" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> 添加</button>
+					</div>
+					<table id="menuTreeTable" class="table table-hover bootstrap-table tree_table" style="border-top-color:#DDDDDD;">
+						<thead>
+						<tr>
+							<th>
+								名称
+							</th>
+							<th class="center" style="width: 45px;">
+								操作
+							</th>
+						</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--快速创建模态框-->
+	<div class="modal fade" id="fieldChooseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" style="width: 700px;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">快速创建</h4>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="col-md-12 col-sm-6 adapt">
+							<fieldset class="set">
+								<!--<textarea id="fieldChooseInput" class="form-control" style="height: 250px;"></textarea>-->
+								<input id="fieldChooseInput" class="form-control"></input>
+							</fieldset>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+					<button type="button" class="btn btn-success">应用</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+
+	<!--Java类型自定义模态框-->
+	<div class="modal fade" id="CustomModalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">输入自定义Java对象</h4>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="col-md-12 col-sm-6 adapt">
+							<label>包名：</label>
+							<fieldset class="set">
+								<input type="text" id="packagePath" value="" maxlength="200" class="form-control  ">
+							</fieldset>
+							<span class="help-inline">必须是存在的package</span>
+						</div>
+						<div class="col-md-12 col-sm-6 adapt">
+							<label>类名：</label>
+							<fieldset class="set">
+								<input type="text" id="className" value="" maxlength="200" class="form-control  ">
+							</fieldset>
+							<span class="help-inline">必须是存在的class对象</span>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+					<button type="button" class="btn btn-green">应用</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+
+	<!--queryType模态框-->
+	<div class="modal fade" id="CustomModalList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">属性配置</h4>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="col-md-12 col-sm-6 adapt">
+							<label>查询匹配方式：</label>
+							<fieldset class="set">
+								<select id="queryTypeSL" class="select2">
+									<option value="=" title="" selected="">=</option>
+									<option value="!=" title="">!=</option>
+									<option value=">" title="">&gt;</option>
+									<option value=">=" title="">&gt;=</option>
+									<option value="<" title="">&lt;</option>
+									<option value="<=" title="">&lt;=</option>
+									<option value="between" title="">Between</option>
+									<option value="like" title="">Like</option>
+									<option value="left_like" title="">Left Like</option>
+									<option value="right_like" title="">Right Like</option>
+								</select>
+							</fieldset>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+					<button type="button" class="btn btn-success">应用</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+
+	<!--列定制模态框-->
+	<div class="modal fade" id="setColumnModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">表格列定制</h4>
+				</div>
+				<div class="modal-body" style="padding: 20px 0px;height: 300px;overflow-y: scroll;overflow-x: hidden;">
+					<div class="container-fluid">
+						<table id="tableList" class="table table-hover bootstrap-table">
+							<thead>
+							<tr>
+								<th style="text-align: center;">
+									<input type="checkbox" class="i-checks" />
+								</th>
+								<th>
+									中文名
+								</th>
+								<th>
+									英文名
+								</th>
+							</tr>
+							</thead>
+							<tbody id="setColumnModalList">
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+					<button type="button" class="btn btn-success">应用</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+
+	<script type="text/html" id="inputTplForm">
+		<div id="{{(d.javaFieldReplace)}}" class="col-md-{{ d.isOneLine == '1' ? '12' : '6' }} col-sm-6 adapt item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set">
+				<input id="{{d.javaField}}" name="{{d.javaField}}" class="form-control {{#  d.isNull != '1' ? 'required' : ''}} {{d.validateType}}" type="text" value=""
+					   style="text-align:{{d.align}}" maxlength="{{d.maxLength}}" minLength="{{d.minLength}}" min="{{d.minValue}}" max="{{d.maxValue}}"
+					   aria-required="true">
+			</fieldset>
+			<i class="fa fa-times"></i>
+		</div>
+	</script>
+	<script type="text/html" id="textareaTplForm">
+		<div id="{{(d.javaFieldReplace)}}" class="col-md-{{ d.isOneLine == '1' ? '12' : '6' }} col-sm-6 adapt item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set">
+                <textarea id="{{d.javaField}}" name="{{d.javaField}}" class="form-control {{#  d.isNull != '1' ? 'required' : ''}}" type="text" value=""
+						  style="text-align:{{d.align}}" maxlength="{{d.maxLength}}" minLength="{{d.minLength}}"
+						  aria-required="true">
+                </textarea>
+			</fieldset>
+			<i class="fa fa-times"></i>
+		</div>
+	</script>
+	<script type="text/html" id="selectTplForm">
+		<div id="{{(d.javaFieldReplace)}}" class="col-md-{{ d.isOneLine == '1' ? '12' : '6' }} col-sm-6 adapt item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set">
+				<select id="{{d.javaField}}" name="{{d.javaField}}" class="form-control m-b {{#  d.isNull != '1' ? 'required' : ''}}"
+						style="text-align:{{d.align}}" >
+					{{#  if(d.dictList){ }}
+					{{#  for(var i = 0; i<d.dictList.length; i++){ }}
+					<option value="{{d.dictList[i].key}}">{{d.dictList[i].value}}</option>
+					{{#  } }}
+					{{#  } }}
+				</select>
+			</fieldset>
+			<i class="fa fa-times"></i>
+		</div>
+	</script>
+	<script type="text/html" id="radioboxTplForm">
+		<div id="{{(d.javaFieldReplace)}}" class="col-md-{{ d.isOneLine == '1' ? '12' : '6' }} col-sm-6 adapt item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set border-r-default pt3 pl6 pb2" style="position: relative;">
+				{{#  if(d.dictList){ }}
+				{{#  for(var i = 0; i<d.dictList.length; i++){ }}
+				<span><input id="{{d.javaField+i}}" name="{{d.javaField}}" class="i-checks {{#  d.isNull != '1' ? 'required' : ''}}" type="radio" value="{{d.dictList[i].key}}"><label for="{{d.javaField+i}}" class="normal">{{d.dictList[i].value}}</label></span>
+				{{#  } }}
+				{{#  } }}
+			</fieldset>
+			<i class="fa fa-times"></i>
+		</div>
+	</script>
+	<script type="text/html" id="checkboxTplForm">
+		<div id="{{(d.javaFieldReplace)}}" class="col-md-{{ d.isOneLine == '1' ? '12' : '6' }} col-sm-6 adapt item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set border-r-default pt3 pl6 pb2" style="position: relative;">
+				{{#  if(d.dictList){ }}
+				{{#  for(var i = 0; i<d.dictList.length; i++){ }}
+				<span><input id="{{d.javaField+i}}" name="{{d.javaField}}" class="i-checks {{#  d.isNull != '1' ? 'required' : ''}}" type="checkbox" value="{{d.dictList[i].key}}"><label for="{{d.javaField+i}}" class="normal">{{d.dictList[i].value}}</label></span>
+				{{#  } }}
+				{{#  } }}
+			</fieldset>
+			<i class="fa fa-times"></i>
+		</div>
+	</script>
+	<script type="text/html" id="dateselectTplForm">
+		<div id="{{(d.javaFieldReplace)}}" class="col-md-{{ d.isOneLine == '1' ? '12' : '6' }} col-sm-6 adapt item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set">
+				<input id="{{d.javaField}}" name="{{d.javaField}}" class="form-control Wdate {{#  d.isNull != '1' ? 'required' : ''}} {{d.dateType}}" type="text" value=""
+					   style="text-align:{{d.align}}" readonly="readonly" onClick="WdatePicker({dateFmt:'{{d.dateType}}'})" aria-required="true">
+			</fieldset>
+			<i class="fa fa-times"></i>
+		</div>
+	</script>
+	<script type="text/html" id="treeTplForm">
+		<div id="{{(d.javaFieldReplace)}}" class="col-md-{{ d.isOneLine == '1' ? '12' : '6' }} col-sm-6 adapt item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set">
+				<div id="parentInputGroup" class="input-group" style="width:100%">
+					<input id="{{d.javaField}}" name="{{d.javaField}}" class="form-control {{#  d.isNull != '1' ? 'required' : ''}}" readonly="readonly" type="text" value=""
+						   style="text-align:{{d.align}}" >
+					<span class="input-group-btn">
+				       	<button type="button" id="parentButton" class="btn btn-sm  btn-green  "><i class="fa fa-search"></i></button>
+			        </span>
+				</div>
+			</fieldset>
+			<i class="fa fa-times"></i>
+		</div>
+	</script>
+	<script type="text/html" id="fileTplForm">
+		<div id="{{(d.javaFieldReplace)}}" class="col-md-{{ d.isOneLine == '1' ? '12' : '6' }} col-sm-6 adapt item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set border-r-default border-box ptpb1 pl6">
+				<div id="parentInputGroup" class="input-group" style="width:100%">
+					<a id="{{d.javaField}}" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="添加文件"><i class="fa fa-plus"></i> 添加文件</a>
+				</div>
+			</fieldset>
+			<i class="fa fa-times"></i>
+		</div>
+	</script>
+	<script type="text/html" id="sortInputTplForm">
+		<div id="{{(d.javaFieldReplace)}}" class="col-md-{{ d.isOneLine == '1' ? '12' : '6' }} col-sm-6 adapt item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set">
+				<input id="{{d.javaField}}" name="{{d.javaField}}" class="form-control {{#  d.isNull != '1' ? 'required' : ''}} {{d.validateType}}" type="text" value=""
+					   style="text-align:{{d.align}}" maxlength="{{d.maxLength}}" minLength="{{d.minLength}}" min="{{d.minValue}}" max="{{d.maxValue}}"
+					   aria-required="true">
+			</fieldset>
+			<i class="fa fa-times"></i>
+		</div>
+	</script>
+	<script type="text/html" id="summernoteTplForm">
+		<div id="{{(d.javaFieldReplace)}}" class="col-md-{{ d.isOneLine == '1' ? '12' : '6' }} col-sm-6 adapt item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set">
+				<div id="{{d.javaField}}" style="height: 200px;" name="{{d.javaField}}" class="form-control initSummernote {{#  d.isNull != '1' ? 'required' : ''}}">
+				</div>
+			</fieldset>
+			<i class="fa fa-times"></i>
+		</div>
+	</script>
+
+
+	<script type="text/html" id="inputTplList">
+		<div id="{{(d.javaFieldReplace)}}" class="form-group item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>&nbsp;{{d.comments}}：</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set">
+				<input id="{{d.javaField}}" name="{{d.javaField}}" class="form-control {{#  d.isNull != '1' ? 'required' : ''}} {{d.validateType}}" type="text" value=""
+					   style="text-align:{{d.align}}" maxlength="{{d.maxLength}}" minLength="{{d.minLength}}" min="{{d.minValue}}" max="{{d.maxValue}}"
+					   aria-required="true">
+			</fieldset>
+			<i class="fa fa-cog"></i>
+		</div>
+	</script>
+	<script type="text/html" id="textareaTplList">
+		<div id="{{(d.javaFieldReplace)}}" class="form-group item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>&nbsp;{{d.comments}}：</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set">
+				<input id="{{d.javaField}}" name="{{d.javaField}}" class="form-control {{#  d.isNull != '1' ? 'required' : ''}}" type="text" value=""
+					   style="text-align:{{d.align}}"
+					   aria-required="true">
+			</fieldset>
+			<i class="fa fa-cog"></i>
+		</div>
+	</script>
+	<script type="text/html" id="selectTplList">
+		<div id="{{(d.javaFieldReplace)}}" class="form-group item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>&nbsp;{{d.comments}}：</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set">
+				<select id="{{d.javaField}}" name="{{d.javaField}}" class="form-control m-b {{#  d.isNull != '1' ? 'required' : ''}}"
+						style="text-align:{{d.align}}" >
+					{{#  if(d.dictList){ }}
+					{{#  for(var i = 0; i<d.dictList.length; i++){ }}
+					<option value="{{d.dictList[i].key}}">{{d.dictList[i].value}}</option>
+					{{#  } }}
+					{{#  } }}
+				</select>
+			</fieldset>
+			<i class="fa fa-cog"></i>
+		</div>
+	</script>
+	<script type="text/html" id="radioboxTplList">
+		<div id="{{(d.javaFieldReplace)}}" class="form-group item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>&nbsp;{{d.comments}}：</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set border-r-default pt3 pl6 pb2" style="position: relative;">
+				{{#  if(d.dictList){ }}
+				{{#  for(var i = 0; i<d.dictList.length; i++){ }}
+				<span><input id="{{d.javaField+i}}" name="{{d.javaField}}" class="i-checks {{#  d.isNull != '1' ? 'required' : ''}}" type="radio" value="{{d.dictList[i].key}}"><label for="{{d.javaField+i}}" class="normal">{{d.dictList[i].value}}</label></span>
+				{{#  } }}
+				{{#  } }}
+			</fieldset>
+			<i class="fa fa-cog"></i>
+		</div>
+	</script>
+	<script type="text/html" id="checkboxTplList">
+		<div id="{{(d.javaFieldReplace)}}" class="form-group item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>&nbsp;{{d.comments}}：</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set border-r-default pt3 pl6 pb2" style="position: relative;">
+				{{#  if(d.dictList){ }}
+				{{#  for(var i = 0; i<d.dictList.length; i++){ }}
+				<span><input id="{{d.javaField+i}}" name="{{d.javaField}}" class="i-checks {{#  d.isNull != '1' ? 'required' : ''}}" type="checkbox" value="{{d.dictList[i].key}}"><label for="{{d.javaField+i}}" class="normal">{{d.dictList[i].value}}</label></span>
+				{{#  } }}
+				{{#  } }}
+			</fieldset>
+			<i class="fa fa-cog"></i>
+		</div>
+	</script>
+	<script type="text/html" id="dateselectTplList">
+		<div id="{{(d.javaFieldReplace)}}" class="form-group item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>&nbsp;{{d.comments}}：</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set" style="width: auto;">
+				{{#  if(d.queryType == 'between'){ }}
+				<input id="{{d.javaField}}start" name="{{d.javaField}}" class="form-control Wdate {{#  d.isNull != '1' ? 'required' : ''}} {{d.dateType}}" type="text" value=""
+					   style="text-align:{{d.align}};width: auto;" readonly="readonly" onClick="WdatePicker({dateFmt:'{{d.dateType}}',maxDate:'#F{$dp.$D(\'{{d.javaField}}end\')}'})" aria-required="true">
+				-
+				<input id="{{d.javaField}}end" name="{{d.javaField}}" class="form-control Wdate {{#  d.isNull != '1' ? 'required' : ''}} {{d.dateType}}" type="text" value=""
+					   style="text-align:{{d.align}};width: auto;" readonly="readonly" onClick="WdatePicker({dateFmt:'{{d.dateType}}',minDate:'#F{$dp.$D(\'{{d.javaField}}start\')}'})" aria-required="true">
+				{{#  }else{ }}
+				<input id="{{d.javaField}}" name="{{d.javaField}}" class="form-control Wdate {{#  d.isNull != '1' ? 'required' : ''}} {{d.dateType}}" type="text" value=""
+					   style="text-align:{{d.align}}" readonly="readonly" onClick="WdatePicker({dateFmt:'{{d.dateType}}'})" aria-required="true">
+				{{#  } }}
+			</fieldset>
+			<i class="fa fa-cog"></i>
+		</div>
+	</script>
+	<script type="text/html" id="treeTplList">
+		<div id="{{(d.javaFieldReplace)}}" class="form-group item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>&nbsp;{{d.comments}}：</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set">
+				<div id="parentInputGroup" class="input-group" style="width:100%">
+					<input id="{{d.javaField}}" name="{{d.javaField}}" class="form-control {{#  d.isNull != '1' ? 'required' : ''}}" readonly="readonly" type="text" value=""
+						   style="text-align:{{d.align}}" >
+					<span class="input-group-btn">
+				       	<button type="button" id="parentButton" class="btn btn-sm  btn-green  "><i class="fa fa-search"></i></button>
+			        </span>
+				</div>
+			</fieldset>
+			<i class="fa fa-cog"></i>
+		</div>
+	</script>
+	<script type="text/html" id="fileTplList">
+		<div id="{{(d.javaFieldReplace)}}" class="form-group item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>&nbsp;{{d.comments}}：</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set border-r-default border-box ptpb1 pl6">
+				<div id="parentInputGroup" class="input-group" style="width:100%">
+					<a id="{{d.javaField}}" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="添加文件"><i class="fa fa-plus"></i> 添加文件</a>
+				</div>
+			</fieldset>
+			<i class="fa fa-cog"></i>
+		</div>
+	</script>
+	<script type="text/html" id="parentIdTplList">
+		<div id="{{(d.javaFieldReplace)}}" class="form-group item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>&nbsp;{{d.comments}}：</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set">
+				<div id="parentInputGroup" class="input-group" style="width:100%">
+					<input id="{{d.javaField}}" name="{{d.javaField}}" class="form-control {{#  d.isNull != '1' ? 'required' : ''}}" readonly="readonly" type="text" value=""
+						   style="text-align:{{d.align}}" >
+					<span class="input-group-btn">
+				       	<button type="button" id="parentButton" class="btn btn-sm  btn-green  "><i class="fa fa-search"></i></button>
+			        </span>
+				</div>
+			</fieldset>
+			<i class="fa fa-cog"></i>
+		</div>
+	</script>
+	<script type="text/html" id="sortInputTplList">
+		<div id="{{(d.javaFieldReplace)}}" class="form-group item" data-json='{{JSON.stringify(d).replace(/\'/g,"’")}}'>
+			<label class="label-bk-gray item-content" >
+				<span>&nbsp;{{d.comments}}：</span>
+				<span class="friendly">{{d.friendlyJdbcType}}</span>
+			</label>
+			<fieldset class="set">
+				<input id="{{d.javaField}}" name="{{d.javaField}}" class="form-control {{#  d.isNull != '1' ? 'required' : ''}} {{d.validateType}}" type="text" value=""
+					   style="text-align:{{d.align}}" maxlength="{{d.maxLength}}" minLength="{{d.minLength}}" min="{{d.minValue}}" max="{{d.maxValue}}"
+					   aria-required="true">
+			</fieldset>
+			<i class="fa fa-cog"></i>
+		</div>
+	</script>
+
+	<script type="text/html" id="inputTplApp">
+		<li class="mui-table-view-cell">
+			<div class="mui-table">
+				<div class="mui-table-cell mui-col-xs-3">{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</div>
+				<div class="mui-table-cell mui-col-xs-9 my-input">
+					<input class="mui-input-clear {{#  d.isNull != '1' ? 'required' : ''}}" type="text">
+				</div>
+			</div>
+		</li>
+	</script>
+	<script type="text/html" id="textareaTplApp">
+		<li class="mui-table-view-cell">
+			<div class="mui-table">
+				<div class="mui-table-cell mui-col-xs-3">{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</div>
+				<div class="mui-table-cell mui-col-xs-9 my-input">
+					<textarea class="mui-input-clear"></textarea>
+				</div>
+			</div>
+		</li>
+	</script>
+	<script type="text/html" id="selectTplApp">
+		<li class="mui-table-view-cell">
+			<div class="mui-table">
+				<div class="mui-table-cell mui-col-xs-3">{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</div>
+				<div class="mui-table-cell mui-col-xs-9 my-input">
+					<select>
+						{{#  if(d.dictList){ }}
+						{{#  for(var i = 0; i<d.dictList.length; i++){ }}
+						<option value="{{d.dictList[i].key}}">{{d.dictList[i].value}}</option>
+						{{#  } }}
+						{{#  } }}
+					</select>
+				</div>
+			</div>
+		</li>
+	</script>
+	<script type="text/html" id="radioboxTplApp">
+		<li class="mui-table-view-cell">
+			<div class="mui-table">
+				<div class="mui-table-cell mui-col-xs-3">{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</div>
+				<div class="mui-table-cell mui-col-xs-9 my-input">
+					{{#  if(d.dictList){ }}
+					{{#  for(var i = 0; i<d.dictList.length; i++){ }}
+					<div class="mui-input-row mui-radio mui-left">
+						<label>{{d.dictList[i].value}}</label>
+						<input name="{{d.javaField}}" value="{{d.dictList[i].key}}" type="radio">
+					</div>
+					{{#  } }}
+					{{#  } }}
+				</div>
+			</div>
+		</li>
+	</script>
+	<script type="text/html" id="checkboxTplApp">
+		<li class="mui-table-view-cell">
+			<div class="mui-table">
+				<div class="mui-table-cell mui-col-xs-3">{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</div>
+				<div class="mui-table-cell mui-col-xs-9 my-input">
+					{{#  if(d.dictList){ }}
+					{{#  for(var i = 0; i<d.dictList.length; i++){ }}
+					<div class="mui-input-row mui-checkbox mui-left">
+						<label>{{d.dictList[i].value}}</label>
+						<input name="{{d.javaField}}" value="{{d.dictList[i].key}}" type="checkbox">
+					</div>
+					{{#  } }}
+					{{#  } }}
+				</div>
+			</div>
+		</li>
+	</script>
+	<script type="text/html" id="dateselectTplApp">
+		<li class="mui-table-view-cell">
+			<div class="mui-table">
+				<div class="mui-table-cell mui-col-xs-3">{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</div>
+				<div class="mui-table-cell mui-col-xs-9 my-input">
+					<input v-if="viewFlag == 'set'" v-model="data.testTime" @tap="datePicker($event,data.testTime)" data-model="testTime" data-options='{"type":"date"}' class="mui-input-clear " type="text">
+				</div>
+			</div>
+		</li>
+	</script>
+	<script type="text/html" id="treeTplApp">
+		<li class="mui-table-view-cell">
+			<div class="mui-table">
+				<div class="mui-table-cell mui-col-xs-3">{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</div>
+				<div class="mui-table-cell mui-col-xs-9 my-input tree">
+					<input class="required mui-input-clear' : 'mui-input-clear'" type="text" readonly="readonly">
+					<span class="mui-icon mui-icon-search"></span>
+				</div>
+			</div>
+		</li>
+	</script>
+	<script type="text/html" id="fileTplApp">
+		<li class="mui-table-view-cell">
+			<div class="mui-table">
+				<div class="mui-table-cell mui-col-xs-3">{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</div>
+				<div class="mui-table-cell mui-col-xs-9 my-input tree">
+					<!--<input class="required mui-input-clear' : 'mui-input-clear'" type="text">
+					<span class="mui-icon mui-icon-search"></span>-->
+				</div>
+			</div>
+		</li>
+	</script>
+	<script type="text/html" id="parentIdTplApp">
+		<li class="mui-table-view-cell">
+			<div class="mui-table">
+				<div class="mui-table-cell mui-col-xs-3">{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</div>
+				<div class="mui-table-cell mui-col-xs-9 my-input tree">
+					<input class="required mui-input-clear' : 'mui-input-clear'" type="text" readonly="readonly">
+					<span class="mui-icon mui-icon-search"></span>
+				</div>
+			</div>
+		</li>
+	</script>
+	<script type="text/html" id="sortInputTplApp">
+		<li class="mui-table-view-cell">
+			<div class="mui-table">
+				<div class="mui-table-cell mui-col-xs-3">{{#  if(d.isNull != '1'){ }}<font color="red">*</font>{{#  } }}{{d.comments}}</div>
+				<div class="mui-table-cell mui-col-xs-9 my-input">
+					<input class="mui-input-clear {{#  d.isNull != '1' ? 'required' : ''}}" type="text">
+				</div>
+			</div>
+		</li>
+	</script>
+
+	<script type="text/html" id="menuTreeTableTpl">
+		<td >
+			{{d.row.s01}}
+		</td>
+		<td nowrap="nowrap" class="center" style="width: 45px;" data-json='{{d.row.json}}'>
+			{{d.row.btns}}
+		</td>
+	</script>
+	
+	
+	<!--自定义表单-->
+	<script type="text/html" id="inputTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td class="td-content">
+			<div class="adapt">
+				<fieldset class="set">
+					<input component-type="input" name="{{d.javaField}}" class="form-control {{#  d.isNull != '1' ? 'required' : ''}} {{d.validateType}}" type="text" value=""
+						{{#  if(d.maxLength){ }}   
+						    maxlength="{{d.maxLength}}" 
+						{{#  } }} 
+						{{#  if(d.minLength){ }} 
+						    minLength="{{d.minLength}}" 
+						{{#  } }} 
+						{{#  if(d.minValue){ }} 
+						    min="{{d.minValue}}" 
+						{{#  } }} 
+						{{#  if(d.maxValue){ }} 
+						    max="{{d.maxValue}}"
+						{{#  } }} 
+							>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="textareaTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td class="td-content">
+			<div class="adapt">
+				<fieldset class="set">
+		            <textarea component-type="textarea" rows="3" name="{{d.javaField}}" class="form-control {{#  d.isNull != '1' ? 'required' : ''}}" type="text" value=""
+							{{#  if(d.maxLength){ }}   
+							    maxlength="{{d.maxLength}}" 
+							{{#  } }} 
+							{{#  if(d.minLength){ }} 
+							    minLength="{{d.minLength}}" 
+							{{#  } }} 
+							   >
+		            </textarea>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="selectTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td class="td-content">
+			<div class="adapt">
+				<fieldset class="set">
+					<select component-type="select" component-id="{{d.dictType}}" name="{{d.javaField}}" class="form-control m-b {{#  d.isNull != '1' ? 'required' : ''}}">
+						<option></option>
+					</select>
+				</fieldset>
+	  		</div>
+		</td>
+	</script>
+	<script type="text/html" id="radioboxTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td class="td-content">
+			<div class="adapt">
+				<fieldset class="set">
+					<div component-type="radio" component-id="{{d.dictType}}" name="{{d.javaField}}" class="i-checks-div {{#  d.isNull != '1' ? 'required' : ''}}"></div>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="checkboxTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td class="td-content">
+			<div class="adapt">
+				<fieldset class="set">
+					<div component-type="checkbox" component-id="{{d.dictType}}" name="{{d.javaField}}" class="i-checks-div {{#  d.isNull != '1' ? 'required' : ''}}"></div>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="dateselectTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td class="td-content">
+			<div class="adapt">
+				<fieldset class="set">
+					<input component-type="datePicker" name="{{d.javaField}}" readonly="readonly" onclick="WdatePicker({dateFmt:'{{d.dateType}}'})" class="Wdate form-control {{#  d.isNull != '1' ? 'required' : ''}}" type="text" value="" />
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="sortInputTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td class="td-content">
+			<div class="adapt">
+				<fieldset class="set">
+					<input component-type="input" name="{{d.javaField}}" class="form-control {{#  d.isNull != '1' ? 'required' : ''}} {{d.validateType}}" type="text" value="">
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="treeTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td class="td-content">
+			<div class="adapt">
+				<fieldset class="set">
+					<div component-type="treeSelect" name="{{d.realName}}" class="tag-div " 
+						 actionUrl="{{d.actionUrl}}" sync="{{d.sync}}" check="{{d.check}}" chooseParent="{{d.chooseParent}}"></div>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="gridTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td class="td-content">
+			<div class="adapt">
+				<fieldset class="set">
+					<div component-type="grid" name="{{d.realName}}" class="tag-div " 
+						tableName="{{d.tableName}}" searchKey="{{d.searchKey}}" fieldKeys="{{d.fieldKeys}}" fieldLabels="{{d.fieldLabels}}" searchLabel="{{d.searchLabel}}" javaField="{{d.javaField}}"></div>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="iconTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td class="td-content">
+			<div class="adapt">
+				<fieldset class="set">
+					<div component-type="iconSelect" name="{{d.javaField}}" class="tag-div "></div>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="treeSelectTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td class="td-content">
+			<div class="adapt">
+				<fieldset class="set">
+					<div component-type="treeSelect" name="{{d.realName}}" class="tag-div " 
+						actionUrl="{{d.actionUrl}}" sync="{{d.sync}}" check="{{d.check}}" chooseParent="{{d.chooseParent}}"></div>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="summernoteTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td class="td-content">
+			<div class="adapt">
+				<fieldset class="set">
+					<textarea component-type="summernote" name="{{d.javaField}}" class="form-control  "></textarea>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+	<script type="text/html" id="fileTplReport">
+		<td class="td-name">
+			<span>{{d.comments}}</span>
+		</td>
+		<td class="td-content">
+			<div class="adapt">
+				<fieldset class="set">
+					<div name="{{d.javaField}}" component-type="{{d.showTypeCopy}}" component-accept="{{d.accept}}" class="form-control " style="padding: 1px 12px;" component-uploadpath="/system/sysFile/fileUploadBatchProgress">
+					</div>
+				</fieldset>
+			</div>
+		</td>
+	</script>
+
+	<div id="modal-backgroup"></div>
+</div>
+
+<script>
+	var loadingIndex = LayerUtil.loading("加载中。。。");
+	layui.use(['laytpl','layer', 'element', 'admin'], function() {
+		var laytpl = layui.laytpl;
+		var element = layui.element;
+		var admin = layui.admin;
+
+
+		/*util begin*/
+		//模态框关闭事件
+		$("#freeFormBody").on("click",".modal.fade.in button.close",function(){
+			hideMdodal();
+		})
+		function hideMdodal(){
+			$("#freeFormBody .modal.fade.in").hide();
+			$("#freeFormBody .modal.fade.in").removeClass("in");
+			$("#freeFormBody #modal-backgroup").hide();
+		}
+
+		//列表
+		var form_columnGrids = [];
+		var form_data = {};
+
+		function buildFormKanBan() {
+			var docElem = document.documentElement;
+			var kanban = document.querySelector('#freeFormBody .form-kanban-demo');
+			var board = kanban.querySelector('.board');
+			var itemContainers = Array.prototype.slice.call(kanban.querySelectorAll('.board-column-content'));
+			//	var form_columnGrids = [];
+			var dragCounter = 0;
+			var boardGrid;
+
+			itemContainers.forEach(function(container) {
+
+				var muuri = new Muuri(container, {
+					items: '.item',
+					layoutDuration: 400,
+					layoutEasing: 'ease',
+					dragEnabled: true,
+					dragSort: function() {
+						return form_columnGrids;
+					},
+					dragSortInterval: 0,
+					//			dragContainer: document.body,
+					dragReleaseDuration: 0,
+					dragReleaseEasing: 'ease',
+					/*itemDraggingClass:'muuri-item-dragging',
+                    itemReleasingClass: 'muuri-item-releasing'*/
+				})
+						.on('dragStart', function(item) {
+							//拖动项目开始时，在拖动开始过程结束时触发。
+							++dragCounter;
+							docElem.classList.add('dragging');
+							item.getElement().style.width = item.getWidth() + 'px';
+							item.getElement().style.height = item.getHeight() + 'px';
+
+							//右侧菜单展示、添加active效果
+							$("#freeFormBody .form-kanban-demo .main-menu .board-column-content .item").removeClass("active");
+							$(item.getElement()).addClass("active");
+							$("#freeFormBody .form-kanban-demo .right-menu").css("visibility", "visible");
+
+							//这里只更改select2表单类型 其他的规则在change事件中触发
+							var data = $("#freeFormBody .form-kanban-demo .item.active").attr("data-json");
+							data = JSON.parse(data);
+							form_data = data;
+
+							$("#freeFormBody .form-kanban-demo .right-menu *[name='showType']").val(data['showType']).trigger("change");
+						})
+						.on('dragMove', function(item) {
+							$(item.getElement()).find(".set,.fa").css("visibility", "hidden");
+
+							//清除active效果
+							$(item.getElement()).removeClass("active");
+							$("#freeFormBody .form-kanban-demo .right-menu").css("visibility", "hidden");
+						})
+						.on('dragEnd', function(item) {
+							//拖动项目结束时触发。
+							if(--dragCounter < 1) {
+								docElem.classList.remove('dragging');
+							}
+							$(item.getElement()).find(".set,.fa").css("visibility", "visible");
+						})
+						.on('dragReleaseEnd', function(item) {
+							//已释放项目已激活到位置后触发。
+							item.getElement().style.width = '';
+							item.getElement().style.height = '';
+							form_columnGrids.forEach(function(muuri) {
+								muuri.refreshItems().layout();
+							});
+						})
+						.on('layoutStart', function() {
+							boardGrid.refreshItems().layout();
+						});
+
+				form_columnGrids.push(muuri);
+			});
+
+			boardGrid = new Muuri(board, {
+				layoutDuration: 400,
+				layoutEasing: 'ease',
+				dragEnabled: true,
+				dragSortInterval: 0,
+				dragStartPredicate: {
+					handle: '.board-column-header'
+				},
+				dragReleaseDuration: 400,
+				dragReleaseEasing: 'ease'
+			});
+
+			$("#freeFormBody .form-kanban-demo .i-checks").iCheck({
+				checkboxClass: "icheckbox_square-green",
+				radioClass: "iradio_square-green"
+			});
+		};
+
+		//表单
+		var list_columnGrids = [];
+		var setItem = "";
+
+		function buildListKanBan() {
+			var docElem = document.documentElement;
+			var kanban = document.querySelector('#freeFormBody .list-kanban-demo');
+			var board = kanban.querySelector('.board');
+			var itemContainers = Array.prototype.slice.call(kanban.querySelectorAll('.board-column-content'));
+			//	var list_columnGrids = [];
+			var dragCounter = 0;
+			var boardGrid;
+
+			itemContainers.forEach(function(container) {
+
+				var muuri = new Muuri(container, {
+					items: '.item',
+					layoutDuration: 400,
+					layoutEasing: 'ease',
+					dragEnabled: true,
+					dragSort: function() {
+						return list_columnGrids;
+					},
+					dragSortInterval: 0,
+					//			dragContainer: document.body,
+					dragReleaseDuration: 0,
+					dragReleaseEasing: 'ease',
+					/*itemDraggingClass:'muuri-item-dragging',
+                    itemReleasingClass: 'muuri-item-releasing'*/
+				})
+						.on('dragStart', function(item) {
+							//拖动项目开始时，在拖动开始过程结束时触发。
+							++dragCounter;
+							docElem.classList.add('dragging');
+							item.getElement().style.width = item.getWidth() + 'px';
+							item.getElement().style.height = item.getHeight() + 'px';
+						})
+						.on('dragMove', function(item) {
+							$(item.getElement()).find(".set,.fa").css("visibility", "hidden");
+						})
+						.on('dragEnd', function(item) {
+							//拖动项目结束时触发。
+							if(--dragCounter < 1) {
+								docElem.classList.remove('dragging');
+							}
+							$(item.getElement()).find(".set,.fa").css("visibility", "visible");
+						})
+						.on('dragReleaseEnd', function(item) {
+							//已释放项目已激活到位置后触发。
+							item.getElement().style.width = '';
+							item.getElement().style.height = '';
+							list_columnGrids.forEach(function(muuri) {
+								muuri.refreshItems().layout();
+							});
+						})
+						.on('layoutStart', function() {
+							boardGrid.refreshItems().layout();
+						});
+
+				list_columnGrids.push(muuri);
+			});
+
+			boardGrid = new Muuri(board, {
+				layoutDuration: 400,
+				layoutEasing: 'ease',
+				dragEnabled: true,
+				dragSortInterval: 0,
+				dragStartPredicate: {
+					handle: '.board-column-header'
+				},
+				dragReleaseDuration: 400,
+				dragReleaseEasing: 'ease'
+			});
+
+			$("#freeFormBody .list-kanban-demo .i-checks").iCheck({
+				checkboxClass: "icheckbox_square-green",
+				radioClass: "iradio_square-green"
+			});
+		};
+
+		//规则变量
+		var list_rules = {
+			input:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				validateType: '10',
+				minLength: '10',
+				maxLength: '10',
+				minValue: '10',
+				maxValue: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				defaultValue: '10',
+				comments_EN: '10',
+				blockChainParam1:'11',
+				blockChainParam2:'11',
+				blockChainParam3:'11'
+			},
+			textarea:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				minLength: '10',
+				maxLength: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				defaultValue: '10',
+				comments_EN: '10',
+				blockChainParam1:'11',
+				blockChainParam2:'11',
+				blockChainParam3:'11'
+			},
+			select:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				dictType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				defaultValue: '10',
+				comments_EN: '10'
+			},
+			radiobox:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				dictType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				defaultValue: '10',
+				comments_EN: '10'
+			},
+			checkbox:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				dictType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				defaultValue: '10',
+				comments_EN: '10'
+			},
+			dateselect:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				dateType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				defaultValue: '10',
+				comments_EN: '10'
+			},
+			treeselectRedio:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				defaultValue: '10',
+				comments_EN: '10'
+			},
+			treeselectCheck:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				defaultValue: '10',
+				comments_EN: '10'
+			},
+			officeselectTree:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				defaultValue: '10',
+				comments_EN: '10'
+			},
+			areaselect:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				defaultValue: '10',
+				comments_EN: '10'
+			},
+			treeselect:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				tableName: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				defaultValue: '10',
+				comments_EN: '10'
+			},
+			gridselect:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				tableName: '10',
+				fieldLabels: '10',
+				fieldKeys: '10',
+				searchLabel: '10',
+				searchKey: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				defaultValue: '10',
+				comments_EN: '10'
+			},
+			fileupload:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				defaultValue: '10',
+				comments_EN: '10'
+			},
+			fileuploadsec:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				defaultValue: '10',
+				comments_EN: '10'
+			},
+			fileuploadpic:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				defaultValue: '10',
+				comments_EN: '10'
+			},
+			fileselectclassic:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				defaultValue: '10',
+				comments_EN: '10'
+			},
+			fileselectsec:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				defaultValue: '10',
+				comments_EN: '10'
+			},
+			parentId:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				comments_EN: '10'
+			},
+			iconselect:{
+				comments: '10',
+				javaField: '10',
+				showType: '10',
+				isOneLine: '10',
+				isNull: '10',
+				javaType: '10',
+				jdbcType: '10',
+				name: '10',
+				isReadonly: '10',
+				defaultValue: '10',
+				comments_EN: '10'
+			},
+			sortInput:{
+				comments: '11',
+				javaField: '01',
+				showType: '01',
+				isOneLine: '10',
+				isNull: '10',
+				validateType: '10',
+				minLength: '10',
+				maxLength: '10',
+				minValue: '10',
+				maxValue: '10',
+				javaType: '11',
+				jdbcType: '11',
+				name: '11',
+				isReadonly: '11',
+				defaultValue: '10',
+				comments_EN: '11'
+			},
+			summernote:{
+				comments: '11',
+				javaField: '01',
+				showType: '01',
+				isOneLine: '01',
+				isNull: '10',
+				javaType: '11',
+				jdbcType: '11',
+				name: '11',
+				isReadonly: '11',
+				defaultValue: '10',
+				comments_EN: '11'
+			},
+		}
+
+		$.validator.setDefaults({
+			errorPlacement: function(error, element) {
+				if($(element).closest("fieldset").length > 0){
+					if ($(element).closest("fieldset").next("div").hasClass("tooltip")) {
+						$(element).closest("fieldset").attr({
+							"data-original-title": $(error).text()
+						}).tooltip('show');
+					} else {
+						$(element).closest("fieldset").attr({
+							"data-original-title": $(error).text(),
+							"data-placement": "bottom",
+							"data-trigger":"manual",
+							"data-selector":"blockquote"
+						}).tooltip('show');
+						$(element).closest("fieldset").next("div.tooltip").css("margin-top","-10px");
+					}
+				}else{
+					if ($(element).next("div").hasClass("tooltip")) {
+						$(element).attr({
+							"data-original-title": $(error).text()
+						}).tooltip('show');
+						$(element).next("div.tooltip").css("margin-top","-10px").removeClass("top").addClass("bottom");
+						if($(element).hasClass("select2")){
+							$(element).next("div.tooltip").css({"margin-top":"50px","margin-left":"100px"}).removeClass("top").addClass("bottom");
+						}
+					} else {
+						$(element).attr({
+							"data-original-title": $(error).text(),
+							"data-placement": "bottom",
+							"data-trigger":"manual",
+							"data-selector":"blockquote"
+						}).tooltip('show');
+						$(element).next("div.tooltip").css("margin-top","-10px").removeClass("top").addClass("bottom");
+						if($(element).hasClass("select2")){
+							$(element).next("div.tooltip").css({"margin-top":"50px","margin-left":"100px"}).removeClass("top").addClass("bottom");
+						}
+					}
+				}
+			},
+			unhighlight: function(b) {
+				if($(b).closest("fieldset").length > 0){
+					$(b).closest("fieldset").tooltip('destroy');
+					$(b).removeClass("error");
+				}else{
+					$(b).tooltip('destroy');
+					$(b).removeClass("error");
+				}
+			}
+		});
+
+
+		//元数据存储 以及 数据排序
+		var resultData = "";
+		function sortBy(field) {
+			return function(a,b) {
+				return a[field] - b[field];
+			}
+		}
+
+		function getNameString(k, length){
+			var arr = [];
+			for(var i = 1; i < length+1; i++){
+				var index = '';
+				if(i<10){
+					index = "0"+i;
+				}else{
+					index = i;
+				}
+				arr.push(k+index);
+			}
+			return arr;
+		}
+		/*console.log(getNameString("s",50));
+        console.log(getNameString("c",10));
+        console.log(getNameString("d",10));
+        */
+		function getNameObj(k, length){
+			var arr = [];
+			for(var i = 1; i < length+1; i++){
+				var index = '';
+				if(i<10){
+					index = "0"+i;
+				}else{
+					index = i;
+				}
+				arr.push(k+index+".id|name");
+			}
+			return arr;
+		}
+		/*console.log(getNameObj("user",5));
+        console.log(getNameObj("users",5));
+        console.log(getNameObj("office",5));
+        console.log(getNameObj("area",5));
+        */
+		function getNameGrid(k, length){
+			var arr = [];
+			for(var i = 1; i < length+1; i++){
+				var index = '';
+				if(i<10){
+					index = "0"+i;
+				}else{
+					index = i;
+				}
+				arr.push(k+index+".id|s01");
+			}
+			return arr;
+		}
+		function getNameTree(k, length){
+			var arr = [];
+			for(var i = 1; i < length+1; i++){
+				var index = '';
+				if(i<10){
+					index = "0"+i;
+				}else{
+					index = i;
+				}
+				arr.push(k+index+".id|name");
+			}
+			return arr;
+		}
+		/*console.log(getNameGrid("g",5));*/
+
+
+		var arrayJson = [
+			{
+				"showType": "treeselectRedio",
+				"isOneLine": 0,
+				"isNull": 1,
+				"comments": "创建者",
+				"javaField": "createBy.id",
+				"maxLength": "",
+				"minLength": "",
+				"minValue": "",
+				"maxValue": "",
+				"friendlyJdbcType": "文本",
+				"javaType": "String",
+				"jdbcType": "varchar(64)",
+				"queryType": "=",
+				"validateType": "",
+				"isForm": 0,
+				"isQuery": 0,
+				"isList": 0,
+				"formSort": 100,
+				"searchSort": 100,
+				"isReadonly": 0,
+				"defaultValue": "",
+				"name": "create_by",
+				"listSort":0,
+				"comments_EN":"Creat by"
+			},
+			{
+				"showType": "dateselect",
+				"isOneLine": 0,
+				"isNull": 1,
+				"comments": "创建时间",
+				"javaField": "createDate",
+				"friendlyJdbcType": "日期",
+				"javaType": "java.util.Date",
+				"dateType":"yyyy-MM-dd",
+				"jdbcType": "datetime",
+				"queryType": "=",
+				"validateType": "",
+				"isForm": 0,
+				"isQuery": 0,
+				"isList": 0,
+				"formSort": 100,
+				"searchSort": 100,
+				"isReadonly": 0,
+				"defaultValue": "",
+				"name": "create_date",
+				"listSort":1,
+				"comments_EN":"Creat date"
+			},
+			{
+				"showType": "treeselectRedio",
+				"isOneLine": 0,
+				"isNull": 1,
+				"comments": "更新者",
+				"javaField": "updateBy.id",
+				"maxLength": "",
+				"minLength": "",
+				"minValue": "",
+				"maxValue": "",
+				"friendlyJdbcType": "文本",
+				"javaType": "String",
+				"jdbcType": "varchar(64)",
+				"queryType": "=",
+				"validateType": "",
+				"isForm": 0,
+				"isQuery": 0,
+				"isList": 0,
+				"formSort": 100,
+				"searchSort": 100,
+				"isReadonly": 0,
+				"defaultValue": "",
+				"name": "update_by",
+				"listSort":2,
+				"comments_EN":"Update by"
+			},
+			{
+				"showType": "dateselect",
+				"isOneLine": 0,
+				"isNull": 1,
+				"comments": "更新时间",
+				"javaField": "updateDate",
+				"friendlyJdbcType": "日期",
+				"javaType": "java.util.Date",
+				"dateType":"yyyy-MM-dd",
+				"jdbcType": "datetime",
+				"queryType": "=",
+				"validateType": "",
+				"isForm": 0,
+				"isQuery": 0,
+				"isList": 0,
+				"formSort": 100,
+				"searchSort": 100,
+				"isReadonly": 0,
+				"defaultValue": "",
+				"name": "update_date",
+				"listSort":3,
+				"comments_EN":"Update date"
+			},
+			{
+				"showType": "input",
+				"isOneLine": 0,
+				"isNull": 1,
+				"comments": "备注信息",
+				"javaField": "remarks",
+				"maxLength": "",
+				"minLength": "",
+				"minValue": "",
+				"maxValue": "",
+				"friendlyJdbcType": "文本",
+				"javaType": "String",
+				"jdbcType": "varchar(255)",
+				"queryType": "=",
+				"validateType": "",
+				"isForm": 0,
+				"isQuery": 0,
+				"isList": 0,
+				"formSort": 100,
+				"searchSort": 100,
+				"isReadonly": 0,
+				"defaultValue": "",
+				"name": "remarks",
+				"listSort":4,
+				"comments_EN":"Remarks"
+			},
+			{
+				"showType": "input",
+				"isOneLine": 0,
+				"isNull": 1,
+				"comments": "归属机构编码",
+				"javaField": "ownerCode",
+				"maxLength": "",
+				"minLength": "",
+				"minValue": "",
+				"maxValue": "",
+				"friendlyJdbcType": "文本",
+				"javaType": "String",
+				"jdbcType": "varchar(255)",
+				"queryType": "=",
+				"validateType": "",
+				"isForm": 0,
+				"isQuery": 0,
+				"isList": 0,
+				"formSort": 100,
+				"searchSort": 100,
+				"isReadonly": 0,
+				"defaultValue": "",
+				"name": "owner_code",
+				"listSort":5,
+				"comments_EN":"Owner code"
+			}
+		]
+		/*util end*/
+
+		//渲染流程按钮
+		var btnsStr = LayerUtil.getBtnsStrFromMenuData("/admin/processCenter/modelManagement");
+		$("#freeFormBody #process-btn-div").prepend(btnsStr.toolBtnsStr);
+		$("#freeFormBody").on("click","#addModel",function(){
+			LayerUtil.openDialog({
+				title: layui.admin.lang() ? 'Form' : '添加模型',
+				formLay: 'wytest-form',
+				url: 'admin/processCenter/formAdd',
+				//actionUrl:  + '/GetForm.json',
+				btn: ['保存', '关闭'],
+				btn_EN: ['save', 'close'],
+				setDataWithoutAjax:true,
+				func1:function(index,layero){
+					var dialogDom = $(layero).find("#inputForm");
+					var data = {
+						name: $(dialogDom).find("input[name='name']").val(),
+						key: 0,
+						description: $(dialogDom).find('textarea[name="metaInfo.description"]').val(),
+						category: $(dialogDom).find('select[name="category"]').val(),
+						scope: $(dialogDom).find("input[name='metaInfo.scope']").val(),
+						officeId: $(dialogDom).find("input[name='office.id']").val()
+					}
+					//name，key，description，category，scope，officeId
+					LayerUtil.ajax({
+						url: admin.basePath + '/service/model/create',
+						data: data,
+						success: function(res){
+							LayerUtil.success(res[LayerUtil.getMsgLang()]);
+							$("#freeFormBody #processTable").bootstrapTable('refresh');
+							layui.layer.close(index)
+						}
+					});
+				}
+			})
+		})
+		//渲染 菜单按钮
+		var btnsStrMenu = LayerUtil.getBtnsStrFromMenuData("/admin/sys_menu/list");
+		/*$("#freeFormBody #toolbar-menu").prepend(btnsStrMenu.toolBtnsStr);*/
+
+		$("#freeFormBody").on("click","#addBtn",function(){
+			var formId = $("#freeFormBody #formId").val();
+			if(formId){
+				addBtnFuc()
+			}else{
+				saveFuc(function(result){
+					$("#freeFormBody #formId").val(result.data.genTable.id)
+					addBtnFuc()
+				})
+			}
+		})
+		function addBtnFuc(){
+			LayerUtil.openDialog({
+				title : layui.admin.lang() ? 'New ' : '添加菜单',
+				formLay : 'sys_menu',
+				initData : {
+					formNo: $("#freeFormBody #main-table-name").val()
+				},
+				setDataWithoutAjax : true,
+				url : 'admin/genTable/addMenu',
+				btn : ['保存', '取消'],
+				btn_EN : ['Save', 'Cancel'],
+				func1 : function(index,layero) {
+					var validateForm = $(layero).find("#inputForm").validate();
+					if(validateForm.form()){
+						var data = myHelper.composeData($(layero).find("#inputForm"));
+						var postData = {
+							formNo: data.formNo,
+							parentId: data.parent.id,
+							icon: data.s02
+						}
+						LayerUtil.ajax({
+							url : admin.basePath + '/sys/menu/createMenuGroup?formNo='+postData.formNo+'&parentId='+postData.parentId+'&icon='+postData.icon,
+							type : 'post',
+							success : function(res) {
+								LayerUtil.success(res[LayerUtil.getMsgLang()]);
+								$menuTreeTable.refresh({});
+								layui.layer.close(index);
+							}
+						});
+					}
+				}
+			})
+		}
+		$("#freeFormBody").on("click"," #menuTreeTable .edit",function(){
+			var row = JSON.parse($(this).closest("td").attr("data-json"));
+			addOrEdit({
+				id: row.id
+			})
+		})
+		$("#freeFormBody").on("click"," #menuTreeTable .delete",function(){
+			var row = JSON.parse($(this).closest("td").attr("data-json"));
+			delFuc(row);
+		})
+		$("#freeFormBody").on("click"," #menuTreeTable .view",function(){
+			var row = JSON.parse($(this).closest("td").attr("data-json"));
+			viewForm({
+				id: row.id
+			})
+		})
+		$("#freeFormBody").on("click"," #menuTreeTable .rbtn",function(){
+			var row = JSON.parse($(this).closest("td").attr("data-json"));
+			addChild({
+				parent:{
+					id: row.id,
+					name: row.s01
+				},
+				s10: 3
+			})
+		})
+		$("#freeFormBody").on("click"," #menuTreeTable .lbtn",function(){
+			var row = JSON.parse($(this).closest("td").attr("data-json"));
+			addChild({
+				parent:{
+					id: row.id,
+					name: row.s01
+				},
+				s10: 4
+			})
+		})
+		$("#freeFormBody").on("click"," #menuTreeTable .lowerlevel",function(){
+			var row = JSON.parse($(this).closest("td").attr("data-json"));
+			addChild({
+				parent:{
+					id: row.id,
+					name: row.s01
+				},
+			})
+		});
+		function addOrEdit(initData) {
+			var id = initData ? initData.id : '';
+			LayerUtil.openDialog({
+				title : layui.admin.lang() ? 'New ' : '添加菜单',
+				formLay : 'sys_menu',
+				initData : initData,
+				setDataWidthAjax : true,
+				actionDataName : 'data',
+				url : 'admin/sys_menu/form',
+				actionUrl : admin.basePath + '/dynamic/zform/getZform?formNo=sys_menu&id=' + id,
+				btn : ['保存', '取消'],
+				btn_EN : ['Save', 'Cancel'],
+				func1 : function(index,layero) {
+					var data = myHelper.composeData($(layero).find("#inputForm"));
+					LayerUtil.ajax({
+						url : admin.basePath + '/dynamic/zform/save',
+						type : 'post',
+						data : JSON.stringify(data),
+						success : function(res) {
+							LayerUtil.success(res[LayerUtil.getMsgLang()]);
+							$menuTreeTable.refresh({});
+							layui.layer.close(index);
+						}
+					});
+				}
+			})
+		}
+		function addChild(initData) {
+			var id = initData ? initData.id : '';
+			LayerUtil.openDialog({
+				title : layui.admin.lang() ? 'New ' : '添加菜单',
+				formLay : 'sys_menu',
+				initData : initData,
+				setDataWithoutAjax : true,
+				actionDataName : 'data',
+				url : 'admin/sys_menu/form',
+				btn : ['保存', '取消'],
+				btn_EN : ['Save', 'Cancel'],
+				func1 : function(index,layero) {
+					var data = myHelper.composeData($(layero).find("#inputForm"));
+					LayerUtil.ajax({
+						url : admin.basePath + '/dynamic/zform/save',
+						type : 'post',
+						data : JSON.stringify(data),
+						success : function(res) {
+							LayerUtil.success(res[LayerUtil.getMsgLang()]);
+							$menuTreeTable.refresh({});
+							layui.layer.close(index);
+						}
+					});
+				}
+			})
+		}
+		function viewForm(initData) {
+			LayerUtil.openDialogView({
+				title : layui.admin.lang() ? 'View ' : '查看菜单',
+				formLay : 'sys_menu',
+				initData : initData,
+				url : 'admin/sys_menu/form',
+				actionUrl : admin.basePath + '/dynamic/zform/getZform?formNo=sys_menu&id=' + initData.id,
+				actionDataName : 'data',
+				setDataWidthAjax : true,
+			})
+		}
+		function delFuc(row){
+			LayerUtil.confirm('确认要删除' + row.name + '吗？', function() {
+				LayerUtil.ajax({
+					url: admin.basePath + '/dynamic/zform/delete?formNo=sys_menu&ids=' + row.id,
+					type:'post',
+					shade:true,
+					success: function(res){
+						LayerUtil.success(res[LayerUtil.getMsgLang()]);
+						$menuTreeTable.refresh({});
+					}
+				});
+			});
+		}
+
+		//隐藏核心字段
+		var hideArr = [];
+		var $menuTreeTable = null;
+		var listSortIndex = 0;
+
+		$("#freeFormBody select.select2").select2({
+			width: "100%",
+			minimumResultsForSearch: -1
+		});
+
+
+		//初始化获取左树表名 并且格式化select2
+		LayerUtil.ajax({
+			url: admin.basePath + '/gen/genTable/getTreeTableList',
+			type:"get",
+			async: false,
+			success: function(result){
+				var html = "";
+				$.each(result.data.data, function(i,v) {
+					html += "<option value='"+v.id+"'>"+v.name+"</option>";
+				});
+				$("#main-table-tree").append(html);
+				$("#freeFormBody select.select2").select2({
+					width: "146px",
+					minimumResultsForSearch: -1
+				});
+			}
+		});
+		//表类型change事件
+		$("#freeFormBody #main-table-type").on("change", function (e) {
+			if($(this).val() == 4){
+				$("#freeFormBody #main-table-tree-div").show();
+			}else{
+				$("#freeFormBody #main-table-tree-div").hide();
+			}
+		});
+
+		//主子表tab切换
+		$("#freeFormBody").on("click",".fc-tab-title > li",function(event){
+			$("#freeFormBody .fc-tab-title > li").removeClass("layui-this");
+			$(this).addClass("layui-this");
+			var index = $("#freeFormBody .fc-tab-title > li").index($(this));
+			$("#freeFormBody .layui-tab-content .fc-tab-item").removeClass("active");
+			$("#freeFormBody .layui-tab-content .fc-tab-item").eq(index).addClass("active");
+		});
+
+		//表单页点击左侧元数据
+		$("#freeFormBody").on("click",".form-kanban-demo .board .left-menu > .data-demo > .item",function(){
+			var json = JSON.parse($(this).attr("data-json"));
+			//获取javaField
+			var arr = [];
+			var reg = "";
+			if(json.javaField == "s") {
+				arr = getNameString(json.javaField, 50);
+				reg = "/^"+json.javaField+"((0[1-9]{1})|([1-4]{1}[0-9]{1})|(50))$/";
+			}
+			else if(json.javaField == "c" || json.javaField == "d"){
+				arr = getNameString(json.javaField, 10);
+				reg = "/^"+json.javaField+"((0[1-9]{1})|(10))$/";
+			}
+			else if(json.javaField == "user" || json.javaField == "users" || json.javaField == "office" || json.javaField == "area"){
+				arr = getNameObj(json.javaField, 5);
+				reg = "/^"+json.javaField+"(0[1-5]{1})\.id\|name$/";
+			}
+			else if(json.javaField == "g") {
+				arr = getNameGrid(json.javaField, 5);
+				reg = "/^"+json.javaField+"(0[1-5]{1})/";
+			}
+			else if(json.javaField == "t") {
+				arr = getNameTree(json.javaField, 5);
+				reg = "/^"+json.javaField+"(0[1-5]{1})/";
+			}
+			else if(json.javaField == "parent.id|name") {
+				arr = ["parent.id|name"];
+				reg = "/^parent\.id\|name$/";
+			}
+			else if(json.javaField == "sort") {
+				arr = ["sort"];
+				reg = "/^sort$/";
+			}
+			reg = eval(reg);
+			var items = form_columnGrids[0].getItems();
+			var items_length = items.length;
+			$.each(items, function(i,item) {
+				var data = JSON.parse($(item._element).attr("data-json"));
+				if(reg.test(data.javaField)){
+					arr = $.grep(arr,function(item, i){
+						return item !=data.javaField;
+					});
+				}
+			});
+			var items = form_columnGrids[1].getItems();
+			$.each(items, function(i,item) {
+				var data = JSON.parse($(item._element).attr("data-json"));
+				if(reg.test(data.javaField)){
+					arr = $.grep(arr,function(item, i){
+						return item !=data.javaField;
+					});
+				}
+			});
+			if(arr.length > 0){
+				json.javaField = arr[0];
+				if(!json.name){
+					json.name = arr[0];
+				}
+
+				json.isForm = 1;
+				json.isQuery = 0;
+//			json.isList = 1;
+				json.formSort = 0;
+				json.searchSort = 0;
+				json.listSort = listSortIndex++;
+				json.javaFieldReplace = json.javaField.replace(/\|/g,'-').replace(/\./g,'-');
+
+				//给默认值赋值
+				var formId = $("#freeFormBody #formId").val();
+				if(!formId){
+					json.isList = 1;
+					if(json.showType.indexOf("file") == -1 && form_columnGrids[0].getItems().length > 4){
+						json.isList = 0;
+					}
+				}
+
+				var tpl = $("#freeFormBody #" + json.showType + "TplForm").html();
+				var html = "";
+				if(tpl) {
+					//isNull !=1必填  isOneLine 1=12
+					html = laytpl(tpl).render(json);
+				}else if(json.showType.indexOf("select") != -1){
+					var tpl = $("#freeFormBody #treeTplForm").html();
+					html = laytpl(tpl).render(json);
+				}else if(json.showType.indexOf("file") != -1){
+					var tpl = $("#freeFormBody #fileTplForm").html();
+					html = laytpl(tpl).render(json);
+				}
+				else if(json.showType == "parentId"){
+					var tpl = $("#freeFormBody #treeTplForm").html();
+					html = laytpl(tpl).render(json);
+				}
+				elem = $(html)[0];
+				form_columnGrids[0].add([elem]);
+
+				if(json.showType == "summernote"){
+					$("#freeFormBody .form-kanban-demo .initSummernote").summernote({
+						height: 150,
+						tabsize: 2,
+						lang: 'zh-CN',
+						disableDragAndDrop:true
+					});
+				}
+			}else{
+				layer.msg("所选元数据已经超出自定义范围！", {icon:0});
+			}
+		});
+		//表单页 删除表单数据
+		$("#freeFormBody").on("click",".main-menu .board-column-content.isShow .item .fa-times", function(){
+			var elem = $(this).closest(".item")[0];
+			LayerUtil.confirm(layui.admin.lang() ? "are you sure?" : "确定删除吗？", function(){
+				form_columnGrids[0].remove(elem, {removeElements:true });
+				$("#freeFormBody .form-kanban-demo .right-menu").css("visibility", "hidden");
+			})
+		});
+		$("#freeFormBody").on("click",".main-menu .board-column-content.isHide .item .fa-times", function(){
+			var elem = $(this).closest(".item")[0];
+			LayerUtil.confirm(layui.admin.lang() ? "are you sure?" : "确定删除吗？", function(){
+				form_columnGrids[1].remove(elem, {removeElements:true });
+				$("#freeFormBody .form-kanban-demo .right-menu").css("visibility", "hidden");
+			})
+		});
+
+		//翻译
+		$("#freeFormBody").on("click", "#main-table-fanyi", function() {
+			var str = $.trim($("#main-table-comments").val());
+			if(!str){
+				layer.msg("请填写说明", {icon:0});
+				return false;
+			}else{
+				fanyi(str,$("#main-table-comments-en"));
+			}
+		});
+		$("#freeFormBody").on("click", "#right-menu-fanyi", function() {
+			var str = $.trim($(this).closest("div").find("input[name=comments]").val());
+			if(!str){
+				layer.msg("请填写说明", {icon:0});
+				return false;
+			}else{
+				fanyi(str,$("#comments_ENDiv input"));
+			}
+		});
+		function fanyi(str,signObj){
+			LayerUtil.ajax({
+				url: admin.basePath + '/ai/trans/getTransResult?query='+str+'&from=auto&to=en',
+				async: false,
+				shade:true,
+				success: function(result){
+					var fanyiJson = JSON.parse(result.data.data);
+					var str_EN = fanyiJson.trans_result[0].dst;
+					signObj.val(str_EN);
+				}
+			})
+		}
+
+		//领域选择弹出模态框
+		$("#freeFormBody").on("click","#fieldChoose", function(){
+			$("#freeFormBody #fieldChooseModal").addClass("in").show();
+			$("#freeFormBody #modal-backgroup").show();
+			$("#freeFormBody #fieldChooseInput").val("").trigger("change");
+		});
+		//领域选择模态框保存
+		$("#freeFormBody").on("click","#fieldChooseModal .btn-success", function() {
+			var fieldChooseInput = $("#freeFormBody #fieldChooseInput").val();
+			if(!fieldChooseInput){
+				hideMdodal();
+				return false;
+			}
+			var loadingIndex = LayerUtil.loading("");
+			fieldChooseInput = fieldChooseInput.split(/[(\r\n)\r\n]+/);
+
+			LayerUtil.ajax({
+//			url: admin.basePath + '/freeForm-field.json',
+				/*url: admin.basePath + '/gen/genTable/realmData?genRealm='+fieldChooseInput.join(","),*/
+				url: admin.basePath + '/gen/genTable/getRealmColumnsByNames?names='+fieldChooseInput,
+				type:'post',
+				data:{
+					/*genRealm: fieldChooseInput.join(",")*/
+					names: fieldChooseInput
+				},
+				success: function(result){
+					$.each(result.data.realm, function(index, json) {
+
+						//获取javaField
+						var arr = [];
+						var reg = "";
+						if(json.javaField == "s") {
+							arr = getNameString(json.javaField, 50);
+							reg = "/^"+json.javaField+"((0[1-9]{1})|([1-4]{1}[0-9]{1})|(50))$/";
+						}
+						else if(json.javaField == "c" || json.javaField == "d"){
+							arr = getNameString(json.javaField, 10);
+							reg = "/^"+json.javaField+"((0[1-9]{1})|(10))$/";
+						}
+						else if(json.javaField == "user" || json.javaField == "users" || json.javaField == "office" || json.javaField == "area"){
+							arr = getNameObj(json.javaField, 5);
+							reg = "/^"+json.javaField+"(0[1-5]{1})\.id\|name$/";
+						}
+						else if(json.javaField == "g") {
+							arr = getNameGrid(json.javaField, 5);
+							reg = "/^"+json.javaField+"(0[1-5]{1})/";
+						}
+						else if(json.javaField == "t") {
+							arr = getNameTree(json.javaField, 5);
+							reg = "/^"+json.javaField+"(0[1-5]{1})/";
+						}
+						else if(json.javaField == "parent.id|name") {
+							arr = ["parent.id|name"];
+							reg = "/^parent\.id\|name$/";
+						}
+						else if(json.javaField == "sort") {
+							arr = ["sort"];
+							reg = "/^sort$/";
+						}
+						reg = eval(reg);
+						var items = form_columnGrids[0].getItems();
+						var items_length = items.length;
+						$.each(items, function(i,item) {
+							var data = JSON.parse($(item._element).attr("data-json"));
+							if(reg.test(data.javaField)){
+								arr = $.grep(arr,function(item, i){
+									return item !=data.javaField;
+								});
+							}
+						});
+						var items = form_columnGrids[1].getItems();
+						$.each(items, function(i,item) {
+							var data = JSON.parse($(item._element).attr("data-json"));
+							if(reg.test(data.javaField)){
+								arr = $.grep(arr,function(item, i){
+									return item !=data.javaField;
+								});
+							}
+						});
+						if(arr.length > 0){
+							json.javaField = arr[0];
+//						json.name = arr[0];
+
+							/*json.isForm = 1;
+                            json.isQuery = 0;
+                //			json.isList = 1;
+                            json.formSort = 0;
+                            json.searchSort = 0;
+                            json.listSort = listSortIndex++;*/
+							json.javaFieldReplace = json.javaField.replace(/\|/g,'-').replace(/\./g,'-');
+
+							var tpl = $("#freeFormBody #" + json.showType + "TplForm").html();
+							var html = "";
+							if(tpl) {
+								//isNull !=1必填  isOneLine 1=12
+								html = laytpl(tpl).render(json);
+							}else if(json.showType.indexOf("select") != -1){
+								var tpl = $("#freeFormBody #treeTplForm").html();
+								html = laytpl(tpl).render(json);
+							}else if(json.showType.indexOf("file") != -1){
+								var tpl = $("#freeFormBody #fileTplForm").html();
+								html = laytpl(tpl).render(json);
+							}
+							else if(json.showType == "parentId"){
+								var tpl = $("#freeFormBody #treeTplForm").html();
+								html = laytpl(tpl).render(json);
+							}
+							elem = $(html)[0];
+							form_columnGrids[0].add([elem]);
+
+							if(json.showType == "summernote"){
+								$("#freeFormBody .form-kanban-demo .initSummernote").summernote({
+									height: 150,
+									tabsize: 2,
+									lang: 'zh-CN',
+									disableDragAndDrop:true
+								});
+							}
+						}else{
+							layer.msg("所选元数据已经超出自定义范围！", {icon:0});
+						}
+
+					});
+
+					LayerUtil.close(loadingIndex);
+					hideMdodal();
+				}
+			})
+		});
+
+
+		//右侧属性菜单验证
+		var validateForm = $("#freeFormBody .form-kanban-demo #form").validate({
+			submitHandler: function (form) {
+				var data = {};
+				$("#freeFormBody .form-kanban-demo .right-menu div[id]:visible").each(function(i,item){
+					var k = $(item).find("*[name]").attr("name");
+					var value = $(item).find("*[name]").val();
+					if($(item).find("*[name]").attr("type") == "radio"){
+						value = $(item).find("*[name]:checked").val();
+					}else if($(item).find("*[name]").attr("type") == "checkbox"){
+						value = "";
+						$(item).find("*[name]:checked").each(function(index,obj) {
+							value += $(obj).val();
+						});
+					}else if($(item).find("*[name]").attr("name") == "jdbcType"){
+						value = $(item).find("*[name]").val();
+						if(value == "varchar"){
+							value += "(" + $("#freeFormBody #jdbcTypeVarchar").val() + ")";
+						}
+					}else if($(item).find("*[name]").attr("name") == "dictType"){
+						value = $(item).find("*[name]").val();
+					}
+					data[k] = value;
+				});
+				data.friendlyJdbcType = form_data.friendlyJdbcType;
+				data.id = form_data.id;
+
+				data.isForm = form_data.isForm;
+				data.isQuery = form_data.isQuery;
+				data.isList = form_data.isList;
+				data.formSort = form_data.formSort;
+				data.searchSort = form_data.searchSort;
+				data.listSort = form_data.listSort;
+				data.javaFieldReplace = data.javaField.replace(/\|/g,'-').replace(/\./g,'-');
+
+				if(data.dictType){
+					LayerUtil.ajax({
+//					url: admin.basePath + '/freeForm-dictList.json',
+						url: admin.basePath + '/gen/genTable/dictViewDynamic',
+						type:"get",
+						data: {"key":data.dictType},
+						async: false,
+						success: function(result){
+							data.dictList = result.data.dictList;
+						}
+					})
+				}
+
+				//渲染表单元数据
+				var tpl = $("#freeFormBody #" + data.showType + "TplForm").html();
+				var html = "";
+				if(tpl) {
+					//isNull !=1必填  isOneLine 1=12
+					html = laytpl(tpl).render(data);
+				}else if(data.showType.indexOf("select") != -1){
+					var tpl = $("#freeFormBody #treeTplForm").html();
+					html = laytpl(tpl).render(data);
+				}else if(data.showType.indexOf("file") != -1){
+					var tpl = $("#freeFormBody #fileTplForm").html();
+					html = laytpl(tpl).render(data);
+				}
+				else if(data.showType == "parentId"){
+					var tpl = $("#freeFormBody #treeTplForm").html();
+					html = laytpl(tpl).render(data);
+				}
+
+				$("#freeFormBody .form-kanban-demo .item.active").html($(html).html());
+				$("#freeFormBody .form-kanban-demo .item.active").attr("data-json",JSON.stringify(data).replace(/\'/g,"’"));
+				if(data.isOneLine == 1){
+					$("#freeFormBody .form-kanban-demo .item.active").removeClass("col-md-12").removeClass("col-md-6").addClass("col-md-12");
+				}else{
+					$("#freeFormBody .form-kanban-demo .item.active").removeClass("col-md-12").removeClass("col-md-6").addClass("col-md-6");
+				}
+
+				$("#freeFormBody .form-kanban-demo .item.active .i-checks, #"+data.id+" .i-checks").iCheck({
+					checkboxClass: "icheckbox_square-green",
+					radioClass: "iradio_square-green"
+				});
+
+				form_columnGrids.forEach(function(muuri) {
+					muuri.refreshItems().layout();
+				});
+
+				layer.msg("元数据修改成功！", {icon:1});
+			}
+		});
+		//右侧属性菜单验证
+		$("#freeFormBody").on("click","#saveSet",function(){
+			if(validateForm.form()){
+				$("#freeFormBody .form-kanban-demo #form").submit();
+			}
+		})
+
+		//日期选择 年月日时分秒功能
+		$("#freeFormBody .form-kanban-demo .right-menu *[name='dateType']").on("change",function(){
+			$("#freeFormBody .form-kanban-demo *[name='dateType']").prop("checked",false);
+			$(this).prevAll("*[name='dateType']").prop("checked",true);
+			$(this).prop("checked",true);
+		})
+
+
+		//Java类型change 弹出模态框
+		$("#freeFormBody .form-kanban-demo .right-menu select[name='javaType']").on("change", function (e) {
+			if($(this).val() == ""){
+				$("#freeFormBody #CustomModalForm").addClass("in").show();
+				$("#freeFormBody #modal-backgroup").show();
+				$("#freeFormBody #CustomModalForm #packagePath,#CustomModalForm #className").val("");
+			}else if($(this).children("option:selected").attr("class") == "newadd"){
+				$("#freeFormBody #CustomModalForm").addClass("in").show();
+				$("#freeFormBody #modal-backgroup").show();
+				var value = $(this).val();
+				var arr = value.split(".");
+				$("#freeFormBody #CustomModalForm #className").val(arr[arr.length - 1]);
+				arr.splice((arr.length - 1),1);
+				$("#freeFormBody #CustomModalForm #packagePath").val(arr.join("."));
+			}
+		});
+		//Java类型自定义输入 模态框保存
+		$("#freeFormBody").on("click","#CustomModalForm .btn-green", function() {
+			if($.trim($("#freeFormBody #CustomModalForm #packagePath").val()).length == 0 || $.trim($("#freeFormBody #CustomModalForm #className").val()).length == 0 ){
+				LayerUtil.warning("包名或类名不能为空！");
+			}else{
+				var packagePath = $("#freeFormBody #CustomModalForm #packagePath").val(), className = $("#freeFormBody #CustomModalForm #className").val();
+				var value = packagePath + "." + className;
+				$("#freeFormBody .form-kanban-demo .right-menu *[name='javaType']").find(".newadd").attr("value",value).text(className);
+
+				$("#freeFormBody .form-kanban-demo .right-menu *[name='javaType']").select2('destroy');
+				$("#freeFormBody .form-kanban-demo .right-menu *[name='javaType']").select2({
+					width: "100%",
+					minimumResultsForSearch: -1
+				});
+				hideMdodal();
+			}
+		});
+
+		//物理类型change
+		$("#freeFormBody .form-kanban-demo .right-menu select[name='jdbcType']").on("change", function (e) {
+			var value = $(this).val();
+			if(!value){
+				value = "";
+			}
+			if(value =="varchar"){
+				$("#freeFormBody #jdbcTypeVarchar").removeAttr("disabled");
+			}else{
+				$("#freeFormBody #jdbcTypeVarchar").attr("disabled","disabled");
+			}
+
+			var data = $("#freeFormBody .form-kanban-demo .item.active").attr("data-json");
+			data = JSON.parse(data);
+			var num = value.indexOf("varchar") > -1 ? (data['jdbcType'].match(/\d+/g) ? data['jdbcType'].match(/\d+/g).join("") : 64) : "";
+			$("#freeFormBody #jdbcTypeVarchar").val(num);
+		});
+
+		//显示表单类型change
+		$("#freeFormBody .form-kanban-demo .right-menu select[name='showType']").on("change", function(){
+			var data = $("#freeFormBody .form-kanban-demo .item.active").attr("data-json");
+			data = JSON.parse(data);
+
+			//var reg = list_rules[data.showType];
+			var showType = $(this).val();
+			$("#freeFormBody .form-kanban-demo .right-menu div[id]").hide();
+			var reg = list_rules[showType];
+			for (k in reg){
+				$("#freeFormBody .form-kanban-demo .right-menu div[id='"+k+"Div']").show();
+				var value = reg[k];
+				//规则变量
+				if(value[0] == 1){
+					$("#freeFormBody .form-kanban-demo .right-menu *[name='"+k+"']").removeAttr("disabled");
+				}else{
+					$("#freeFormBody .form-kanban-demo .right-menu *[name='"+k+"']").attr("disabled","disabled");
+				}
+				if(value[1] == 1){
+					$("#freeFormBody .form-kanban-demo .right-menu *[name='"+k+"']").attr("required","required");
+				}else{
+					$("#freeFormBody .form-kanban-demo .right-menu *[name='"+k+"']").removeAttr("required","required");
+				}
+				//赋值操作
+				if($("#freeFormBody .form-kanban-demo .right-menu *[name='"+k+"']").attr("type") == "radio" || $("#freeFormBody .form-kanban-demo .right-menu *[name='"+k+"']").attr("type") == "checkbox"){
+					if(k=="dateType"){
+						$("#freeFormBody .form-kanban-demo .right-menu *[name='"+k+"']").prop("checked",false);
+						if(typeof data[k] == "undefined" || data[k]==""){
+							$("#freeFormBody .form-kanban-demo .right-menu *[name='"+k+"'][value='yyyy']").prop("checked",true);
+							$("#freeFormBody .form-kanban-demo .right-menu *[name='"+k+"'][value='-MM']").prop("checked",true);
+							$("#freeFormBody .form-kanban-demo .right-menu *[name='"+k+"'][value='-dd']").prop("checked",true);
+						}else{
+							var dateArr = [];
+							var dateSplit = data[k].split(" ");
+							dateArr = dateArr.concat(dateSplit[0].split("-"));
+							if(dateSplit.length == 2){
+								dateArr = dateArr.concat(dateSplit[1].split(":"))
+							}
+							$.each(dateArr, function(i,t) {
+								$("#freeFormBody .form-kanban-demo .right-menu *[name='"+k+"'][data='"+t+"']").prop("checked",true);
+							});
+						}
+					}else{
+						$("#freeFormBody .form-kanban-demo .right-menu *[name='"+k+"'][value='"+data[k]+"']").prop("checked",true);
+					}
+				}else{
+					if(k == 'javaType'){
+						if($("#freeFormBody .form-kanban-demo .right-menu *[name='javaType']").find("option[value='"+data['javaType']+"']").length == 0){
+							if(!data['javaType']){
+								data['javaType'] = "";
+							}
+							var arr = data['javaType'].split(".");
+							$("#freeFormBody .form-kanban-demo .right-menu *[name='javaType']").find(".newadd").attr("value",data['javaType']).text(arr[arr.length - 1]).attr("selected","selected");
+						}else{
+							if($("#freeFormBody .form-kanban-demo .right-menu *[name='javaType']").find(".newadd").attr("value") != data['javaType']){
+								$("#freeFormBody .form-kanban-demo .right-menu *[name='javaType']").find(".newadd").attr("value","").text("自定义输入").attr("selected","selected");
+							}
+						}
+						$("#freeFormBody .form-kanban-demo .right-menu *[name='javaType']").val(data['javaType']);
+
+						$("#freeFormBody .form-kanban-demo .right-menu *[name='javaType']").select2('destroy');
+						$("#freeFormBody .form-kanban-demo .right-menu *[name='javaType']").select2({
+							width: "100%",
+							minimumResultsForSearch: -1
+						});
+					}
+					else if(k == 'jdbcType'){
+						if(!data['jdbcType']){
+							data['jdbcType'] = "";
+						}
+						if(data['jdbcType'].indexOf("varchar") > -1){
+							$("#freeFormBody .form-kanban-demo .right-menu *[name='jdbcType']").val('varchar').trigger("change");
+							$("#freeFormBody #jdbcTypeVarchar").removeAttr("disabled");
+						}else{
+							$("#freeFormBody .form-kanban-demo .right-menu *[name='jdbcType']").val(data['jdbcType']).trigger("change");
+							$("#freeFormBody #jdbcTypeVarchar").attr("disabled","disabled");
+						}
+					}
+					else if(k == "dictType"){
+						$("#freeFormBody #dictTypeDiv #dictType").html("<option value='"+data['dictType']+"'>"+data['dictType']+"</option>")
+						try{
+							$("#freeFormBody #dictTypeDiv #dictType").select2('destroy');
+						}catch(e){
+						}
+						//渲染字典搜索框
+						$('#freeFormBody #dictTypeDiv #dictType').select2({
+							width: "100%",
+							minimumInputLength: 1,
+							formatSelection: function(data) {
+								return data.codeText
+							}, //生效
+							ajax: {
+//							type: 'get',
+//							url: function(params) {
+//								return admin.basePath + "/freeForm-getDicttype.json"
+//							},
+//							data: function(params) { //输入的内容
+//								return {
+//									text: params.term,
+//								}
+//							},
+								type: 'get',
+								url: function(params) {
+									return admin.basePath + "/gen/genTable/dictDynamic"
+								},
+								headers:{
+									token: localStorage.getItem('$tokenBPM')
+								},
+								data: function(params) { //输入的内容
+									return {"key":params.term}
+								},
+								dataType: 'json',
+								processResults: function(data, page) {
+									var array = data.data.dictList;
+									var i = 0;
+									while(i < array.length) {
+										array[i]["id"] = array[i]['key'];
+										array[i]["text"] = array[i]['key'];
+										delete array[i]["key"];
+										delete array[i]["value"];
+										i++;
+									}
+									return {
+										results: array
+									};
+								},
+								cache: true,
+							},
+							placeholder: '请选择',
+							escapeMarkup: function(markup) { //提示语
+								return markup
+							},
+							templateResult: function(repo) {
+								if(repo.loading) {
+									return repo.text;
+								}
+								var markup = "<div class='select2-result-repository clearfix'>" +
+										"<div class='select2-result-repository__meta'>" +
+										"<div class='select2-result-repository__title'>" + repo.id + "</div>";
+								if(repo.description) {
+									markup += "<div class='select2-result-repository__description'>" + repo.text + "</div>";
+								}
+								return markup;
+							},
+							templateSelection: function(repo) {
+								return repo.text;
+							}
+						})
+					}
+					else if(k != 'showType'){
+						$("#freeFormBody .form-kanban-demo .right-menu *[name='"+k+"']").val(data[k]).trigger("change");
+					}
+				}
+			}
+			//文本域和上传组件窗格x12不可修改
+			if(showType == 'textarea' || showType == 'summernote' || showType.indexOf("file") > -1){
+				$("#freeFormBody .form-kanban-demo .right-menu *[name='isOneLine'][value='1").prop("checked",true);
+			}
+		})
+
+
+		//tab切换 校验form 渲染list和app
+		$("#freeFormBody").on("click",".my-tab-title > li",function(event){
+			if($(this).hasClass("layui-this")){
+				return false;
+			}
+
+			$("link[title='mui']").attr("disabled",true);
+			$("link[title='free']").attr("disabled",false);
+
+			//从表单离开时获取数据
+			if($("#freeFormBody .my-tab-title > li.layui-this").attr("id") == "freeFrom"){
+				if($.trim($("#freeFormBody #main-table-name").val()) == ""){
+					layer.msg("表名必须填写!", {icon:0});
+					$("#freeFormBody #main-table-name").focus();
+					return false;
+				}
+				else if($.trim($("#freeFormBody #main-table-comments").val()) == ""){
+					layer.msg("说明必须填写!", {icon:0});
+					$("#freeFormBody #main-table-comments").focus();
+					return false;
+				}
+
+				resultData = getFreeFromData();
+				if(!resultData){
+					return false;
+				}
+			}
+			//从列表离开时更新数据
+			else if($("#freeFormBody .my-tab-title > li.layui-this").attr("id") == "freeList"){
+				setFreeDataByList();
+			}
+
+			$("#freeFormBody .my-tab-title > li").removeClass("layui-this");
+			$(this).addClass("layui-this");
+			var index = $("#freeFormBody .my-tab-title > li").index($(this));
+			$("#freeFormBody .layui-tab-content .layui-tab-item").removeClass("layui-show");
+			$("#freeFormBody .layui-tab-content .layui-tab-item").eq(index).addClass("layui-show");
+
+			if($(this).attr("id") == "freeList"){
+				//列表清空
+				list_columnGrids[0].remove(list_columnGrids[0].getItems(),{removeElements:true});
+				list_columnGrids[1].remove(list_columnGrids[1].getItems(),{removeElements:true});
+				//列表渲染开始
+				var result = resultData.concat([]);
+				result.sort(sortBy("searchSort"));
+				$.each(result, function(index, item) {
+					item.javaFieldReplace = item.javaField.replace(/\|/g,'-').replace(/\./g,'-');
+					var tpl = $("#freeFormBody #" + item.showType + "TplList").html();
+					var html = "";
+					if(tpl) {
+						html = laytpl(tpl).render(item);
+					}else if(item.showType.indexOf("select") != -1){
+						var tpl = $("#freeFormBody #treeTplList").html();
+						html = laytpl(tpl).render(item);
+					}else if(item.showType.indexOf("file") != -1){
+					}
+
+					if(html){
+						elem = $(html)[0];
+						if(item.isQuery == "1"){
+							//					$("#freeFormBody .list-kanban-demo .main-menu .board-column-content.form-inline").append(html);
+							list_columnGrids[1].add([elem]);
+						}else{
+							//					$("#freeFormBody .list-kanban-demo .left-menu .board-column-content").append(html);
+							list_columnGrids[0].add([elem]);
+						}
+					}
+				});
+				$("#freeFormBody .list-kanban-demo .i-checks").iCheck({
+					checkboxClass: "icheckbox_square-green",
+					radioClass: "iradio_square-green"
+				});
+
+				result.sort(sortBy("listSort"));
+				var columns = [];
+				$.each(result, function(index, item) {
+					if(item.showType.indexOf("file") == -1){
+						var columnObj = {
+							field: item.javaField,
+							title: item.comments,
+							sortable: true,
+							id: item.id,
+							javaField: item.javaField,
+							visible: item.isList == "1" ? true : false
+						}
+						columns.push(columnObj);
+					}
+				});
+
+				$("#freeFormBody #table").bootstrapTable('destroy');
+				$("#freeFormBody #table").bootstrapTable({
+					method: 'get',               //请求方法
+					dataType: "json",            //类型json
+					showRefresh: false,           //显示刷新按钮
+					showToggle: false,            //显示切换手机试图按钮
+					showColumns: false,           //显示 内容列下拉框
+					showExport: false,            //显示到处按钮
+					showPaginationSwitch: false,  //显示切换分页按钮
+					minimumCountColumns: 2,      //最低显示2行
+					striped: true,               //是否显示行间隔色
+					cache: false,                //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+					pagination: true,            //是否显示分页（*）
+					sortOrder: "asc",            //排序方式
+					pageNumber:1,                //初始化加载第一页，默认第一页
+					pageSize: 10,                //每页的记录行数（*）
+					pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
+					url: "", //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据
+					sidePagination: "server",        //分页方式：client客户端分页，server服务端分页（*）
+					columns: columns,
+					onPostBody:function(){
+						/*if($('.bootstrap-table-div .fixed-table-toolbar .pull-right').find(".freeBtn").length == 0){
+                            $('.bootstrap-table-div .fixed-table-toolbar .pull-right').prepend("<div class='freeBtn' style='float:left;color:#18a689;font-size:14px;padding-right:10px'>选择列表数据 > </div>")
+                        }*/
+					}
+				});
+
+			}
+			else if($(this).attr("id") == "appShow"){
+				$("link[title='mui']").attr("disabled",false);
+				$("link[title='free']").attr("disabled",true);
+
+				var result = resultData.concat([]);
+				result.sort(sortBy("formSort"));
+				var html = "";
+				$.each(result, function(i,item) {
+					if(item.isList == '1'){
+						html += '<div>'+item.comments+'：</div>';
+					}
+				});
+				$("#freeFormBody #listLi").html(html);
+				result.sort(sortBy("formSort"));
+
+				$("#freeFormBody #formUl").html("");
+				$.each(result, function(index, item) {
+					if(item.isForm == '1'){
+						item.javaFieldReplace = item.javaField.replace(/\|/g,'-').replace(/\./g,'-');
+						var tpl = $("#freeFormBody #" + item.showType + "TplApp").html();
+						var html = "";
+						if(tpl) {
+							//isNull !=1必填  isOneLine 1=12
+							html = laytpl(tpl).render(item);
+						}else if(item.showType.indexOf("select") != -1){
+							var tpl = $("#freeFormBody #treeTplApp").html();
+							html = laytpl(tpl).render(item);
+						}else if(item.showType.indexOf("file") != -1){
+							var tpl = $("#freeFormBody #fileTplApp").html();
+							html = laytpl(tpl).render(item);
+						}
+						$("#freeFormBody #formUl").append(html);
+					}
+				});
+
+				mui('.mui-scroll-wrapper').scroll({
+					deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+				});
+
+				mui.init({
+					pullRefresh: {
+						container: "#refreshContainer",
+						down: {
+							/*style:'circle',*/
+							contentdown : "下拉可以刷新",//可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+							contentover : "释放立即刷新",//可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+							contentrefresh : "正在刷新...",
+							auto: true,
+							callback: function(){
+								setTimeout(function(){
+									mui("#refreshContainer").pullRefresh().endPulldownToRefresh();
+								},1000);
+							}
+						},
+						up: {
+							auto: false,
+							contentrefresh: "正在加载...",
+							contentnomore: '没有更多数据了',
+							callback: function() {
+								setTimeout(function(){
+									//true表示没有更多数据了,停止上拉加载
+									mui("#refreshContainer").pullRefresh().endPullupToRefresh(true);
+								},1000);
+							}
+						}
+					}
+				});
+			}else if($(this).attr("id") == "process"){
+				resultData = getFreeFromData();
+				if(!resultData){
+					return false;
+				}
+				if($("#freeFormBody .my-tab-title > li.layui-this").attr("id") == "freeList"){
+					setFreeDataByList()
+				}
+
+				$("#freeFormBody #processTable").bootstrapTable('destroy');
+				$("#freeFormBody #processTable").bootstrapTable({
+					method: 'get',               //请求方法
+					dataType: "json",            //类型json
+					showRefresh: false,           //显示刷新按钮
+					showToggle: false,            //显示切换手机试图按钮
+					showColumns: false,           //显示 内容列下拉框
+					showExport: false,            //显示到处按钮
+					showPaginationSwitch: false,  //显示切换分页按钮
+					minimumCountColumns: 2,      //最低显示2行
+					striped: true,               //是否显示行间隔色
+					cache: false,                //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+					pagination: true,            //是否显示分页（*）
+					sortOrder: "asc",            //排序方式
+					pageNumber:1,                //初始化加载第一页，默认第一页
+					pageSize: 10,                //每页的记录行数（*）
+					pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
+					sidePagination: "server",        //分页方式：client客户端分页，server服务端分页（*）
+					url: layui.admin.basePath + '/service/model/list',
+					ajaxOptions:{
+						headers: {token: localStorage.getItem('$tokenBPM')}
+					},
+					queryParams: function(param){
+						var data = {};
+						data.pageNo = (param.offset / param.limit) + 1;
+						data.pageSize = param.limit;
+						data.treeId = 0;
+						data.category = "";
+						return data;
+					},
+					onPostBody:function(){
+						$("#freeFormBody #processTable").find(".hide-btn-group").each(function(i,item){
+							var width = 0;
+							$("#freeFormBody #processTable").find(this).find(".btn").each(function(index,obj){
+								var count = $(obj).text().length;
+								if(layui.admin.lang()){
+									width += count*8 + 10;
+								}else{
+									width += count*15 + 10;
+								}
+							})
+							$(this).width(width);
+						});
+					},
+					columns: [
+						{
+							checkbox: true
+						}
+						, { field: 'category', title: '流程分类', sortable: true }
+						, { field: 'name', title: '模型名称', sortable: true }
+						, { field: 'officeName', title: '归属机构', sortable: true }
+						, { field: 'metaInfo.scope', title: '表单路径', sortable: true, align: 'center'}
+						, {
+							field: "lastUpdateTime",
+							title: "最后更新时间"
+							// formatter: function (value, row, index) {
+							// 	return row.lastUpdateTime
+							// }
+						}
+						, {
+							title: layui.admin.lang() ? 'Operation' : '操作',
+							width: '45px',
+							"class": 'center must',
+							events: {
+								'click .disignModel': function (e, value, row, index) {
+									//在线设计
+									console.log(row.id);
+									var href = admin.host + '/modeler.html?modelId='+row.id+'&ctx=/gtoa/a';
+									window.open(href);
+								},
+								'click .setModel': function (e, value, row, index) {
+									//编辑
+									LayerUtil.openDialog({
+										title: layui.admin.lang() ? 'Form' : '表单',
+										formLay: 'wytest-form',
+										initData:{
+											modelId : row.id
+										},
+										url: 'admin/processCenter/form',
+										//actionUrl: 'http://127.0.0.1:5500/json' + '/GetForm.json',
+										actionUrl: admin.basePath + '/service/model/data?modelId='+row.id,
+										btn: ['保存', '关闭'],
+										btn_EN: ['save', 'close'],
+										func1:function(index,layero){
+											window.processCenter.dosubmit(index,row.id);
+											$("#freeFormBody #processTable").bootstrapTable('refresh');
+										}
+									})
+								},
+								'click .deployModel': function (e, value, row, index) {
+									//部署
+									LayerUtil.confirm('确认要部署该模型吗？', function() {
+										LayerUtil.ajax({
+											url: admin.basePath + '/service/model/deploy',
+											type:'get',
+											shade:true,
+											data: {id:row.id},
+											success: function(res){
+												LayerUtil.success(res[LayerUtil.getMsgLang()]);
+												$("#freeFormBody #processTable").bootstrapTable('refresh');
+											}
+										});
+									});
+								},
+								'click .deleteModel': function (e, value, row, index) {
+									//部署
+									LayerUtil.confirm('确认要删除该模型吗？', function() {
+										LayerUtil.ajax({
+											url: admin.basePath + '/service/model/delete',
+											type:'get',
+											shade:true,
+											data: {id:row.id},
+											success: function(res){
+												LayerUtil.success(res[LayerUtil.getMsgLang()]);
+												$("#freeFormBody #processTable").bootstrapTable('refresh');
+											}
+										});
+									});
+								}
+							},
+							formatter: function(value, row, index) {
+								return btnsStr.tableBtnsStr;
+							}
+						}
+					],
+					onClickRow:function (row,$element) {
+						if($($element).hasClass('info')){
+							$("#freeFormBody #processName").val('');
+							$("#freeFormBody #processId").val('');
+							$("#freeFormBody .info").removeClass('info');//移除class
+						}else{
+							$("#freeFormBody .info").removeClass('info');//移除class
+							$($element).addClass('info');//添加class
+							$("#freeFormBody #processName").val(row.category);
+							$("#freeFormBody #processId").val(row.category);
+						}
+					}
+				});
+			}else if($(this).attr("id") == "creatMenu"){
+				resultData = getFreeFromData();
+				if(!resultData){
+					return false;
+				}
+				if($("#freeFormBody .my-tab-title > li.layui-this").attr("id") == "freeList"){
+					setFreeDataByList()
+				}
+
+				if($menuTreeTable == null){
+					$menuTreeTable = $("#freeFormBody #menuTreeTable").treeTable({
+						theme:'vsStyle',
+						expandLevel : 1,
+						column:0,
+						checkbox: false,
+						url: layui.admin.basePath + '/dynamic/zform/data?path=path&traceFlag=&formNo=sys_menu',
+						queryParams: function() {
+							return {};
+						},
+						callback:function(item) {
+							var treeTableTpl = $("#freeFormBody #menuTreeTableTpl").html();
+							item.json = JSON.stringify(item);
+							var width = 0;
+							var btnStr = btnsStrMenu.tableBtnsStr;
+							if(item.s10 == 3 || item.s10 == 4){
+								btnStr = '<div class="show-btn-group"><i class="fa fa-cog" aria-hidden="true"></i><div class="hide-btn-group"><a class="btn edit" dealname="修改">修改</a><a class="btn delete" dealname="删除">删除</a><a class="btn view" dealname="查看">查看</a></div></div>'
+							}
+							$(btnStr).find(".btn").each(function(index,obj){
+								var count = $(obj).text().length;
+								if(layui.admin.lang()){
+									width += count * 8 + 10;
+								}else{
+									width += count * 15 + 10;
+								}
+							})
+							var html = $(btnStr);
+							html.find(".hide-btn-group").width(width);
+							item.btns = html.prop("outerHTML");
+							var result = laytpl(treeTableTpl).render({
+								row: item
+							});
+							return result;
+						},
+						beforeClick: function($menuTreeTable, id) {
+							//异步获取数据 这里模拟替换处理
+							$menuTreeTable.refreshPoint(id);
+						},
+						beforeExpand : function($menuTreeTable, id) {
+						},
+						afterExpand : function($menuTreeTable, id) {
+						},
+						beforeClose : function($menuTreeTable, id) {
+						},
+						setData:function(res,pId){
+							var list = res.rows;
+
+							$.each(list, function(idx, obj) {
+								obj.parentId = obj.parent.id;
+								obj.isopen = true;
+							});
+							var data = [];
+							if(this.sync === false){
+								data = $.grep(list,function(obj,idx){
+									return obj.parentId == pId;
+								});
+
+								var callFuc = function(father){
+									$.each(father, function(i, item) {
+										var children = $.grep(list,function(obj,idx){
+											return obj.parentId == item.id;
+										});
+										data = data.concat(children);
+										if(children.length > 0){
+											callFuc.call(callFuc,children);
+										}
+									});
+								}
+								callFuc(data);
+							}else{
+								data = $.grep(list,function(obj,idx){
+									return obj.parentId == pId;
+								})
+							}
+							return data;
+						}
+					});
+				}
+			}
+		})
+
+		//清空流程点击事件
+		$("#freeFormBody #clearProcess").on("click",function(){
+			$("#freeFormBody #processName").val('');
+			$("#freeFormBody #processId").val('');
+			$("#freeFormBody .info").removeClass("info");
+		})
+		//刷新流程table
+		window.refreshProcessTable = function(){
+			$("#freeFormBody #processTable").bootstrapTable('refresh');
+		}
+		//刷新菜单树
+		window.refreshMenuTreeTable = function(){
+			var index = jp.loading("正在加载，请稍等...");
+			//var data = {subSystemCodeList : $("#subSystemCodeList").val()};
+			$menuTreeTable.refresh();
+			jp.close(index);
+		}
+		//新建流程
+		window.addProcess = function(){
+			openDialog("添加模型","/gtoa/a/act/model/create","600px;", "360px;","");
+		}
+		//新建菜单
+		window.addMenu = function(){
+			jp.openDialog('添加菜单', "${ctx}/sys/menu/form",'800px', '550px', $menuTreeTable);
+		}
+
+		//点击齿轮弹出模态框
+		$("#freeFormBody").on("click",".main-menu .board-column-content.form-inline .item .fa-cog", function(){
+			$("#freeFormBody #CustomModalList").addClass("in").show();
+			$("#freeFormBody #modal-backgroup").show();
+			setItem = $(this).closest(".item");
+			var data = JSON.parse(setItem.attr("data-json"));
+			$("#freeFormBody #queryTypeSL").val(data.queryType).trigger("change");
+		});
+		//模态框保存
+		$("#freeFormBody").on("click","#CustomModalList .btn-success", function() {
+			var queryType = $("#freeFormBody #queryTypeSL").val();
+			var data = JSON.parse(setItem.attr("data-json"));
+			data.queryType = queryType;
+
+			setItem.attr("data-json", JSON.stringify(data).replace(/\'/g,"’"));
+
+			//重新渲染日期选择框
+			if(data.showType == "dateselect"){
+				var tpl = $("#freeFormBody #dateselectTplList").html();
+				var html = "";
+				if(tpl) {
+					html = laytpl(tpl).render(data);
+				}
+				setItem.html($(html).html());
+			}
+
+			hideMdodal();
+		});
+
+		//点击列定制弹出模态框
+		$("#freeFormBody").on("click", "#setColumn", function(){
+			$("#freeFormBody #setColumnModal").addClass("in").show();
+			$("#freeFormBody #modal-backgroup").show();
+
+			var columns = $("#freeFormBody .list-kanban-demo #table").bootstrapTable('getOptions').columns[0];
+			var html = "";
+			$.each(columns, function(index, item) {
+				var columnObj = {
+					field: item.javaField,
+					title: item.title,
+					sortable: true,
+					id: item.id,
+					javaField: item.javaField,
+					visible: item.visible
+				}
+				var str = JSON.stringify(columnObj);
+
+				var checked = "";
+				if(item.visible == true){
+					checked = "checked";
+				}
+				html += '<tr data-json=\''+str+'\'>'+
+						'<td class="sortClass" style="text-align: center;">'+
+						'<input type="checkbox" class="i-checks" '+checked+'/>'+
+						'</td>'+
+						'<td>'+ item.title +'</td>'+
+						'<td>'+ item.javaField +'</td>'+
+						'</tr>';
+			});
+
+			$("#freeFormBody #setColumnModalList").html(html);
+			$("#freeFormBody #setColumnModalList .i-checks").iCheck({
+				checkboxClass: "icheckbox_square-green",
+				radioClass: "iradio_square-green"
+			});
+		});
+		//模态框保存后重新渲染bootstrap
+		$("#freeFormBody").on("click", "#setColumnModal .btn-success", function() {
+			var columns = [];
+			$("#freeFormBody #setColumnModalList tr").each(function(i, item){
+				var json = JSON.parse($(item).attr("data-json"));
+				if($(item).find(".i-checks").is(":checked")){
+					json.visible = true;
+				}else{
+					json.visible = false;
+				}
+				json.listSort = i;
+				columns.push(json);
+			});
+			$("#freeFormBody #table").bootstrapTable("destroy");
+			$("#freeFormBody #table").bootstrapTable({
+				method: 'get',               //请求方法
+				dataType: "json",            //类型json
+				showRefresh: false,           //显示刷新按钮
+				showToggle: false,            //显示切换手机试图按钮
+				showColumns: false,           //显示 内容列下拉框
+				showExport: false,            //显示到处按钮
+				showPaginationSwitch: false,  //显示切换分页按钮
+				minimumCountColumns: 2,      //最低显示2行
+				striped: true,               //是否显示行间隔色
+				cache: false,                //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+				pagination: true,            //是否显示分页（*）
+				sortOrder: "asc",            //排序方式
+				pageNumber:1,                //初始化加载第一页，默认第一页
+				pageSize: 10,                //每页的记录行数（*）
+				pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
+				url: "", //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据
+				sidePagination: "server",        //分页方式：client客户端分页，server服务端分页（*）
+				columns: columns,
+				onPostBody:function(){
+				}
+			});
+			hideMdodal();
+		});
+		//列定制模态框拖拽
+		function sortTable() {
+			$("#freeFormBody #setColumnModalList").sortable({
+				handle: '.sortClass',
+			});
+			$("#freeFormBody #setColumnModalList").disableSelection();
+		}
+
+		//获取数据
+		function getFreeFromData(){
+			var arr = [];
+			var next = true;
+
+			//判断表单元数据必填项
+			var items = form_columnGrids[0].getItems();
+			$.each(items, function(i,item) {
+				var data = JSON.parse($(item._element).attr("data-json"));
+				data.isForm = 1;
+				data.formSort = i;
+
+				var reg = list_rules[data.showType];
+				for (k in reg){
+					var value = reg[k];
+					if(value[1] == "1" && data[k] === ""){
+						layer.msg("有元数据属性未填写完毕!", {icon:0});
+						next = false;
+
+						$("#freeFormBody .form-kanban-demo .main-menu .board-column-content .item").removeClass("active");
+						$(item.getElement()).addClass("active");
+						$("#freeFormBody .form-kanban-demo .right-menu").css("visibility", "visible");
+						//这里只更改select2表单类型 其他的规则在change事件中触发
+						form_data = data;
+						$("#freeFormBody .form-kanban-demo .right-menu *[name='showType']").val(data['showType']).trigger("change");
+
+						return false;
+					}
+				}
+				arr.push(data);
+			});
+
+			//判断表单隐藏元数据必填项
+			var items = form_columnGrids[1].getItems();
+			$.each(items, function(i,item) {
+				var data = JSON.parse($(item._element).attr("data-json"));
+				data.isForm = 0;
+				data.formSort = 100+i;
+
+				var reg = list_rules[data.showType];
+				for (k in reg){
+					var value = reg[k];
+					if(value[1] == "1" && data[k] === ""){
+						$(item._element).trigger("click");
+						layer.msg("有元数据属性未填写完毕!", {icon:0});
+						next = false;
+
+						$("#freeFormBody .form-kanban-demo .main-menu .board-column-content .item").removeClass("active");
+						$(item.getElement()).addClass("active");
+						$("#freeFormBody .form-kanban-demo .right-menu").css("visibility", "visible");
+						//这里只更改select2表单类型 其他的规则在change事件中触发
+						form_data = data;
+						$("#freeFormBody .form-kanban-demo .right-menu *[name='showType']").val(data['showType']).trigger("change");
+
+						return false;
+					}
+				}
+				arr.push(data);
+			});
+			if(next){
+				//判断英文名是否出现重复
+				$.each(arr, function(i,data) {
+					var names = $.grep(arr,function(obj){
+						return data.name == obj.name;
+					})
+					if(names.length > 1){
+						var list = [];
+						$.each(names, function(i,item){
+							list.push(item.comments);
+						})
+						var listStr = list.join("、");
+
+						layer.msg(listStr+" 的英文名出现重复!", {icon:0});
+						next = false;
+
+						$("#freeFormBody .form-kanban-demo .main-menu .board-column-content .item").removeClass("active");
+						$("#freeFormBody .form-kanban-demo .main-menu .board-column-content .item#" + (data.javaField).replace(/\|/g,'-').replace(/\./g,'-')).addClass("active");
+						$("#freeFormBody .form-kanban-demo .right-menu").css("visibility", "visible");
+						//这里只更改select2表单类型 其他的规则在change事件中触发
+						form_data = data;
+						$("#freeFormBody .form-kanban-demo .right-menu *[name='showType']").val(data['showType']).trigger("change");
+
+						return false;
+					}
+				})
+				if(next){
+					return arr;
+				}else{
+					return false;
+				}
+			}else{
+				return false;
+			}
+		}
+		//获取数据--当在freeList页面时
+		function setFreeDataByList(){
+			var items = list_columnGrids[1].getItems();
+			$.each(resultData, function(index, obj) {
+				obj.isQuery = 0;
+				obj.searchSort = resultData.length;
+				$.each(items, function(i,item) {
+					var data = JSON.parse($(item._element).attr("data-json"));
+					if(obj.javaField == data.javaField){
+						obj.queryType = data.queryType;
+						obj.isQuery = 1;
+						obj.searchSort = i;
+					}
+				});
+				$("#freeFormBody .form-kanban-demo .item#"+(obj.javaField).replace(/\|/g,'-').replace(/\./g,'-')).attr("data-json", JSON.stringify(obj).replace(/\'/g,"’"));
+			});
+
+			var columns = $("#freeFormBody .list-kanban-demo #table").bootstrapTable('getOptions').columns[0];
+			$.each(resultData, function(index, obj) {
+				obj.isList = 0;
+				$.each(columns, function(i,item) {
+					if(obj.javaField == item.javaField){
+						//				console.log(i,item.javaField)
+						if(item.visible == true){
+							obj.isList = 1;
+						}
+						obj.listSort = i;
+					}
+				});
+				$("#freeFormBody .form-kanban-demo .item#"+(obj.javaField).replace(/\|/g,'-').replace(/\./g,'-')).attr("data-json", JSON.stringify(obj).replace(/\'/g,"’"));
+			});
+			listSortIndex = columns.length;
+		}
+		
+		
+		//渲染tinymce
+		var report = $("#freeFormBody #report");
+		var newName = "report"+new Date().getTime();
+		report.attr("id",newName);
+        //渲染tinymce按钮点击事件
+		$("#freeFormBody").on("click", "#reportBtn", function() {
+			var data = resultData.concat([]);
+			var html = "<table id='report-table' class='border tdborder'>";
+			var idx = 0;
+			$.each(data, function(index, item) {
+				if(item.isForm == "1"){
+					
+					if(idx%2==0 || item.isOneLine==1){
+						html += "<tr>";
+					}
+					
+					item.javaFieldReplace = item.javaField.replace(/\|/g,'-').replace(/\./g,'-');
+					var tpl = $("#freeFormBody #" + item.showType + "TplReport").html();
+					if(tpl) {
+						//isNull !=1必填  isOneLine 1=12
+						html += laytpl(tpl).render(item);
+					} 
+					else if(item.showType.indexOf("select") != -1){
+						var tpl = $("#freeFormBody #treeTplReport").html();
+						item.realName = item.javaField.split("|")[0];
+						if(item.showType=="treeselectRedio"){
+							item.actionUrl = "/sys/tagTree/userTree";
+							item.sync = "false";
+							item.check = "false";
+							item.chooseParent = "false";
+						}
+						else if(item.showType=="treeselectCheck"){
+							item.actionUrl = "/sys/tagTree/userTree";
+							item.sync = "false";
+							item.check = "true";
+							item.chooseParent = "false";
+						}
+						else if(item.showType=="officeselectTree"){
+							item.actionUrl = "/sys/tagTree/officeTreeAsync?id=0";
+							item.sync = "true";
+							item.check = "false";
+							item.chooseParent = "true";
+						}
+						else if(item.showType=="areaselect"){
+							item.actionUrl = "/sys/tagTree/areaTreeAsync?id=0";
+							item.sync = "true";
+							item.check = "false";
+							item.chooseParent = "true";
+						}
+						else if(item.showType=="gridselect"){
+							tpl = $("#freeFormBody #gridTplReport").html();
+						}
+						else if(item.showType == "treeselect"){
+							tpl = $("#freeFormBody #treeSelectTplReport").html();
+							item.actionUrl = "/dynamic/zform/treeData?parentId=0&traceFlag=1&formNo="+item.tableName;
+							item.sync = "false";
+							item.check = "false";
+							item.chooseParent = "true";
+							console.log(item)
+						}
+						else if(item.showType == "iconselect"){
+							tpl = $("#freeFormBody #iconTplReport").html();
+						}
+						html += laytpl(tpl).render(item);
+					}else if(item.showType.indexOf("file") != -1){
+						var tpl = $("#freeFormBody #fileTplReport").html();
+						if(item.showType == "fileuploadpic"){
+							item.showTypeCopy = "upload";
+							item.accept = "pic";
+						}
+						else if(item.showType == "fileuploadsec"){
+							item.showTypeCopy = "uploadsec";
+							item.accept = "";
+						}
+						else if(item.showType == "fileupload"){
+							item.showTypeCopy = "upload";
+							item.accept = "";
+						}
+						html += laytpl(tpl).render(item);
+					}
+					else if(item.showType == "parentId"){
+						var tpl = $("#freeFormBody #treeTplReport").html();
+						html += laytpl(tpl).render(item);
+					}
+					
+					if(idx%2==1 || item.isOneLine==1){
+						html += "</tr>";
+						idx=0;
+					}else{
+						idx++;
+					}
+				}
+				
+			});
+			html += "</table>";
+			
+			var $html = $("<div>").append(html);
+			$html.find("tr").each(function(j,obj){
+				if($(obj).children("td").length == 2){
+					$(obj).children("td").eq(1).attr("colspan",3);
+				}
+			})
+			tinyMCE.editors[newName].setContent($html.html());
+		})
+		
+		//tinymce初始化
+		function initTinyMCE(){
+			tinymce.init({
+	            selector: '#'+newName,
+	            language:'zh_CN',
+	            auto_focus: true,
+	            plugins: 'print preview searchreplace autolink directionality visualblocks visualchars fullscreen link template code codesample table charmap hr nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern help emoticons autoresize wycustom1 wycustom2',
+	            toolbar: 'code undo redo restoredraft | cut copy paste pastetext | forecolor backcolor bold italic underline strikethrough link anchor | alignleft aligncenter alignright alignjustify outdent indent | \
+	             wycustom1 wycustom2 | \
+	             styleselect formatselect fontselect fontsizeselect | bullist numlist | blockquote subscript superscript removeformat | \
+	             table charmap emoticons hr insertdatetime print preview | fullscreen ',
+	            height: 650, //编辑器高度
+	            min_height: 400,
+	            fontsize_formats: '12px 14px 16px 18px 24px 36px 48px 56px 72px',
+	            font_formats: '微软雅黑=Microsoft YaHei,Helvetica Neue,PingFang SC,sans-serif;苹果苹方=PingFang SC,Microsoft YaHei,sans-serif;宋体=simsun,serif;仿宋体=FangSong,serif;黑体=SimHei,sans-serif;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings,zapf dingbats;知乎配置=BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif;小米配置=Helvetica Neue,Helvetica,Arial,Microsoft Yahei,Hiragino Sans GB,Heiti SC,WenQuanYi Micro Hei,sans-serif',
+	            //importcss_append: true,
+	            //
+	            toolbar_mode : 'wrap',
+	            //icons:'ax-color',
+				setup : function (ed) { 
+					ed.on('keyup',function(){
+						ed.save();
+					})
+			    }, 
+			    verify_html:false,
+	//						    invalid_styles: {
+	//						        'td': ''
+	//						    },
+	//						    valid_styles:{
+	//						    	'*': 'width',
+	//						    },
+			    br_in_pre: false,
+			    remove_trailing_brs:true,
+			    end_container_on_empty_block:false,
+			    elementpath: false,
+			    keep_styles: false,
+			    protect:[
+			       /\<fieldset class\=\"set\"\>.*?\<\/fieldset\>/g, 
+			    ]
+	        });
+		}
+
+		//表单页自执行方法
+		window.formFuction = function(){
+			LayerUtil.ajax({
+				url: admin.basePath + '/dynamic/zform/dictListFromTable?formNo=con_address&propertyName=s01&orderBy=',
+				type: 'get',
+				async: false,
+				success: function(result){
+					var html = "";
+					$.each(result.data.dict, function(idx,item) {
+						html += '<option value="'+item.member+'">'+item.memberName+'</option>';
+					});
+					$("#freeFormBody #blockChainParam1-mian").append(html);
+					$("#freeFormBody #blockChainParam1-mian").select2({
+						width: "100%",
+						minimumResultsForSearch: -1
+					});
+				}
+			});
+			LayerUtil.ajax({
+				url: admin.basePath + '/sys/dict/getDictListView?types=yes_no',
+				type: 'get',
+				async: false,
+				success: function(result){
+					var html = "";
+					$.each(result.data.data, function(idx,item) {
+						html += '<option value="'+item.member+'">'+item.memberName+'</option>';
+					});
+					$("#freeFormBody #blockChainParam2-mian").append(html);
+					$("#freeFormBody #blockChainParam2-mian").select2({
+						width: "100%",
+						minimumResultsForSearch: -1
+					});
+				}
+			});
+			
+			//wy数据获取
+			var formId = $("#freeFormBody #formId").val();
+
+			if(formId){
+				LayerUtil.ajax({
+					//url: admin.basePath + '/freeForm-data2.json',
+					url: admin.basePath + '/gen/genTable/editForm',
+					type: 'post',
+					async: false,
+					data: JSON.stringify({
+						id:formId
+					}),
+					success: function(result){
+						$.each(result.data.data, function(i,item){
+							if(typeof item.searchSort == "undefined" || item.searchSort === ""){
+								item.searchSort = result.data.data.length;
+							}
+							if(typeof item.formSort == "undefined" || item.formSort === ""){
+								item.formSort = result.data.data.length;
+							}
+							if(typeof item.listSort == "undefined" || item.listSort === ""){
+								item.listSort = result.data.data.length;
+							}
+						})
+						resultData = result.data.data;
+						listSortIndex = result.data.data.length;
+						
+						//tinyMCE赋值
+						$("#freeFormBody #"+newName).text(result.data.genTable.extJsp);
+						initTinyMCE();
+//						tinyMCE.editors[newName].setContent(result.data.genTable.extJsp);
+						
+						if(result.data.genTable.isCustom == "1"){
+							$("#freeFormBody #isCustom").prop('checked', true);
+						}
+
+						//wy新增获取数据
+						$("#freeFormBody #oldName, #freeFormBody #main-table-name").val(result.data.genTable.name);
+						$("#freeFormBody #parentTable").val(result.data.genTable.parentTable);
+						$("#freeFormBody #main-table-comments").val(result.data.genTable.comments);
+						$("#freeFormBody #main-table-comments-en").val(result.data.genTable.comments_EN);
+						$("#freeFormBody #main-table-module").val(result.data.genTable.module);
+						$("#freeFormBody #main-table-tree").val(result.data.genTable.parentTable).trigger("change");
+						$("#freeFormBody #blockChainParam1-mian").val(result.data.genTable.blockChainParam1).trigger("change");
+						$("#freeFormBody #blockChainParam2-mian").val(result.data.genTable.blockChainParam2).trigger("change");
+
+						$("#freeFormBody #processId").val(result.data.genTable.processDefinitionCategory);
+						$("#freeFormBody #processName").val(result.data.genTable.processDefinitionCategory);
+
+						//$("#freeFormBody #main-parent-table").val(result.data.genTable.parentTable);
+						$("#freeFormBody #main-parent-table-fk").val(result.data.genTable.parentTableFk);
+
+						$("#freeFormBody #importList").val(result.data.genTable.importList);
+						$("#freeFormBody #exportList").val(result.data.genTable.exportList);
+						$("#freeFormBody #exportTemplatePath").val(result.data.genTable.exportTemplatePath);
+						$("#freeFormBody #exportRuleName").val(result.data.genTable.exportRuleName);
+
+						var tableTypeId = $("#freeFormBody #tableTypeId").val();
+						if(result.data.genTable.parentTable){
+							if(tableTypeId == 4){
+								$("#freeFormBody #main-table-type").append('<option value="4">左树右表</option>');
+								$("#freeFormBody #main-table-tree-div").show();
+							}else{
+								$("#freeFormBody #main-table-type").append('<option value="0">列表</option>');
+							}
+						}else{
+							$("#freeFormBody #main-table-type").append('<option value="0">列表</option><option value="3">树表</option><option value="4">左树右表</option>');
+							$("#freeFormBody #main-table-type").val(tableTypeId);
+						}
+						$("#freeFormBody #main-table-type").select2({
+							width: "100%",
+							minimumResultsForSearch: -1
+						});
+
+
+						if(result.data.genTable.isMobile == "1"){
+							$("#freeFormBody #isMobile").prop('checked', true);
+						}
+						myHelper.initIChecks($("#freeFormBody #isMobileDiv"));
+
+						if(result.data.genTable.isBuildImport == "1"){
+							$("#freeFormBody #isBuildImport").prop('checked', true);
+						}
+						if(result.data.genTable.isBuildExport == "1"){
+							$("#freeFormBody #isBuildExport").prop('checked', true);
+						}
+						if(result.data.genTable.isScroll == "1"){
+							$("#freeFormBody #isScroll").prop('checked', true);
+						}
+						if(result.data.genTable.isRowedit == "1"){
+							$("#freeFormBody #isRowedit").prop('checked', true);
+						}
+						if(result.data.genTable.isBuildSecret == "1"){
+							$("#freeFormBody #isBuildSecret").prop('checked', true);
+						}
+						myHelper.initIChecks($("#freeFormBody #tableSetDiv"));
+
+						//wy渲染主子表
+						if(result.data.genTable.children && result.data.genTable.children.length > 0){
+							$("#freeFormBody .fatherAndChild").show();
+
+							var title = "";
+							$.each(result.data.genTable.children, function(index, item) {
+								title += '<li class="">'+ item.key +'</li>';
+								var content = '<div class="fc-tab-item">'+
+										'<table id="fcTable'+index+'"></table>'+
+										'</div>';
+								$("#freeFormBody .fatherAndChild .layui-tab-content").append(content);
+
+								var columns = [];
+								$.each(item.data, function(i, obj) {
+									if(obj.isList == 1){
+										var columnObj = {
+											field: obj.javaField,
+											title: obj.comments,
+											sortable: true
+										}
+										columns.push(columnObj);
+									}
+								});
+								$("#freeFormBody #fcTable"+index).bootstrapTable({
+									method: 'get',               //请求方法
+									dataType: "json",            //类型json
+									showRefresh: false,           //显示刷新按钮
+									showToggle: false,            //显示切换手机试图按钮
+									showColumns: false,           //显示 内容列下拉框
+									showExport: false,            //显示到处按钮
+									showPaginationSwitch: false,  //显示切换分页按钮
+									minimumCountColumns: 2,      //最低显示2行
+									striped: true,               //是否显示行间隔色
+									cache: false,                //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+									pagination: false,            //是否显示分页（*）
+									sortOrder: "asc",            //排序方式
+									pageNumber:1,                //初始化加载第一页，默认第一页
+									pageSize: 10,                //每页的记录行数（*）
+									pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
+									url: "", //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据
+									sidePagination: "server",        //分页方式：client客户端分页，server服务端分页（*）
+									columns: columns,
+									onPostBody:function(){
+									}
+								});
+							});
+							$("#freeFormBody .fatherAndChild .fc-tab-title").append(title);
+							$("#freeFormBody .fatherAndChild .fc-tab-title>li").eq(0).trigger("click");
+						}
+					}
+				});
+			}else{
+				initTinyMCE();
+				
+				var parentTable = $("#freeFormBody #parentTable").val();
+				var tableTypeId = $("#freeFormBody #tableTypeId").val();
+				$("#freeFormBody #main-table-tree").val(parentTable);
+				if(parentTable){
+					if(tableTypeId == 3){
+						$("#freeFormBody #main-table-type").append('<option value="4">左树右表</option>');
+						$("#freeFormBody #main-table-tree-div").show();
+					}else{
+						$("#freeFormBody #main-table-type").append('<option value="0">列表</option>');
+					}
+				}else{
+					$("#freeFormBody #main-table-type").append('<option value="0">列表</option><option value="3">树表</option><option value="4">左树右表</option>');
+				}
+				$("#freeFormBody #main-table-type").select2({
+					width: "100%",
+					minimumResultsForSearch: -1
+				});
+
+				resultData = arrayJson;
+				myHelper.initIChecks($("#freeFormBody #isMobileDiv"));
+				myHelper.initIChecks($("#freeFormBody #tableSetDiv"));
+			}
+
+			
+			$("#freeFormBody  #isCustom.i-checks").iCheck({
+				checkboxClass: "icheckbox_square-green",
+				radioClass: "iradio_square-green"
+			});
+
+			$.each(resultData, function(index, item) {
+				if(item.javaField == "id" || item.javaField == "delFlag" || item.javaField == "procInsId" || item.javaField == "parent.id" || item.javaField == "procDefKey"){
+					hideArr.push(item);
+				}
+			});
+			resultData = $.grep(resultData, function(item, index){
+				return item.javaField != "id" && item.javaField != "delFlag" && item.javaField != "procInsId" && item.javaField != "parent.id" && item.javaField != "procDefKey";
+			})
+
+			//表单渲染开始
+			var result = resultData.concat([]);
+			result.sort(sortBy("formSort"));
+			$.each(result, function(index, item) {
+				item.javaFieldReplace = item.javaField.replace(/\|/g,'-').replace(/\./g,'-');
+				var tpl = $("#freeFormBody #" + item.showType + "TplForm").html();
+				var html = "";
+				if(tpl) {
+					//isNull !=1必填  isOneLine 1=12
+					html = laytpl(tpl).render(item);
+				}else if(item.showType.indexOf("select") != -1){
+					var tpl = $("#freeFormBody #treeTplForm").html();
+					html = laytpl(tpl).render(item);
+				}else if(item.showType.indexOf("file") != -1){
+					var tpl = $("#freeFormBody #fileTplForm").html();
+					html = laytpl(tpl).render(item);
+				}
+				else if(item.showType == "parentId"){
+					var tpl = $("#freeFormBody #treeTplForm").html();
+					html = laytpl(tpl).render(item);
+				}
+
+				if(item.isForm == "1"){
+					$("#freeFormBody .form-kanban-demo .main-menu .board-column-content.isShow").append(html);
+				}
+				else{
+					$("#freeFormBody .form-kanban-demo .main-menu .board-column-content.isHide").append(html);
+				}
+
+				if(item.showType == "summernote"){
+					$("#freeFormBody .form-kanban-demo .initSummernote").summernote({
+						height: 150,
+						tabsize: 2,
+						lang: 'zh-CN',
+						disableDragAndDrop:true
+					});
+				}
+			});
+			setTimeout(function(){
+				buildFormKanBan();
+				buildListKanBan();
+				LayerUtil.close(loadingIndex);
+			},1000)
+			//显示第一页
+			$("#freeFormBody #freeFrom").trigger("click");
+			sortTable();
+
+		};
+
+		window.freeFormBodyFuc = {};
+		window.freeFormBodyFuc.dosubmit = function(layIndex){
+			saveFuc(function(result){
+				layui.admin.removeSessionData("page-form-field-"+$("#freeFormBody #main-table-name").val());
+				LayerUtil.success(result[LayerUtil.getMsgLang()]);
+				layui.layer.close(layIndex);
+			})
+		}
+
+		function saveFuc(cb){
+			if($.trim($("#freeFormBody #main-table-name").val()) == ""){
+				layer.msg("表名必须填写!", {icon:0});
+				$("#freeFormBody #main-table-name").focus();
+				return false;
+			}
+			else if($.trim($("#freeFormBody #main-table-comments").val()) == ""){
+				layer.msg("说明必须填写!", {icon:0});
+				$("#freeFormBody #main-table-comments").focus();
+				return false;
+			}
+
+
+			resultData = getFreeFromData();
+			if(!resultData){
+				return false;
+			}
+
+			if($("#freeFormBody .my-tab-title > li.layui-this").attr("id") == "freeList"){
+				setFreeDataByList()
+			}
+
+			var json = resultData.concat(hideArr);
+			/*$.each(json, function(i,item) {
+                if(item.name == "id" || item.name == "del_flag"){
+                    item.formSort = Number(item.formSort);
+                    item.searchSort = Number(item.searchSort);
+                    item.listSort = Number(item.listSort);
+                }
+            });*/
+			var parentTableValue = $("#freeFormBody #main-table-tree").val();
+			if (!parentTableValue || parentTableValue == "") {
+				parentTableValue = $("#freeFormBody #parentTable").val();
+			}
+			console.log(parentTableValue);
+			var data = {
+				id:$("#freeFormBody #formId").val(),
+				tableType: $("#freeFormBody #main-table-type").val(),
+				json:json,
+				name:$("#freeFormBody #main-table-name").val(),
+				comments:$("#freeFormBody #main-table-comments").val(),
+				module:$("#freeFormBody #main-table-module").val(),
+				processDefinitionCategory: $("#freeFormBody #processId").val(),
+				oldName:$("#freeFormBody #oldName").val(),
+				parentTable:parentTableValue,
+				isMobile:$("#freeFormBody #isMobile").is(":checked") ? "1" : "",
+				isRowedit:$("#freeFormBody #isRowedit").is(":checked") ? "1" : "",
+				isBuildSecret:$("#freeFormBody #isBuildSecret").is(":checked") ? "1" : "",
+				isScroll:$("#freeFormBody #isScroll").is(":checked") ? "1" : "",
+				mobileIcon:$("#mobileIcon").val(),
+				comments_EN: $("#main-table-comments-en").val(),
+				//parentTable:$("#freeFormBody #main-parent-table").val(),
+				parentTableFk:$("#freeFormBody #main-parent-table-fk").val(),
+				isBuildImport:$("#freeFormBody #isBuildImport").is(":checked") ? "1" : "",
+				isBuildExport:$("#freeFormBody #isBuildExport").is(":checked") ? "1" : "",
+				importList:$("#freeFormBody #importList").val(),
+				exportList:$("#freeFormBody #exportList").val(),
+				exportTemplatePath:$("#freeFormBody #exportTemplatePath").val(),
+				exportRuleName:$("#freeFormBody #exportRuleName").val(),
+				extJsp:tinyMCE.editors[newName].getContent(),
+				isCustom:$("#freeFormBody #isCustom").is(":checked") ? "1" : "",
+				blockChainParam1:$("#freeFormBody #blockChainParam1-mian").val(),
+				blockChainParam2:$("#freeFormBody #blockChainParam2-mian").val()
+			}
+
+			console.log(JSON.stringify(data))
+			//保存
+			LayerUtil.ajax({
+				//url: admin.basePath + '/true.json',
+				type:'post',
+				url: admin.basePath + '/gen/genTable/saveGenTable',
+				async: false,
+				shade:true,
+				data:JSON.stringify(data),
+				success: function(result){
+					cb(result);
+				}
+			})
+			return true;
+		}
+
+	});
+
+</script>
+

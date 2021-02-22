@@ -1,0 +1,4 @@
+-- 手动安装kettle库
+mvn install:install-file -Dfile=D:/Maven/temp/kettle-core-7.0.0.0-25.jar -DgroupId=org.pentaho -DartifactId=kettle-core -Dversion=7.0.0.0-25 -Dpackaging=jar
+mvn install:install-file -Dfile=D:/Maven/temp/kettle-engine-7.0.0.0-25.jar -DgroupId=org.pentaho -DartifactId=kettle-engine -Dversion=7.0.0.0-25 -Dpackaging=jar
+mvn install:install-file -Dfile=D:/Maven/temp/metastore-7.0.0.0-25.jar -DgroupId=org.pentaho -DartifactId=metastore -Dversion=7.0.0.0-25 -Dpackaging=jar

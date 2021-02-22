@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>App演示管理</title>
+		<link rel="stylesheet" href="../../../static/app/css/mui.min.css" />
+		<link rel="stylesheet" href="../../../static/app/css/app.css" />
+		<style>
+			ul { font-size: 14px; color: #8f8f94; }
+			.mui-btn { padding: 10px; }
+			.white .mui-content { background: #fff; }
+			.mui-bar-tab { background-color: #fff; }
+			.mui-bar-nav~.mui-content { padding-top: 0px; }
+			#refreshContainer { top: 64px; padding-bottom: 0px; }
+			#refreshContainer > .mui-scroll { background-color: #FFF; }
+			.title { padding: 15px 15px 0px 15px; position: relative; z-index: 9; top: 0px; }
+			.mui-bar-nav ~ .mui-content .mui-pull-top-pocket { top: 0px; }
+			.mui-table-view { color: #000; }
+			.mui-table-view-cell:after { position: absolute; right: 15px; bottom: 0; left: 15px; height: 1px; content: ''; -webkit-transform: scaleY(.5); transform: scaleY(.5); background-color: #c8c7cc; }
+			.mui-table-view:after { right: 15px; left: 15px; }
+			.mui-table-view:before { right: 15px; left: 15px; z-index: 9; }
+			.mui-table-view.no-head:before { height: 0px; }
+			.mui-table-view.no-head { margin-top: 0px !important; }
+			.mui-media-body > div { white-space: normal; font-size: 17px; line-height: 25px; overflow: hidden; }
+			.mui-table-view .mui-media-object { max-width: 100px; height: 70px; }
+			.mui-bar-nav~.mui-content { padding-top: 0px; }
+			.mui-slider-handle > a{ color: inherit; display: block; }
+		</style>
+	</head>
+	<body class="white">
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">App演示列表</h1>
+			<a class="mui-btn-link mui-pull-right" @tap="add">新建</a>
+		</header>
+		
+		<div id="vue-dom" class="mui-content" style="position: absolute; margin: auto; top: 74px; bottom: 0px; width: 100%;">
+			<div class="title" class="mui-scroll-wrapper">
+				<div class="mui-input-row mui-search">
+					<input type="search" v-model="searchName" placeholder="搜索">
+				</div>
+			</div>
+			<div id="refreshContainer" class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view" style="margin-top: 1px;">
+						<template v-for="(row, index) in rows">
+							<li class="mui-table-view-cell mui-media">
+								<div class="mui-slider-right mui-disabled">
+									<a @tap="goToInfo($event, row)" class="mui-btn mui-btn-green">查看</a>
+									<a @tap="goToEditInfo($event, row)" class="mui-btn mui-btn-blue">编辑</a>
+									<a v-if="row.unsent" @tap="deletRow($event, index, row)" class="mui-btn mui-btn-red">删除</a>
+								</div>
+								<div class="mui-slider-handle">
+									<a href="javascript:;">
+										<div class="mui-media-body">
+											<div>
+												{{row.s01}}
+											</div>
+											<p class='mui-ellipsis'>提交时间：{{row.updateDate}}</p>
+										</div>
+									</a>
+								</div>
+							</li>
+					   	</template>
+					</ul>
+					
+				</div>
+			</div>
+		</div>
+		<script>var h5pullDown = true;</script>
+		<script type="text/javascript" src="../../../static/app/js/mui.js"></script>
+		<script type="text/javascript" src="../../../static/app/js/app.js"></script>
+		<script type="text/javascript" src="../../../static/app/js/vue.js" ></script>
+		<script type="text/javascript" src="../../../static/app/js/pace.min.js"></script>
+		<script type="text/javascript" src="list.js" ></script>
+	</body>
+</html>

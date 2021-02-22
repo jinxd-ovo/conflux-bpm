@@ -1,0 +1,336 @@
+.adapt {
+    display: table;
+    width: 100%;
+}
+.adapt>span {
+	padding-right: 5px;
+    width: 125px !important;
+    display: table-cell;
+    text-align: right;
+    box-sizing: border-box;
+    vertical-align: middle;
+    font-weight: 400;
+    border-right: none;
+    overflow: hidden;
+    box-sizing: border-box;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: move;
+}
+.adapt>div {
+    line-height: 30px;
+    padding-left: 10px;
+}
+.adapt .i-checks-div{
+    border: 1px solid #e6e6e6;
+    padding-left: 6px;
+}
+.adapt .i-checks-div[disabled]{
+    background-color: #eee;
+    cursor: not-allowed;
+}
+.select2-container--default.select2-container--disabled .select2-selection--single{
+    cursor: not-allowed;
+}
+.adapt .tag-div{
+	position: relative;
+}
+.adapt .tag-div[disabled],
+.adapt .tag-div[disabled] input{
+    background-color: #eee;
+    cursor: not-allowed;
+}
+.adapt .tag-div[disabled] .tag-div-button{
+    background-color: #eee;
+    border: 1px solid #e5e6e7;
+    cursor: not-allowed;
+}
+.adapt .tag-div .tag-div-button{
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+    color: #fff;
+    cursor: pointer;
+    background-color: #1ab394;
+    text-align: center;
+    right: 0px;
+    top: 0px;
+    border: 1px solid #1ab394;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+.searchForm .tag-div{
+	display: inline-block;
+}
+.searchForm div.form-group{
+	position: relative;
+}
+.searchForm .tag-div .tag-div-button{
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+    color: #fff;
+    cursor: pointer;
+    background-color: #1ab394;
+    text-align: center;
+    right: 0px;
+    top: 0px;
+    border: 1px solid #1ab394;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+.btn-green{
+	height: 30px;
+	line-height: 0px;
+    color: #fff;
+    cursor: pointer;
+    background-color: #1ab394;
+    text-align: center;
+    border: 1px solid #1ab394;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+.form-search input, .form-inline input, .form-horizontal input, .form-search textarea, .form-inline textarea, .form-horizontal textarea, .form-search select, .form-inline select, .form-horizontal select, .form-search .help-inline, .form-inline .help-inline, .form-horizontal .help-inline, .form-search .uneditable-input, .form-inline .uneditable-input, .form-horizontal .uneditable-input, .form-search .input-prepend, .form-inline .input-prepend, .form-horizontal .input-prepend, .form-search .input-append, .form-inline .input-append, .form-horizontal .input-append {
+    display: inline-block;
+    *display: inline;
+    vertical-align: middle;
+    *zoom: 1;
+}
+.form-control, .single-line {
+    font-size: 13px !important;
+    background-color: #FFFFFF;
+    background-image: none;
+    border: 1px solid #e5e6e7;
+    border-radius: 1px;
+    box-shadow: none;
+}
+.adapt textarea {
+	resize: none;
+}
+input[type="text"]{
+	height: 30px;
+	line-height: 30px;
+}
+/*select2*/
+.select2-container.select2-container--default.select2-container--open{
+	z-index: 99999999;
+}
+.select2-container--default .select2-selection--single {
+	border: 1px solid #e5e6e7;
+	border-radius: 0px;
+	height: 30px;
+	line-height: 30px;
+}
+.select2-container--default.select2-container--open.select2-container--below .select2-selection--single,
+.select2-container--default.select2-container--open.select2-container--below .select2-selection--multiple{
+	border-color: #1ab394 !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+	color: #676a6c;
+	font-size: 13px;
+	line-height: 30px;
+	padding-left: 6px;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+	top: 4px;
+}
+.select2-results__option[aria-selected] {
+	line-height: 23px;
+	min-height: 23px;
+	padding-left: 6px;
+}
+.select2-container--default.select2-container--open.select2-container--above .select2-selection--single {
+	border-color: #1ab394 !important;
+}
+.select2-container--open .select2-dropdown--below {
+	border-radius: 0;
+}
+.select2-dropdown {
+	border: 1px solid #1ab394;
+}
+.select2-results__option {
+	padding: 2px;
+}
+.select2-search--dropdown .select2-search__field {
+	padding: 2px;
+}
+#searchForm .select2-container--default .select2-selection--single {
+	height: 30px;
+	line-height: 30px;
+}
+#searchForm .select2-container--default .select2-selection--single .select2-selection__rendered {
+	line-height: 30px;
+}
+#searchForm .select2-container--default .select2-selection--single .select2-selection__arrow {
+	top: 2px;
+}
+.select2-dropdown {
+	border-radius: 0px;
+}
+.select2-selection:focus {
+	outline: none !important;
+}
+
+.select2-container--default .select2-search--inline .select2-search__field{
+	margin-top: 0px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice{
+    background-color: rgb(58, 192, 255);
+    color: #fff;
+    border: none;
+    margin: 0px;
+    line-height: 25px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__rendered li{
+    line-height: 25px;
+    margin-left: 5px;
+    margin-top: 2px;
+}
+.select2-container--default.select2-container--focus .select2-selection--multiple{
+    border: 1px solid #e5e6e7;
+}
+.select2-container--default .select2-selection--multiple{
+	border: 1px solid #e5e6e7;
+	border-radius: 0px;
+	min-height: 30px;
+	line-height: 0;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
+	color:#fff;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover{
+	color:red;
+}
+/*i-checks*/
+.i-checks-div {
+	padding: 3px 0px;
+}
+.i-checks-div .iradio_square-green+.iradio_square-green,
+.i-checks-div .icheckbox_square-green+.icheckbox_square-green {
+	margin-left: 10px;
+}
+.i-checks-div .iradio_square-green.disabled,
+.i-checks-div .icheckbox_square-green.disabled {
+	cursor: not-allowed;
+}
+.i-checks-div .iradio_square-green,
+.i-checks-div .icheckbox_square-green {
+	margin-right: 3px;
+}
+
+*{
+	box-sizing: border-box;
+}
+
+fieldset {
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+table#report-table {
+	width: 100%;
+	border: none;
+	margin: auto;
+}
+table#report-table tr td{
+	padding: 0px;
+	border: none;
+}
+
+table#report-table div[component-type]{
+	min-height: 30px;
+}
+
+.form-control {
+    font-size: 13px !important;
+    background-color: #FFFFFF;
+    background-image: none;
+    border: 1px solid #e5e6e7;
+    border-radius: 1px;
+    box-shadow: none;
+    line-height: 16px;
+    min-height: 30px;
+    width: 100%;
+    padding: 6px 12px;
+}
+
+table#report-table{
+	border: none;
+}
+table#report-table td.td-content{
+    width: 35%;
+}
+table#report-table td.td-name{
+    width: 15%;
+}
+table#report-table.border {
+	border: 1px solid #333333;
+}
+table#report-table tr td{
+	color: #333333;
+}
+table#report-table tr+tr td{
+	border-top: 1px solid #333333;
+}
+table#report-table tr td+td{
+	border-left: 1px solid #333333;
+}
+table#report-table .td-name>span{
+	padding-left: 5px;
+    text-align: right;
+    box-sizing: border-box;
+    vertical-align: middle;
+    font-weight: 400;
+    overflow: hidden;
+    box-sizing: border-box;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: move;
+}
+
+/*red*/
+table#report-table.border.red {
+	border: 1px solid #ff3300;
+}
+table#report-table.red tr td{
+	color: #ff3300;
+}
+table#report-table.red tr+tr td{
+	border-top: 1px solid #ff3300;
+}
+table#report-table.red tr td+td{
+	border-left: 1px solid #ff3300;
+}
+/*black*/
+table#report-table.border.black {
+	border: 1px solid #333;
+}
+table#report-table.black tr td{
+	color: #333;
+}
+table#report-table.black tr+tr td{
+	border-top: 1px solid #333;
+}
+table#report-table.black tr td+td{
+	border-left: 1px solid #333;
+}
+/*green*/
+table#report-table.border.green {
+	border: 1px solid #008000;
+}
+table#report-table.green tr td{
+	color: #008000;
+}
+table#report-table.green tr+tr td{
+	border-top: 1px solid #008000;
+}
+table#report-table.green tr td+td{
+	border-left: 1px solid #008000;
+}
+

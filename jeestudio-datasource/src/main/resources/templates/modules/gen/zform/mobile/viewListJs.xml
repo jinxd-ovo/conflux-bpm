@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+	<name>ListJs</name>
+	<filePath>views/page/${table.name}</filePath>
+	<fileName>list.js</fileName>
+	<content><![CDATA[
+	]]>
+	</content>
+</template>

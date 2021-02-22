@@ -1,0 +1,657 @@
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div id="body-div" class="layui-card-body">
+        	<form id="searchForm" class="searchForm form-inline">
+        		<div class="searchDiv positionSpc">
+        			<div class="form-group pull-left important">
+						<span id="span_name">表名</span>
+						<input name="name" component-type="input" class="form-control" type="text" value="" maxlength="50">
+					</div>
+        			<div class="form-group pull-left">
+						<span id="span_comments">说明</span>
+						<input name="comments" component-type="input" class="form-control" type="text" value="" maxlength="50">
+					</div>
+					<div class="form-group pull-left">
+						<span id="span_module">模块</span>
+						<input name="module" component-type="input" class="form-control" type="text" value="" maxlength="50">
+					</div>
+					<div class="form-group pull-left">
+						<span id="span_parent_table">父表表名</span>
+						<input name="parentTable" component-type="input" class="form-control" type="text" value="" maxlength="50">
+					</div>
+        		</div>
+        	</form>
+        	
+        	<div id="toolbar" class="toolbar">
+				<div class="pull-right">
+					<a id="searchBtn" class="btn btn-success btn-bordered btn-sm"><i class="fa fa-search"></i> <font>查询</font></a>
+					<a id="resetBtn" class="btn btn-success btn-bordered btn-sm"><i class="fa fa-refresh"></i> <font>重置</font></a>
+					<a id="easySearch" class="btn btn-success btn-bordered btn-sm" style="display: none;"><i class="fa fa-backward"></i> <font>返回</font></a>
+					<a id="hardSearch" class="btn btn-success btn-bordered btn-sm" style="display: inline-block;"><i class="fa fa-search-plus"></i> <font>高级查询</font></a>
+				</div>
+			</div>
+
+            <table id="table-list"></table>
+
+            <script type="text/html" id="treeTableTpl">
+				<td>
+					{{d.row.s01}}
+				</td>
+				<td>
+					{{d.row.s02}}
+				</td>
+				<td nowrap="nowrap" class="center" style="width: 45px;">
+					{{d.row.btns}}
+				</td>
+			</script>
+        </div>
+    </div>
+</div>
+
+<script>
+	if(layui.admin.lang()){
+		$("#span_name").html("table name");
+		$("#span_comments").html("explain");
+		$("#span_parent_table").html("parent table name");
+	}
+</script>
+
+<script>
+    layui.use(['common', 'view', 'admin', 'laytpl'], function () {
+        var $ = layui.$
+            , R = layui.common
+            , view = layui.view
+            , admin = layui.admin
+            , laytpl = layui.laytpl;
+		
+        var getTime = "-" + new Date().getTime();
+        $("#body-div").attr("id", "body-div" + getTime);
+        $("#table-list").attr("id","table-list" + getTime);
+
+        var btnsStr = LayerUtil.getBtnsStrFromMenuData();
+		var bootstrapTableUtil = new BootstrapTableUtil(getTime);
+		bootstrapTableUtil.init({
+			//url: admin.basePath + '/freeForm-list.json',
+			url: admin.basePath + '/gen/genTable/findDynamicList',
+			method: 'post',
+			columns: [
+                {
+					checkbox: true
+				} 
+                , { field: 'name', title: layui.admin.lang() ? 'Table name' : '表名', sortable: true }
+                , { field: 'comments', title: layui.admin.lang() ? 'Explain' : '说明', sortable: true }
+				, { field: 'module', title: layui.admin.lang() ? 'Module name' : '模块', sortable: true }
+                , { 
+                	field: 'tableType', title: layui.admin.lang() ? 'Table type' : '表类型', sortable: true,
+                	formatter: function (value, row, index) { 
+						if(value == "0"){
+							return "列表";
+						}else if(value == "1"){
+							return "主表";
+						}else if(value == "2"){
+							return "附表";
+						}else if(value == "3"){
+							return "树表";
+						}else if(value == "4"){
+							return "左树右表";
+						}
+                    }
+                }
+                , { field: 'processModelName', title: layui.admin.lang() ? 'Process template type' : '流程模板类型', sortable: true, align: 'center' }
+                , { field: 'isRelease', title: layui.admin.lang() ? 'Release status' : '发布状态', sortable: true }
+                , { 
+                	field: 'formType', title: layui.admin.lang() ? 'Synchronize database' : '同步数据库', sortable: true ,
+                	events: {
+                		'click .tongbu': function (e, value, row, index) {
+							var id = row.id;
+							syncDB(id);
+						}
+                	},
+                	formatter:function(value, row , index){
+						if(value == "dynamic"){
+							if(row.isSync == 1){
+								return ' 已同步 <a href="javascript:;" id="'+row.id+'" class="btn btn-info btn-xs tongbu"><i class="fa fa-database"></i> 同步数据库</a>';
+							}else if(row.isSync == 0){
+								return ' <font color="red">未同步</font> <a href="javascript:;" id="'+row.id+'" class="btn btn-info btn-xs tongbu"><i class="fa fa-database"></i> 同步数据库</a>';
+							}
+						}else{
+							return "";
+						}
+					}
+                }
+                , { 
+                	title: layui.admin.lang() ? 'Operation' : '操作',
+                	width: '45px',
+					"class": 'center must',
+					events: {
+						'click .edit': function (e, value, row, index) {
+							addOrEdit({
+								formId: row.id,
+								tableTypeId: row.tableType
+							})
+						},
+						'click .remove': function (e, value, row, index) {
+							removeFuc(row);
+						},
+						'click .copy' : function (e, value, row, index){
+							copyFuc(row);
+						},
+						'click .del' : function (e, value, row, index){
+							delFuc(row);
+						},
+						'click .editSql' : function (e, value, row, index){
+							LayerUtil.openDialog({
+								title: '编辑Sql',
+								formLay : 'gen_table',
+								initData : {
+									id: row.id,
+									formNo: "gen_table"
+								},
+								setDataWidthAjax : true,
+								actionDataName : 'data',
+								url: 'admin/genTable/sqlForm',
+								actionUrl : admin.basePath + '/dynamic/zform/getZform?formNo=gen_table&id=' + row.id,
+					            btn: ['保存', '关闭'],
+					            btn_EN: ['save', 'close'],
+					            loading: false,
+					            func1:function(index,layero){
+									var validateForm = $(layero).find("#inputForm").validate({});
+					            	if(validateForm.form()){
+										var data = myHelper.composeData($(layero).find("#inputForm"));
+										LayerUtil.ajax({
+											url : admin.basePath + '/dynamic/zform/save',
+											type : 'post',
+											data : JSON.stringify(data),
+											shade: true,
+											success : function(res) {
+												LayerUtil.success(res[LayerUtil.getMsgLang()]);
+												bootstrapTableUtil.refresh();
+												layui.layer.close(index);
+											}
+										});
+					            	}
+					            }
+							})
+						},
+						'click .addChildren' : function(e, value, row, index){
+							//添加子表
+							var parentTable = row.name;
+							addOrEdit({
+								parentTable:parentTable,
+								tableTypeId: row.tableType
+							})
+						},
+						'click .imAndUp' : function(e, value, row, index){
+							LayerUtil.openDialog({
+								title: '导入导出设计',
+								formLay : row.name,
+								initData : {
+									id: row.id,
+									formNo: "gen_table"
+								},
+								height:"400px",
+								setDataWithoutAjax : true,
+								url: 'admin/genTable/imAndUp',
+					            btn: ['保存', '关闭'],
+					            btn_EN: ['save', 'close'],
+					            loading: false,
+					            func1:function(index,layero){
+									var validateForm = $(layero).find("#inputForm").validate({});
+					            	if(validateForm.form()){
+										var data = myHelper.composeData($(layero).find("#inputForm"));
+										data.name = row.name;
+										if(Array.isArray(data.exportList)){
+											data.exportList = data.exportList.join(",");
+										}
+										if(Array.isArray(data.importList)){
+											data.importList = data.importList.join(","); 
+										}
+										LayerUtil.ajax({
+											url : admin.basePath + '/gen/genTable/saveImportAndExport',
+											type : 'post',
+											data : JSON.stringify(data),
+											shade: true,
+											success : function(res) {
+												LayerUtil.success(res[LayerUtil.getMsgLang()]);
+												layui.layer.close(index);
+											}
+										});
+					            	}
+					            }
+							})
+						},
+						'click .designReport' : function(e, value, row, index){
+							LayerUtil.openDialog({
+								title: '报表设计',
+								formLay : row.name,
+								initData : {
+									id: row.id,
+									formNo: "gen_table"
+								},
+								height:"400px",
+								setDataWithoutAjax : true,
+								url: 'admin/genTable/designReport',
+					            btn: ['保存', '关闭'],
+					            btn_EN: ['save', 'close'],
+					            loading: false,
+								maxmin :false,
+								width:"90%",
+					            func1:function(index,layero){
+									var validateForm = $(layero).find("#inputForm").validate({});
+					            	if(validateForm.form()){
+										var data = myHelper.composeData($(layero).find("#inputForm"));
+										
+										console.log(data);
+										return false;
+										
+										data.name = row.name;
+										if(Array.isArray(data.exportList)){
+											data.exportList = data.exportList.join(",");
+										}
+										if(Array.isArray(data.importList)){
+											data.importList = data.importList.join(","); 
+										}
+										LayerUtil.ajax({
+											url : admin.basePath + '/gen/genTable/saveImportAndExport',
+											type : 'post',
+											data : JSON.stringify(data),
+											shade: true,
+											success : function(res) {
+												LayerUtil.success(res[LayerUtil.getMsgLang()]);
+												layui.layer.close(index);
+											}
+										});
+					            	}
+					            }
+							})
+						},
+					},
+					formatter: function(value, row, index) {
+						return btnsStr.tableBtnsStr;
+					}
+                }
+            ],
+            detailView: true,//父子表
+			//注册加载子表的事件。注意下这里的三个参数！
+	        onExpandRow: function (index, row, $detail) {
+	            oInit.InitSubTable(index, row, $detail);
+	        },
+		},"freeForm-list");
+		
+		$("#body-div"+getTime).find("#viewBtn").on("click",function(){
+			var ids = bootstrapTableUtil.getSingleId();
+			if(ids){
+				LayerUtil.openDialogView({
+					title: layui.admin.lang() ? 'Form' : '查看表单',
+					formLay: 'wytest-freeForm',
+					initData:{
+						formId: ids
+					},
+					url: 'admin/genTableExt/freeForm',
+					setDataWithoutAjax: true,
+					full:true,
+		            func1:function(index,layero){
+	                	window.freeFormBodyFuc.dosubmit(index);
+		            }
+				})
+			}
+    	});
+    	//导入
+    	$("#body-div"+getTime).find("#importBtn").on("click",function(){
+    		LayerUtil.openDialog({
+				title: '导入物理表动态表单',
+				url: 'admin/genTable/bimportTableFromDB',
+	            btn: ['保存', '关闭'],
+	            btn_EN: ['save', 'close'],
+	            loading: false,
+	            func1:function(index,layero){
+	            	var data = myHelper.composeData($(layero).find("#inputForm"));
+                	LayerUtil.ajax({
+						url: admin.basePath + '/gen/genTable/importDynamic',
+						type:'post',
+                		data: JSON.stringify(data),
+                		shade: true,
+                		success: function(res){
+                			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+                			bootstrapTableUtil.refresh();
+                			layui.layer.close(index);
+                			bootstrapTableUtil.refresh();
+                		}
+                	});
+	            }
+			})
+    	});
+    	$("#body-div"+getTime).find("#syncBtn").on("click",function(){
+    		var id = bootstrapTableUtil.getSingleId();
+    		if(id){
+    			syncDB(id);
+    		}
+    	});
+    	//发布代码
+    	$("#body-div"+getTime).find("#buildBtn").on("click",function(){
+    		var id = bootstrapTableUtil.getSingleId();
+    		if(id){
+	        	var rowItem = id.split("_");
+	        	var tableType = rowItem[1];
+	        	if(tableType == "2"){
+	        		top.layer.alert('不能选择附表发布表单，请选择主表!', {icon: 0, title: '警告'});
+	                return;
+	        	}
+	        	LayerUtil.openDialog({
+					title: '发布表单',
+					url: 'admin/genTable/begnCodeForm',
+					actionType: 'post',
+					actionUrl: admin.basePath + '/gen/genTable/buildViewDynamic',
+					actionDataName: 'genScheme',
+					initData: {
+						genTable:{
+							id: rowItem[0]
+						}
+					},
+		            btn: ['保存', '关闭'],
+		            btn_EN: ['save', 'close'],
+		            func1:function(index,layero){
+	                	var data = myHelper.composeData($(layero).find("#inputForm"));
+		            	LayerUtil.ajax({
+	                		url: admin.basePath + '/gen/genTable/buildDynamic',
+	                		type: 'post',
+	        				shade:true,
+	                		data: JSON.stringify(data),
+	                		success: function(res){
+	                			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+	                			bootstrapTableUtil.refresh();
+	                			layui.layer.close(index)
+	                		}
+	                	});
+		            }
+				})
+	       }
+    	});
+    	
+		$("#body-div"+getTime).find("#addBtn").on("click",function(){
+			addOrEdit();
+    	});
+    	/*$("#body-div"+getTime).find("#editBtn").on("click",function(){
+			var ids = bootstrapTableUtil.getSingleId();
+			if(ids){
+				addOrEdit({
+					formId:ids
+				});
+			}
+		});*/
+		$("#body-div"+getTime).find("#removeBtn").on("click",function(){
+			var ids = bootstrapTableUtil.getMultiId();
+			if(ids){
+				LayerUtil.confirm(layui.admin.lang() ? "are you sure?" : "确定删除吗？", function(){
+					LayerUtil.ajax({
+		        		url: admin.basePath + '/true.json',
+		        		data: {
+		        			formId: ids
+		        		},
+		        		shade:true,
+		        		success: function(res){
+		        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+		        			bootstrapTableUtil.refresh();
+		        		}
+		        	})
+				})
+	       	}
+		});
+		//添加或者设计
+		function addOrEdit(initData){
+			LayerUtil.openDialog({
+				title: layui.admin.lang() ? 'Form' : '表单',
+				initData:initData,
+				url: 'admin/genTableExt/freeForm',
+				setDataWithoutAjax: true,
+				full:true,
+	            btn: ['保存', '关闭'],
+	            btn_EN: ['save', 'close'],
+	            func1:function(index,layero){
+                	var doneStatus = window.freeFormBodyFuc.dosubmit(index);
+        			bootstrapTableUtil.refresh();
+	            }
+			})
+		}
+		//同步数据库
+    	function syncDB(id){
+    		LayerUtil.confirm('确认要强制同步数据库吗？同步数据库将删除所有数据重新建表！？', function() {
+				LayerUtil.ajax({
+					//url: admin.basePath + '/${ctx}/gen/genTable/xsynchDb?id=' + id,
+					url: admin.basePath + '/gen/genTable/syncDynamic',
+					type:'post',
+	        		shade:true,
+					data: JSON.stringify({id:id}),
+					success: function(res){
+	        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+	        			bootstrapTableUtil.refresh();
+	        		}
+				});
+			});
+    	}
+    	//移除
+    	function delFuc(row){
+    		LayerUtil.confirm('确认要移除该条记录吗吗？', function() {
+				LayerUtil.ajax({
+					//url: admin.basePath + '/${ctx}/gen/genTable/bdelete?id=' + row.id,
+					url: admin.basePath + '/gen/genTable/removeDynamic',
+					type:'post',
+	        		shade:true,
+					data: JSON.stringify({id:row.id}),
+					success: function(res){
+	        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+	        			bootstrapTableUtil.refresh();
+	        		}
+				});
+			});
+    	}
+    	//删除
+    	function removeFuc(row){
+			LayerUtil.confirm('确认要删除' + row.name + '吗？', function() {
+				LayerUtil.ajax({
+	        		url: admin.basePath + '/gen/genTable/deleteDynamic',
+	        		type:'post',
+	        		shade:true,
+					data: JSON.stringify({id:row.id}),
+	        		success: function(res){
+	        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+	        			bootstrapTableUtil.refresh();
+	        		}
+	        	})
+			});
+    	}
+    	//复制
+    	function copyFuc(row){
+    		LayerUtil.confirm('确认要复制该智能表单吗吗？', function() {
+				LayerUtil.ajax({
+					url: admin.basePath + '/gen/genTable/copyDynamic',
+	        		type:'post',
+	        		shade:true,
+					data: JSON.stringify({id:row.id}),
+					success: function(res){
+	        			LayerUtil.success(res[LayerUtil.getMsgLang()]);
+	        			bootstrapTableUtil.refresh();
+	        			LayerUtil.close(loadingIndex);
+	        		}
+				});
+			});
+		}
+		
+		var oInit = {};
+		//初始化子表格(无线循环)
+	    oInit.InitSubTable = function (index, row, $detail) {
+	        var parentid = row.name;
+	        var tableId = "-"+parentid+ new Date().getTime();
+	        var cur_table = $detail.html('<table id="table-list'+tableId+'"></table>').find('table');
+	        
+	        var bootstrapTableUtil = new BootstrapTableUtil(tableId,"",getTime);
+			bootstrapTableUtil.initSon({
+				url: admin.basePath + '/gen/genTable/findDynamicList',
+				method: 'post',
+				pagination: false,  
+	    		columns: [
+	    			 {
+						checkbox: true
+					} 
+	                , { field: 'name', title: '表名', sortable: true }
+	                , { field: 'comments', title: '说明', sortable: true }
+					, { field: 'module', title: '模块', sortable: true }
+	                , { 
+	                	field: 'tableType', title: '表类型', sortable: true,
+	                	formatter: function (value, row, index) { 
+	                    	if(value == "0"){
+								return "列表";
+							}else if(value == "1"){
+								return "主表";
+							}else if(value == "2"){
+								return "附表";
+							}else if(value == "3"){
+								return "树表";
+							}else if(value == "4"){
+								return "左树右表";
+							}
+	                    }
+	                }
+	                , { field: 'processDefinitionCategory', title: '流程模板类型', sortable: true, align: 'center' }
+	                , { field: 'isRelease', title: '发布状态', sortable: true }
+	                , { 
+	                	field: 'formType', title: '同步数据库', sortable: true ,
+	                	events: {
+	                		'click .tongbu': function (e, value, row, index) {
+								var id = row.id;
+								syncDB(id);
+							}
+	                	},
+	                	formatter:function(value, row , index){
+							if(value == "dynamic"){
+								if(row.isSync == 1){
+									return ' 已同步 <a href="javascript:;" id="'+row.id+'" class="btn btn-info btn-xs tongbu"><i class="fa fa-database"></i> 同步数据库</a>';
+								}else if(row.isSync == 0){
+									return ' <font color="red">未同步</font> <a href="javascript:;" id="'+row.id+'" class="btn btn-info btn-xs tongbu"><i class="fa fa-database"></i> 同步数据库</a>';
+								}
+							}else{
+								return "";
+							}
+						}
+	                }
+	                , { 
+	                	title: layui.admin.lang() ? 'Operation' : '操作',
+	                	width: '45px',
+						"class": 'center must',
+						events: {
+							'click .edit': function (e, value, row, index) {
+								addOrEdit({
+									formId: row.id,
+									tableTypeId: row.tableType
+								})
+							},
+							'click .remove': function (e, value, row, index) {
+								removeFuc(row);
+							},
+							'click .copy' : function (e, value, row, index){
+								copyFuc(row);
+							},
+							'click .del' : function (e, value, row, index){
+								delFuc(row);
+							},
+							'click .editSql' : function (e, value, row, index){
+								LayerUtil.openDialog({
+									title: '编辑Sql',
+									formLay : 'gen_table',
+									initData : {
+										id: row.id,
+										formNo: "gen_table"
+									},
+									setDataWidthAjax : true,
+									actionDataName : 'data',
+									url: 'admin/genTable/sqlForm',
+									actionUrl : admin.basePath + '/dynamic/zform/getZform?formNo=gen_table&id=' + row.id,
+						            btn: ['保存', '关闭'],
+						            btn_EN: ['save', 'close'],
+						            loading: false,
+						            func1:function(index,layero){
+										var validateForm = $(layero).find("#inputForm").validate({});
+						            	if(validateForm.form()){
+											var data = myHelper.composeData($(layero).find("#inputForm"));
+											LayerUtil.ajax({
+												url : admin.basePath + '/dynamic/zform/save',
+												type : 'post',
+												data : JSON.stringify(data),
+												shade: true,
+												success : function(res) {
+													LayerUtil.success(res[LayerUtil.getMsgLang()]);
+													bootstrapTableUtil.refresh();
+													layui.layer.close(index);
+												}
+											});
+						            	}
+						            }
+								})
+							},
+							'click .addChildren' : function(e, value, row, index){
+								//添加子表
+								var parentTable = row.name;
+								addOrEdit({
+									parentTable:parentTable,
+									tableTypeId: row.tableType
+								})
+							},
+							'click .imAndUp' : function(e, value, row, index){
+								LayerUtil.openDialog({
+									title: '导入导出设计',
+									formLay : row.name,
+									initData : {
+										id: row.id,
+										formNo: "gen_table"
+									},
+									height:"400px",
+									setDataWithoutAjax : true,
+									url: 'admin/genTable/imAndUp',
+						            btn: ['保存', '关闭'],
+						            btn_EN: ['save', 'close'],
+						            loading: false,
+						            func1:function(index,layero){
+										var validateForm = $(layero).find("#inputForm").validate({});
+						            	if(validateForm.form()){
+											var data = myHelper.composeData($(layero).find("#inputForm"));
+											data.name = row.name;
+											if(Array.isArray(data.exportList)){
+												data.exportList = data.exportList.join(",");
+											}
+											if(Array.isArray(data.importList)){
+												data.importList = data.importList.join(","); 
+											}
+											LayerUtil.ajax({
+												url : admin.basePath + '/gen/genTable/saveImportAndExport',
+												type : 'post',
+												data : JSON.stringify(data),
+												shade: true,
+												success : function(res) {
+													LayerUtil.success(res[LayerUtil.getMsgLang()]);
+													layui.layer.close(index);
+												}
+											});
+						            	}
+						            }
+								})
+							},
+						},
+						formatter: function(value, row, index) {
+							return LayerUtil.getBtnsStrFromMenuData("","",["designReport"]).tableBtnsStr;
+						}
+	                }
+	    		],
+	            queryParams: { 
+	            	parentTable: parentid,
+	            	pageParam: {pageNo: 1, pageSize: 999}
+	            },
+	            detailView: true,//父子表
+	            //无线循环取子表，直到子表里面没有记录
+	            onExpandRow: function (index, row, $Subdetail) {
+	                oInit.InitSubTable(index, row, $Subdetail);
+	            },
+	        });
+	    };
+		
+    });
+</script>

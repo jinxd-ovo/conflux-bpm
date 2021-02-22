@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.cms.PrtInformationDao">
+
+    <sql id="prtInformationColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.owner_code AS "ownerCode",
+		a.site AS "site.id",
+		e.name AS "site.name",
+		a.parent_id AS "channel.id",
+		b.name AS "channel.name",
+		a.title AS "title",
+		a.author AS "author",
+		a.origin AS "origin",
+		a.origin_url AS "originUrl",
+		a.keyword AS "keyword",
+		a.description AS "description",
+		a.types AS "types",
+		a.if_play AS "ifPlay",
+		a.typesimg AS "typesimg",
+		a.video AS "video",
+		a.audio AS "audio",
+		a.pics AS "pics",
+		a.files AS "files",
+		a.content AS "content",
+		a.has_title_img AS "hasTitleImg",
+		a.titleimg AS "titleimg",
+		a.doc AS "doc",
+		a.doc_type AS "docType",
+		a.top_level AS "topLevel",
+		a.top_date AS "topDate",
+		a.draft_date AS "draftDate",
+		a.draft_user AS "draftUser.id",
+		c.name AS "draftUser.name",
+		a.draft_name AS "draftName",
+		a.release_date AS "releaseDate",
+		a.release_user AS "releaseUser.id",
+		d.name AS "releaseUser.name",
+		a.release_name AS "releaseName",
+		a.pige_date AS "pigeDate",
+		a.pige_user AS "pigeUser.id",
+		a.pige_name AS "pigeName",
+		a.unpige_date AS "unpigeDate",
+		a.unpige_user AS "unpigeUser.id",
+		a.unpige_name AS "unpigeName",
+		a.if_comment AS "ifComment",
+		a.scope_ AS "scope",
+		a.range_ AS "range",
+		a.the_org AS "theOrg",
+		a.if_full_visible AS "ifFullVisible",
+		a.sec_level AS "secLevel",
+		a.sec_period AS "secPeriod",
+		a.file_no AS "fileNo",
+		a.file_org AS "fileOrg",
+		a.send_org AS "sendOrg",
+		a.copy_org AS "copyOrg",
+		a.status AS "status",
+		a.audits AS "audits",
+		'' AS "procInsId",
+		'' AS "procTaskName",
+		'' AS "procTaskPermission.id",
+		'' AS "currentAssignee",
+		'' AS "currentStatus"
+	</sql>
+
+    <sql id="prtInformationJoins">
+		LEFT JOIN prt_channel b ON b.id = a.parent_id
+		LEFT JOIN sys_user c ON c.id = a.draft_user
+		LEFT JOIN sys_user d ON d.id = a.release_user
+		LEFT JOIN prt_site e ON e.id = a.site
+	</sql>
+
+
+    <select id="get" resultType="PrtInformation" >
+        SELECT
+        <include refid="prtInformationColumns"/>
+        FROM prt_information a
+        <include refid="prtInformationJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="PrtInformation" >
+        SELECT
+        <include refid="prtInformationColumns"/>
+        ,'' AS "procTaskPermission.operation"
+        FROM prt_information a
+        <include refid="prtInformationJoins"/>
+        /*LEFT JOIN oa_task_permission tp  ON a.proc_task_permission = tp.id*/
+        <where>
+            a.del_flag = #{delFlag}
+            ${sqlMap.dsf}
+            <if test="site != null and site.id != null and site.id != ''">
+                AND a.site = #{site.id}
+            </if>
+            <if test="channel != null and channel.id != null and channel.id != ''">
+				<bind name="channelLike" value="'%' + channel.id + '%'" />
+                AND (a.parent_id = #{channel.id} OR b.parent_ids LIKE '${channelLike}')
+            </if>
+            <if test="title != null and title != ''">
+				<bind name="titleLike" value="'%' + title + '%'" />
+                AND a.title LIKE '${titleLike}'
+            </if>
+            <if test="keyword != null and keyword != ''">
+				<bind name="keywordLike" value="'%' + keyword + '%'" />
+                AND a.keyword LIKE '${keywordLike}'
+            </if>
+            <if test="description != null and description != ''">
+				<bind name="descriptionLike" value="'%' + description + '%'" />
+                AND a.description LIKE '${descriptionLike}'
+            </if>
+            <if test="types != null and types != ''">
+                AND a.types = #{types}
+            </if>
+            <if test="ifPlay != null and ifPlay != ''">
+                AND a.if_play = #{ifPlay}
+            </if>
+            <if test="content != null and content != ''">
+				<bind name="contentLike" value="'%' + content + '%'" />
+                AND a.content LIKE '${contentLike}'
+            </if>
+            <if test="hasTitleImg != null and hasTitleImg != ''">
+                AND a.has_title_img = #{hasTitleImg}
+            </if>
+            <if test="docType != null and docType != ''">
+                AND a.doc_type = #{docType}
+            </if>
+            <if test="topLevel != null and topLevel != ''">
+                AND a.top_level = #{topLevel}
+            </if>
+            <if test="beginTopDate != null and beginTopDate != ''">
+                AND a.top_date >= #{beginTopDate}
+            </if>
+            <if test="endTopDate != null and endTopDate != ''">
+                AND a.top_date &lt;= #{endTopDate}
+            </if>
+            <if test="beginDraftDate != null and beginDraftDate != ''">
+                AND a.draft_date >= #{beginDraftDate}
+            </if>
+            <if test="endDraftDate != null and endDraftDate != ''">
+                AND a.draft_date &lt;= #{endDraftDate}
+            </if>
+            <if test="draftUser != null and draftUser.id != null and draftUser.id != ''">
+                AND a.draft_user = #{draftUser}
+            </if>
+            <if test="draftUser != null and draftUser.name != null and draftUser.name != ''">
+				<bind name="draftUserLike" value="'%' + draftUser.name + '%'" />
+                AND c.name LIKE '${draftUserLike}'
+            </if>
+            <if test="beginReleaseDate != null and beginReleaseDate != ''">
+                AND a.release_date >= #{beginReleaseDate}
+            </if>
+            <if test="endReleaseDate != null and endReleaseDate != ''">
+                AND a.release_date &lt;= #{endReleaseDate}
+            </if>
+            <if test="releaseUser != null and releaseUser.id != null and releaseUser.id != ''">
+                AND a.release_user = #{releaseUser}
+            </if>
+            <if test="releaseUser != null and releaseUser.name != null and releaseUser.name != ''">
+				<bind name="releaseUserLike" value="'%' + releaseUser.name + '%'" />
+                AND d.name LIKE '${releaseUserLike}'
+            </if>
+            <if test="beginPigeDate != null and beginPigeDate != ''">
+                AND a.pige_date >= #{beginPigeDate}
+            </if>
+            <if test="endPigeDate != null and endPigeDate != ''">
+                AND a.pige_date &lt;= #{endPigeDate}
+            </if>
+            <if test="pigeUser != null and pigeUser.id != null and pigeUser.id != ''">
+                AND a.pige_user = #{pigeUser}
+            </if>
+            <if test="beginUnpigeDate != null and beginUnpigeDate != ''">
+                AND a.unpige_date >= #{beginUnpigeDate}
+            </if>
+            <if test="endUnpigeDate != null and endUnpigeDate != ''">
+                AND a.unpige_date &lt;= #{endUnpigeDate}
+            </if>
+            <if test="unpigeUser != null and unpigeUser.id != null and unpigeUser.id != ''">
+                AND a.unpige_user = #{unpigeUser}
+            </if>
+            <if test="ifComment != null and ifComment != ''">
+                AND a.if_comment = #{ifComment}
+            </if>
+            <if test="scope != null and scope != ''">
+                AND a.scope_ = #{scope}
+            </if>
+            <if test="theOrg != null and theOrg != ''">
+                AND a.the_org = #{theOrg}
+            </if>
+            <if test="ifFullVisible != null and ifFullVisible != ''">
+                AND a.if_full_visible = #{ifFullVisible}
+            </if>
+            <if test="secLevel != null and secLevel != ''">
+                AND a.sec_level = #{secLevel}
+            </if>
+            <if test="secPeriod != null and secPeriod != ''">
+                AND a.sec_period = #{secPeriod}
+            </if>
+            <if test="status != null and status != ''">
+                AND a.status = #{status}
+            </if>
+            <if test="currentStatus != null and currentStatus != ''">
+                AND (a.current_status = #{currentStatus} or a.status = #{currentStatus})
+            </if>
+            <if test="isSelf"><!-- 前台 -->
+                AND a.status = '50'
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                <choose>
+                    <when test="isSelf"><!-- 前台 -->
+                        ORDER BY a.top_level ASC, a.release_date DESC, a.update_date DESC
+                    </when>
+                    <otherwise>
+                        ORDER BY a.update_date DESC
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findAllList" resultType="PrtInformation" >
+        SELECT
+        <include refid="prtInformationColumns"/>
+        FROM prt_information a
+        <include refid="prtInformationJoins"/>
+        <where>
+            a.del_flag = #{delFlag}
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.update_date DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insert">
+		INSERT INTO prt_information(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			owner_code,
+			site,
+			parent_id,
+			title,
+			author,
+			origin,
+			origin_url,
+			keyword,
+			description,
+			types,
+			if_play,
+			typesimg,
+			video,
+			audio,
+			pics,
+			files,
+			content,
+			has_title_img,
+			titleimg,
+			doc,
+			doc_type,
+			top_level,
+			top_date,
+			draft_date,
+			draft_user,
+			draft_name,
+			release_date,
+			release_user,
+			release_name,
+			pige_date,
+			pige_user,
+			pige_name,
+			unpige_date,
+			unpige_user,
+			unpige_name,
+			if_comment,
+			scope_,
+			range_,
+			the_org,
+			if_full_visible,
+			sec_level,
+			sec_period,
+			file_no,
+			file_org,
+			send_org,
+			copy_org,
+			status,
+			audits,
+			proc_ins_id,
+			proc_task_name,
+			proc_task_permission,
+			current_assignee,
+			current_status
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{ownerCode},
+			#{site.id},
+			#{channel.id},
+			#{title},
+			#{author},
+			#{origin},
+			#{originUrl},
+			#{keyword},
+			#{description},
+			#{types},
+			#{ifPlay},
+			#{typesimg},
+			#{video},
+			#{audio},
+			#{pics},
+			#{files},
+			#{content},
+			#{hasTitleImg},
+			#{titleimg},
+			#{doc},
+			#{docType},
+			#{topLevel},
+			#{topDate},
+			#{draftDate},
+			#{draftUser.id},
+			#{draftName},
+			#{releaseDate},
+			#{releaseUser.id},
+			#{releaseName},
+			#{pigeDate},
+			#{pigeUser.id},
+			#{pigeName},
+			#{unpigeDate},
+			#{unpigeUser.id},
+			#{unpigeName},
+			#{ifComment},
+			#{scope},
+			#{range},
+			#{theOrg},
+			#{ifFullVisible},
+			#{secLevel},
+			#{secPeriod},
+			#{fileNo},
+			#{fileOrg},
+			#{sendOrg},
+			#{copyOrg},
+			#{status},
+			#{audits},
+			#{procInsId},
+			#{procTaskName},
+			#{procTaskPermission.id},
+			#{currentAssignee},
+			#{currentStatus}
+		)
+	</insert>
+
+    <update id="update">
+		UPDATE prt_information SET
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			del_flag = #{delFlag},
+			owner_code = #{ownerCode},
+			site = #{site.id},
+			parent_id = #{channel.id},
+			title = #{title},
+			author = #{author},
+			origin = #{origin},
+			origin_url = #{originUrl},
+			keyword = #{keyword},
+			description = #{description},
+			types = #{types},
+			if_play = #{ifPlay},
+			typesimg = #{typesimg},
+			video = #{video},
+			audio = #{audio},
+			pics = #{pics},
+			files = #{files},
+			content = #{content},
+			has_title_img = #{hasTitleImg},
+			titleimg = #{titleimg},
+			doc = #{doc},
+			doc_type = #{docType},
+			top_level = #{topLevel},
+			top_date = #{topDate},
+			draft_date = #{draftDate},
+			draft_user = #{draftUser.id},
+			draft_name = #{draftName},
+			release_date = #{releaseDate},
+			release_user = #{releaseUser.id},
+			release_name = #{releaseName},
+			pige_date = #{pigeDate},
+			pige_user = #{pigeUser.id},
+			pige_name = #{pigeName},
+			unpige_date = #{unpigeDate},
+			unpige_user = #{unpigeUser.id},
+			unpige_name = #{unpigeName},
+			if_comment = #{ifComment},
+			scope_ = #{scope},
+			range_ = #{range},
+			the_org = #{theOrg},
+			if_full_visible = #{ifFullVisible},
+			sec_level = #{secLevel},
+			sec_period = #{secPeriod},
+			file_no = #{fileNo},
+			file_org = #{fileOrg},
+			send_org = #{sendOrg},
+			copy_org = #{copyOrg},
+			status = #{status},
+			audits = #{audits},
+			proc_ins_id = #{procInsId},
+			proc_task_name = #{procTaskName},
+			proc_task_permission = #{procTaskPermission.id},
+			current_assignee = #{currentAssignee},
+			current_status = #{currentStatus}
+		WHERE id = #{id}
+	</update>
+
+    <update id="delete">
+		DELETE FROM prt_information
+		WHERE id = #{id}
+	</update>
+
+    <update id="deleteByLogic">
+		UPDATE prt_information SET
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+    <update id="restoreByLogic">
+		UPDATE prt_information SET
+			del_flag = #{DEL_FLAG_NORMAL}
+		WHERE id = #{id}
+	</update>
+
+    <select id="findUniqueByProperty" resultType="PrtInformation" statementType="STATEMENT">
+		SELECT * FROM prt_information WHERE ${propertyName} = '${value}'
+	</select>
+
+    <select id="findDfByRelease" resultType="PrtInformation">
+        SELECT
+        <include refid="prtInformationColumns"/>
+        FROM
+        prt_information a
+        <include refid="prtInformationJoins"/>
+        WHERE
+        a.status = #{status}
+        AND a.release_date &lt;= #{releaseDate}
+    </select>
+
+    <select id="findYfByPige" resultType="PrtInformation">
+        SELECT
+        <include refid="prtInformationColumns"/>
+        FROM
+        prt_information a
+        <include refid="prtInformationJoins"/>
+        WHERE
+        a.status = #{status}
+        AND a.pige_date &lt;= #{pigeDate}
+    </select>
+
+    <select id="findTops" resultType="PrtInformation">
+        SELECT
+        <include refid="prtInformationColumns"/>
+        FROM
+        prt_information a
+        <include refid="prtInformationJoins"/>
+        WHERE
+        a.top_level != #{topLevel}
+        AND a.top_date &lt;= #{topDate}
+    </select>
+
+	<!-- Channel -->
+	<resultMap id="prtChannelResult" type="PrtChannel">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="sort" column="sort" />
+		<result property="parentIds" column="parentIds" />
+		<result property="ownerCode" column="ownerCode" />
+		<result property="channelMod.id" column="channelMod.id" />
+		<result property="channelMod.name" column="channelMod.name" />
+		<result property="channelMod.types" column="channelMod.types" />
+		<result property="infoMod.id" column="infoMod.id" />
+		<result property="infoMod.name" column="infoMod.name" />
+		<result property="useable" column="useable" />
+		<result property="infoType" column="infoType" />
+		<result property="parentUser" column="parentUser" />
+		<result property="chargeUser.id" column="chargeUser.id" />
+		<result property="chargeUser.name" column="chargeUser.name" />
+		<result property="ifComment" column="ifComment" />
+		<result property="fullPathName" column="fullPathName" />
+		<result property="site.id" column="site.id" />
+		<result property="site.name" column="site.name" />
+		<association property="hasChildren" column="id" select="hasChildren" />
+	</resultMap>
+
+	<sql id="prtChannelColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.owner_code AS "ownerCode",
+		a.parent_id AS "parent.id",
+		parent.name AS "parent.name",
+		a.parent_ids AS "parentIds",
+		a.name AS "name",
+		a.name AS "fullPathName",
+		a.sort AS "sort",
+		a.channel_mod AS "channelMod.id",
+		a.info_mod AS "infoMod.id",
+		a.useable AS "useable",
+		a.info_type AS "infoType",
+		a.parent_user AS "parentUser",
+		a.charge_user AS "chargeUser.id",
+		a.charge_user_name AS "chargeUser.name",
+		a.if_comment AS "ifComment",
+		channelMod.name AS "channelMod.name",
+		channelMod.types AS "channelMod.types",
+		infoMod.name AS "infoMod.name",
+		a.site AS "site.id",
+		site.name AS "site.name"
+	</sql>
+
+	<sql id="prtChannelJoins">
+		LEFT JOIN prt_channel parent ON parent.id = a.parent_id
+		LEFT JOIN prt_model channelMod ON channelMod.id = a.channel_mod
+		LEFT JOIN prt_model infoMod ON infoMod.id = a.info_mod
+		LEFT JOIN prt_site site ON site.id = a.site
+	</sql>
+
+	<select id="findChannelList" resultType="PrtChannel">
+		SELECT
+		<include refid="prtChannelColumns"/>
+		FROM prt_channel a
+		<include refid="prtChannelJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${sqlMap.dsf}
+			<if test="parent != null and parent.id != null and parent.id != ''">
+				AND a.parent_id = #{parent.id}
+			</if>
+			<if test="parentIds != null and parentIds != ''">
+				<bind name="parentIdsLike" value="'%' + parentIds + '%'" />
+				AND a.parent_ids LIKE '${parentIdsLike}'
+			</if>
+			<if test="name != null and name != ''">
+				<bind name="channelNameLike" value="'%' + name + '%'" />
+				AND a.name LIKE '${channelNameLike}'
+			</if>
+			<if test="site != null and site.id != null and site.id != ''">
+				AND a.site = #{site.id}
+			</if>
+			<if test="useable != null and useable != ''">
+				AND a.useable = #{useable}
+			</if>
+		</where>
+		ORDER BY a.sort ASC
+	</select>
+</mapper>

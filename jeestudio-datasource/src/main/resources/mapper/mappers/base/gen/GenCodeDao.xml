@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeestudio.datasource.mapper.base.gen.GenCodeDao">
+
+    <sql id="genCodeColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.owner_code AS "ownerCode",
+		a.username AS "username",
+		a.group_id AS "groupId",
+		a.module_name AS "moduleName",
+		a.file_id AS "fileId",
+		a.file_name AS "fileName",
+		a.create_time AS "createTime",
+		a.path AS "path"
+	</sql>
+
+    <sql id="genCodeJoins">
+    </sql>
+
+
+    <select id="get" resultType="GenCode" >
+        SELECT
+        <include refid="genCodeColumns"/>
+        FROM gen_code a
+        <include refid="genCodeJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="GenCode" >
+        SELECT
+        <include refid="genCodeColumns"/>
+        FROM gen_code a
+        <include refid="genCodeJoins"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            ${sqlMap.dsf}
+            <if test="ownerCode != null and ownerCode != ''">
+                AND a.owner_code LIKE
+                <if test="dbName == 'oracle'">#{ownerCode} || '%'</if>
+                <if test="dbName == 'mssql'">#{ownerCode} + '%'</if>
+                <if test="dbName == 'mysql'">CONCAT(#{ownerCode}, '%')</if>
+                <if test="dbName == 'dm'">CONCAT(#{ownerCode}, '%')</if>
+            </if>
+            <if test="username != null and username != ''">
+                AND a.username = #{username}
+            </if>
+            <if test="fileName != null and fileName != ''">
+                AND a.file_name = #{fileName}
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.update_date DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findAllList" resultType="GenCode" >
+        SELECT
+        <include refid="genCodeColumns"/>
+        FROM gen_code a
+        <include refid="genCodeJoins"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.update_date DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insert">
+		INSERT INTO gen_code(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			owner_code,
+			username,
+			group_id,
+			module_name,
+			file_id,
+			file_name,
+			create_time,
+			path
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{ownerCode},
+			#{username},
+			#{groupId},
+			#{moduleName},
+			#{fileId},
+			#{fileName},
+			#{createTime},
+			#{path}
+		)
+	</insert>
+
+    <insert id="insertV">
+		INSERT INTO gen_code_V(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			owner_code,
+			username,
+			group_id,
+			module_name,
+			file_id,
+			file_name,
+			create_time,
+			path
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{ownerCode},
+			#{username},
+			#{groupId},
+			#{moduleName},
+			#{fileId},
+			#{fileName},
+			#{createTime},
+			#{path}
+		)
+	</insert>
+
+    <update id="update">
+		UPDATE gen_code SET
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			owner_code = #{ownerCode},
+			username = #{username},
+			group_id = #{groupId},
+			module_name = #{moduleName},
+			file_id = #{fileId},
+			file_name = #{fileName},
+			create_time = #{createTime},
+			path = #{path}
+		WHERE id = #{id}
+	</update>
+
+    <!--物理删除-->
+    <update id="delete">
+		DELETE FROM gen_code
+		WHERE id = #{id}
+	</update>
+
+    <!--逻辑删除-->
+    <update id="deleteByLogic">
+		UPDATE gen_code SET
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+    <!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+    <select id="findUniqueByProperty" resultType="GenCode" statementType="STATEMENT">
+		SELECT * FROM gen_code WHERE ${propertyName} = '${value}'
+	</select>
+
+</mapper>

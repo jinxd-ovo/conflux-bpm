@@ -1,0 +1,681 @@
+<div class="layui-fluid sblh" style="overflow: auto;">
+	<div class="layui-card">
+		<div id="body-div">
+			<div class="container gantt-div" style="width: 100%;padding: 0px;">
+
+				<div id="workSpace-gantt" class="gantt-disabled" style="padding: 0px; overflow-y: auto; overflow-x: hidden; border: 1px solid #e5e5e5; position: relative; margin: 0 5px"></div>
+				<div id="taZone" style="display: none;" class="noprint">
+   <textarea rows="8" cols="150" id="ta">
+   	{"tasks":[{"id":"tmp_fk1607482448302","name":"项目管理系统研发","progress":0,"description":"","code":1,"level":0,"status":"STATUS_ACTIVE","depends":"","canWrite":true,"start":1607616000000,"duration":192,"end":1624723199999,"startIsMilestone":false,"endIsMilestone":false,"assigs":[],"hasChild":true},{"id":"tmp_fk1607482579498","name":"背景调查","progress":"90","description":"","code":"1.1","level":1,"status":"STATUS_ACTIVE","depends":"","canWrite":true,"start":1607616000000,"duration":12,"end":1608652799999,"startIsMilestone":false,"endIsMilestone":false,"assigs":[],"hasChild":true},{"id":"tmp_fk1607482496894","name":"市场现有产品调查","progress":"100","description":"","code":"1.1.1","level":2,"status":"STATUS_ACTIVE","depends":"","canWrite":true,"start":1607616000000,"duration":4,"end":1607961599999,"startIsMilestone":false,"endIsMilestone":false,"assigs":[],"hasChild":false},{"id":"tmp_fk1607482508082","name":"内部需求分析","progress":"100","description":"","code":"1.1.2","level":2,"status":"STATUS_ACTIVE","depends":"","canWrite":true,"start":1607616000000,"duration":6,"end":1608134399999,"startIsMilestone":false,"endIsMilestone":false,"assigs":[],"hasChild":false},{"id":"tmp_fk1607482655395","name":"需求文档编写","progress":"80","description":"","code":"1.1.3","level":2,"status":"STATUS_SUSPENDED","depends":"4","canWrite":true,"start":1608134400000,"duration":6,"end":1608652799999,"startIsMilestone":false,"endIsMilestone":false,"assigs":[],"hasChild":false},{"id":"tmp_fk1607482569405","name":"系统设计","progress":"50","description":"","code":"1.2","level":1,"status":"STATUS_SUSPENDED","depends":"5","canWrite":true,"start":1608652800000,"duration":12,"end":1609948799999,"startIsMilestone":false,"endIsMilestone":false,"assigs":[],"hasChild":true},{"id":"tmp_fk1607482515306","name":"系统技术选型","progress":"100","description":"","code":"1.2.1","level":2,"status":"STATUS_SUSPENDED","depends":"","canWrite":true,"start":1608652800000,"duration":5,"end":1609257599999,"startIsMilestone":false,"endIsMilestone":false,"collapsed":false,"assigs":[],"hasChild":false},{"id":"tmp_fk1607482534049","name":"系统架构设计","progress":"70","description":"","code":"1.2.2","level":2,"status":"STATUS_SUSPENDED","depends":"","canWrite":true,"start":1609257600000,"duration":3,"end":1609603199999,"startIsMilestone":false,"endIsMilestone":false,"assigs":[],"hasChild":false},{"id":"tmp_fk1607482538570","name":"系统详细功能规划","progress":"30","description":"","code":"1.2.3","level":2,"status":"STATUS_SUSPENDED","depends":"","canWrite":true,"start":1609257600000,"duration":4,"end":1609689599999,"startIsMilestone":false,"endIsMilestone":false,"assigs":[],"hasChild":false},{"id":"tmp_fk1607482546917","name":"系统详细设计评审","progress":0,"description":"","code":"1.2.4","level":2,"status":"STATUS_SUSPENDED","depends":"","canWrite":true,"start":1609689600000,"duration":3,"end":1609948799999,"startIsMilestone":false,"endIsMilestone":false,"assigs":[],"hasChild":false},{"id":"tmp_fk1607482562867","name":"系统研发","progress":0,"description":"","code":"1.3","level":1,"status":"STATUS_SUSPENDED","depends":"6","canWrite":true,"start":1609948800000,"duration":101,"end":1618675199999,"startIsMilestone":false,"endIsMilestone":false,"collapsed":false,"assigs":[],"hasChild":true},{"id":"tmp_fk1607482559061","name":"系统开发计划","progress":0,"description":"","code":"1.3.1","level":2,"status":"STATUS_SUSPENDED","depends":"","canWrite":true,"start":1609948800000,"duration":2,"end":1610121599999,"startIsMilestone":false,"endIsMilestone":false,"assigs":[],"hasChild":false},{"id":"tmp_fk1607482660779","name":"概设文档编写","progress":0,"description":"","code":"1.3.2","level":2,"status":"STATUS_SUSPENDED","depends":"","canWrite":true,"start":1610035200000,"duration":8,"end":1610726399999,"startIsMilestone":false,"endIsMilestone":false,"assigs":[],"hasChild":false},{"id":"tmp_fk1607482678076","name":"详设文档编写","progress":0,"description":"","code":"1.3.3","level":2,"status":"STATUS_SUSPENDED","depends":"","canWrite":true,"start":1610726400000,"duration":7,"end":1611331199999,"startIsMilestone":false,"endIsMilestone":false,"assigs":[],"hasChild":false},{"id":"tmp_fk1607482682985","name":"数据库设计","progress":0,"description":"","code":"1.3.4","level":2,"status":"STATUS_SUSPENDED","depends":"","canWrite":true,"start":1610726400000,"duration":7,"end":1611331199999,"startIsMilestone":false,"endIsMilestone":false,"assigs":[],"hasChild":false},{"id":"tmp_fk1607482627555","name":"系统编码实现","progress":0,"description":"","code":"1.3.5","level":2,"status":"STATUS_SUSPENDED","depends":"","canWrite":true,"start":1611244800000,"duration":40,"end":1614700799999,"startIsMilestone":false,"endIsMilestone":false,"assigs":[],"hasChild":false},{"id":"tmp_fk1607482637852","name":"系统测试","progress":0,"description":"","code":"1.3.6","level":2,"status":"STATUS_SUSPENDED","depends":"","canWrite":true,"start":1614700800000,"duration":26,"end":1616947199999,"startIsMilestone":false,"endIsMilestone":false,"assigs":[],"hasChild":false},{"id":"tmp_fk1607482641836","name":"系统内部试运行","progress":0,"description":"","code":"1.3.7","level":2,"status":"STATUS_SUSPENDED","depends":"","canWrite":true,"start":1615910400000,"duration":32,"end":1618675199999,"startIsMilestone":false,"endIsMilestone":false,"assigs":[],"hasChild":false}],"selectedRow":8,"deletedTaskIds":[],"resources":[{"id":"tmp_1","name":"Resource 1"},{"id":"tmp_2","name":"Resource 2"},{"id":"tmp_3","name":"Resource 3"},{"id":"tmp_4","name":"Resource 4"},{"id":"tmp_5","name":"Resource 5"},{"id":"tmp_6","name":"Resource 6"},{"id":"tmp_7","name":"Resource 7"},{"id":"tmp_8","name":"Resource 8"},{"id":"tmp_9","name":"Resource 9"},{"id":"tmp_10","name":"Resource 10"}],"roles":[{"id":"tmp_1","name":"Project Manager"},{"id":"tmp_2","name":"Worker"},{"id":"tmp_3","name":"Stakeholder/Customer"}],"canWrite":true,"canWriteOnParent":true}
+   </textarea>
+					<button onclick="loadGanttFromServer();">load</button>
+				</div>
+				<form id="gimmeBack" style="display: none;" action="../gimmeBack.jsp" method="post" target="_blank">
+					<input type="hidden" name="prj" id="gimBaPrj">
+				</form>
+
+				<script type="text/javascript">
+				</script>
+
+				<div id="gantEditorTemplates" style="display: none;">
+					<div class="__template__" type="GANTBUTTONS">
+						<!--
+  <div class="ganttButtonBar noprint">
+    
+    <div class="buttons">
+    <button onclick="$('#workSpace-gantt').trigger('zoomMinus.gantt');" class="button textual" title="缩小"><span class="teamworkIcon">)</span></button>
+    <button onclick="$('#workSpace-gantt').trigger('zoomPlus.gantt');" class="button textual" title="放大"><span class="teamworkIcon">(</span></button>
+    <span class="ganttButtonSeparator"></span>
+    <button onclick="print();" class="button textual" title="打印"><span class="teamworkIcon">p</span></button>
+    </div></div>
+  -->
+					</div>
+
+					<div class="__template__" type="TASKSEDITHEAD">
+						<!--
+  <table class="gdfTable" cellspacing="0" cellpadding="0">
+    <thead>
+    <tr style="height:40px">
+      <th class="gdfColHeader" style="width:35px;">NO.</th>
+      <th class="gdfColHeader" style="width:25px;"></th>
+      <th class="gdfColHeader gdfResizable" style="width:100px;">任务编码</th>
+
+      <th class="gdfColHeader gdfResizable" style="width:200px;">任务名称</th>
+      <th class="gdfColHeader gdfResizable" style="width:80px;">开始时间</th>
+      <th class="gdfColHeader gdfResizable" style="width:80px;">完成时间</th>
+      <th class="gdfColHeader gdfResizable" style="width:50px;">工期</th>
+      <th class="gdfColHeader gdfResizable" style="width:50px;">前置任务</th>
+      <th class="gdfColHeader gdfResizable" style="width:50px;">完成度</th>
+      <th class="gdfColHeader gdfResizable" style="width:100px;">里程碑节点</th>
+      <th class="gdfColHeader gdfResizable" style="width:100px;">关联模型</th>
+      <th class="gdfColHeader gdfResizable" style="width:100px;">负责人</th>
+    </tr>
+    </thead>
+  </table>
+  -->
+					</div>
+
+					<div class="__template__" type="TASKROW">
+						<!--
+  <tr taskId="(#=obj.id#)" class="taskEditRow" level="(#=level#)">
+    <th class="gdfCell " align="center" style="cursor:pointer;"><span class="taskRowIndex">(#=obj.getRow()+1#)</span> </th>
+    <td class="gdfCell noClip" align="center"><div class="taskStatus cvcColorSquare" status="(#=obj.status#)"></div></td>
+    <td class="gdfCell"><input type="text" name="code" value="(#=obj.code?obj.code:''#)"></td>
+    <td class="gdfCell indentCell" style="padding-left:(#=obj.level*10#)px;">
+      <div class="(#=obj.isParent()?'exp-controller expcoll exp':'exp-controller'#)" align="center"></div>
+      <input type="text" name="name" value="(#=obj.name#)">
+    </td>
+    <td class="gdfCell">
+    	<input type="hidden" name="start"  value="" id="wdate(#=obj.id#)-start-hidden">
+		<input type="text"  value="" class="date" id="wdate(#=obj.id#)-start" data-name="start">
+    </td>
+    <td class="gdfCell">
+    	<input type="hidden" name="end" value="" id="wdate(#=obj.id#)-end-hidden">
+		<input type="text"  value="" class="date" id="wdate(#=obj.id#)-end" data-name="end">
+    </td>
+    <td class="gdfCell"><input type="text" name="duration" value="(#=obj.duration#)"></td>
+    <td class="gdfCell"><input type="text" name="depends" value="(#=obj.depends#)" (#=obj.hasExternalDep?"readonly":""#)></td>
+    <td class="gdfCell"><input type="text" name="progress" value="(#=obj.progress#)"></td>
+    <td class="gdfCell"><input type="text" name="bei"></td>
+    <td class="gdfCell"><input type="text" name="model"></td>
+    <td class="gdfCell"><input type="text" name="inPeople"></td>
+  </tr>
+  -->
+					</div>
+
+					<div class="__template__" type="TASKEMPTYROW">
+						<!--
+  <tr class="taskEditRow emptyRow" >
+    <th class="gdfCell" align="right"></th>
+    <td class="gdfCell noClip" align="center"></td>
+    <td class="gdfCell"></td>
+    <td class="gdfCell"></td>
+    <td class="gdfCell"></td>
+    <td class="gdfCell"></td>
+    <td class="gdfCell"></td>
+    <td class="gdfCell"></td>
+    <td class="gdfCell"></td>
+    <td class="gdfCell"></td>
+    <td class="gdfCell"></td>
+  </tr>
+  -->
+					</div>
+
+					<div class="__template__" type="TASKBAR">
+						<!--
+  <div class="taskBox taskBoxDiv" taskId="(#=obj.id#)" >
+    <div class="layout (#=obj.hasExternalDep?'extDep':''#)">
+      <div class="taskStatus" status="(#=obj.status#)"></div>
+      <div class="taskProgress" style="width:(#=obj.progress>100?100:obj.progress#)%; background-color:(#=obj.progress>100?'red':'rgb(153,255,51);'#);"></div>
+      <div class="milestone (#=obj.startIsMilestone?'active':''#)" ></div>
+
+      <div class="taskLabel"></div>
+      <div class="milestone end (#=obj.endIsMilestone?'active':''#)" ></div>
+    </div>
+  </div>
+  -->
+					</div>
+
+					<div class="__template__" type="CHANGE_STATUS">
+						<!--
+    <div class="taskStatusBox">
+      <div class="taskStatus cvcColorSquare" status="STATUS_ACTIVE" title="进行中"></div>
+      <div class="taskStatus cvcColorSquare" status="STATUS_DONE" title="完成"></div>
+      <div class="taskStatus cvcColorSquare" status="STATUS_FAILED" title="失败"></div>
+      <div class="taskStatus cvcColorSquare" status="STATUS_SUSPENDED" title="暂停"></div>
+      <div class="taskStatus cvcColorSquare" status="STATUS_UNDEFINED" title="未定义"></div>
+    </div>
+  -->
+					</div>
+
+					<div class="__template__" type="TASK_EDITOR">
+						<!--
+  <div class="ganttTaskEditor">
+  <table width="100%">
+    <tr>
+      <td>
+        <table cellpadding="5">
+          <tr>
+            <td><label for="code">任务编码</label><br><input type="text" name="code" id="code" value="" class="formElements"></td>
+           </tr><tr>
+            <td><label for="name">任务名称</label><br><input type="text" name="name" id="name" value=""  size="35" class="formElements"></td>
+          </tr>
+          <tr></tr>
+            <td>
+              <label for="description">description</label><br>
+              <textarea rows="5" cols="30" id="description" name="description" class="formElements"></textarea>
+            </td>
+          </tr>
+        </table>
+      </td>
+      <td valign="top">
+        <table cellpadding="5">
+          <tr>
+          <td colspan="2"><label for="status">status</label><br><div id="status" class="taskStatus" status=""></div></td>
+          <tr>
+          <td colspan="2"><label for="progress">progress</label><br><input type="text" name="progress" id="progress" value="" size="3" class="formElements"></td>
+          </tr>
+          <tr>
+          <td><label for="start">start</label><br><input type="text" name="start" id="start"  value="" class="date" size="10" class="formElements"><input type="checkbox" id="startIsMilestone"> </td>
+          <td rowspan="2" class="graph" style="padding-left:50px"><label for="duration">dur.</label><br><input type="text" name="duration" id="duration" value=""  size="5" class="formElements"></td>
+        </tr><tr>
+          <td><label for="end">end</label><br><input type="text" name="end" id="end" value="" class="date"  size="10" class="formElements"><input type="checkbox" id="endIsMilestone"></td>
+        </table>
+      </td>
+    </tr>
+    </table>
+
+  <h2>assignments</h2>
+  <table  cellspacing="1" cellpadding="0" width="100%" id="assigsTable">
+    <tr>
+      <th style="width:100px;">name</th>
+      <th style="width:70px;">role</th>
+      <th style="width:30px;">est.wklg.</th>
+      <th style="width:30px;" id="addAssig"><span class="teamworkIcon" style="cursor: pointer">+</span></th>
+    </tr>
+  </table>
+
+  <div style="text-align: right; padding-top: 20px"><button id="saveButton" class="button big">save</button></div>
+  </div>
+  -->
+					</div>
+
+					<div class="__template__" type="ASSIGNMENT_ROW">
+						<!--
+  <tr taskId="(#=obj.task.id#)" assigId="(#=obj.assig.id#)" class="assigEditRow" >
+    <td ><select name="resourceId"  class="formElements" (#=obj.assig.id.indexOf("tmp_")==0?"":"disabled"#) ></select></td>
+    <td ><select type="select" name="roleId"  class="formElements"></select></td>
+    <td ><input type="text" name="effort" value="(#=getMillisInHoursMinutes(obj.assig.effort)#)" size="5" class="formElements"></td>
+    <td align="center"><span class="teamworkIcon delAssig" style="cursor: pointer">d</span></td>
+  </tr>
+  -->
+					</div>
+
+					<div class="__template__" type="RESOURCE_EDITOR">
+						<!--
+  <div class="resourceEditor" style="padding: 5px;">
+
+    <h2>Project team</h2>
+    <table  cellspacing="1" cellpadding="0" width="100%" id="resourcesTable">
+      <tr>
+        <th style="width:100px;">name</th>
+        <th style="width:30px;" id="addResource"><span class="teamworkIcon" style="cursor: pointer">+</span></th>
+      </tr>
+    </table>
+
+    <div style="text-align: right; padding-top: 20px"><button id="resSaveButton" class="button big">save</button></div>
+  </div>
+  -->
+					</div>
+
+					<div class="__template__" type="RESOURCE_ROW">
+						<!--
+  <tr resId="(#=obj.id#)" class="resRow" >
+    <td ><input type="text" name="name" value="(#=obj.name#)" style="width:100%;" class="formElements"></td>
+    <td align="center"><span class="teamworkIcon delRes" style="cursor: pointer">d</span></td>
+  </tr>
+  -->
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	layui.use(['common', 'view', 'admin', 'laytpl', 'element'], function() {
+		var $ = layui.$,
+			R = layui.common,
+			view = layui.view,
+			admin = layui.admin,
+			laytpl = layui.laytpl;
+
+		var getTime = "-" + new Date().getTime();
+		$("#body-div").attr("id", "body-div" + getTime);
+
+		var ge; //this is the hugly but very friendly global var for the gantt editor
+		$(function() {
+			//load templates
+			$("#body-div" + getTime).find("#ganttemplates").loadTemplates();
+
+			// here starts gantt initialization
+			//wy
+			ge = new GanttMaster({
+				scale: "months", // months  weeks days  hour
+			});
+			
+			ge.canWriteOnParent = false;
+    		ge.canWrite = false;
+			
+			//TODO:朱书彦 是否自动显示bar
+			ge.isBrowserTaskBar = true;
+			//TODO:朱书彦 设置code是否自动编码
+			ge.isLevelCode = true;
+			var workSpace = $("#body-div" + getTime).find("#workSpace-gantt");
+			workSpace.css({
+				width: $("#LAY_app_body").width() - 5,
+				height: $("#LAY_app_body").height() - 50
+			});
+			//wy 这里第二个参数是右侧显示时间单位 分别为 y(年) s(季度) q(月) m(天) w(几/天) d(周几/天)
+			ge.init(workSpace,"m",true);
+
+			//wy
+			//inject some buttons (for this demo only)
+			/*$("#body-div" + getTime).find(".ganttButtonBar div").append("<button onclick='clearGantt();' class='button'>清空</button>")
+				.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
+				.append("<button onclick='getFile();' class='button'>导出</button>");*/
+			/*$(".ganttButtonBar h1").html("<a href='http://twproject.com' title='Twproject the friendly project and work management tool' target='_blank'><img width='80%' src='res/twBanner.jpg'></a>");*/
+			$("#body-div" + getTime).find(".ganttButtonBar div").addClass('buttons');
+			//overwrite with localized ones
+			loadI18n();
+
+			//simulate a data load from a server.
+			loadGanttFromServer();
+
+			//fill default Teamwork roles if any
+			if(!ge.roles || ge.roles.length == 0) {
+				setRoles();
+			}
+
+			//fill default Resources roles if any
+			if(!ge.resources || ge.resources.length == 0) {
+				setResource();
+			}
+
+			/*$(window).resize(function() {
+				workSpace.css({
+					width: $("#LAY_app_body").width() - 5,
+					height: $("#LAY_app_body").height() - 50
+				});
+				workSpace.trigger("resize.gantt");
+			}).oneTime(150, "resize", function() {
+				$(this).trigger("resize")
+			});*/
+		});
+
+		function loadGanttFromServer(taskId, callback) {
+			//this is a simulation: load data from the local storage if you have already played with the demo or a textarea with starting demo data
+			loadFromLocalStorage();
+
+			//this is the real implementation
+			/*
+			//var taskId = $("#taskSelector").val();
+			var prof = new Profiler("loadServerSide");
+			prof.reset();
+
+			$.getJSON("ganttAjaxController.jsp", {CM:"LOADPROJECT",taskId:taskId}, function(response) {
+			  //console.debug(response);
+			  if (response.ok) {
+			    prof.stop();
+
+			    ge.loadProject(response.project);
+			    ge.checkpoint(); //empty the undo stack
+
+			    if (typeof(callback)=="function") {
+			      callback(response);
+			    }
+			  } else {
+			    jsonErrorHandling(response);
+			  }
+			});
+			*/
+		}
+		
+		//wy
+		$(document).on("click","#body-div" + getTime + " #saveGanttOnServer",function(){
+			saveGanttOnServer()
+		})
+
+
+		function saveGanttOnServer() {
+			if(!ge.canWrite)
+				return;
+
+			//this is a simulation: save data to the local storage or to the textarea
+			saveInLocalStorage();
+
+			/*
+			var prj = ge.saveProject();
+
+			delete prj.resources;
+			delete prj.roles;
+
+			var prof = new Profiler("saveServerSide");
+			prof.reset();
+
+			if (ge.deletedTaskIds.length>0) {
+			  if (!confirm("TASK_THAT_WILL_BE_REMOVED\n"+ge.deletedTaskIds.length)) {
+			    return;
+			  }
+			}
+
+			$.ajax("ganttAjaxController.jsp", {
+			  dataType:"json",
+			  data: {CM:"SVPROJECT",prj:JSON.stringify(prj)},
+			  type:"POST",
+
+			  success: function(response) {
+			    if (response.ok) {
+			      prof.stop();
+			      if (response.project) {
+			        ge.loadProject(response.project); //must reload as "tmp_" ids are now the good ones
+			      } else {
+			        ge.reset();
+			      }
+			    } else {
+			      var errMsg="Errors saving project\n";
+			      if (response.message) {
+			        errMsg=errMsg+response.message+"\n";
+			      }
+
+			      if (response.errorMessages.length) {
+			        errMsg += response.errorMessages.join("\n");
+			      }
+
+			      alert(errMsg);
+			    }
+			  }
+
+			});
+			*/
+		}
+
+		//-------------------------------------------  Create some demo data ------------------------------------------------------
+		function setRoles() {
+			ge.roles = [{
+				id: "tmp_1",
+				name: "Project Manager"
+			}, {
+				id: "tmp_2",
+				name: "Worker"
+			}, {
+				id: "tmp_3",
+				name: "Stakeholder/Customer"
+			}];
+		}
+
+		function setResource() {
+			var res = [];
+			for(var i = 1; i <= 10; i++) {
+				res.push({
+					id: "tmp_" + i,
+					name: "Resource " + i
+				});
+			}
+			ge.resources = res;
+		}
+
+		function clearGantt() {
+			ge.reset();
+		}
+
+		function loadI18n() {
+			GanttMaster.messages = {
+				"CANNOT_WRITE": "不能编辑",
+				"CHANGE_OUT_OF_SCOPE": "没有超出编辑范围更新父级的权限",
+				"START_IS_MILESTONE": "开始是里程碑",
+				"END_IS_MILESTONE": "结束时里程碑",
+				"TASK_HAS_CONSTRAINTS": "任务包含约束",
+				"GANTT_ERROR_DEPENDS_ON_OPEN_TASK": "错误：特定于开放的任务",
+				"GANTT_ERROR_DESCENDANT_OF_CLOSED_TASK": "错误：衍生于关闭的任务",
+				"TASK_HAS_EXTERNAL_DEPS": "任务包含外部依赖",
+				"GANTT_ERROR_LOADING_DATA_TASK_REMOVED": "错误：加载被删除的任务",
+				"ERROR_SETTING_DATES": "日期时间设置错误（依赖时间关系或父级任务工期）",
+				"CIRCULAR_REFERENCE": "有无限循环参照",
+				"CANNOT_DEPENDS_ON_ANCESTORS": "不能依赖父级任务",
+				"CANNOT_DEPENDS_ON_DESCENDANTS": "不能依赖子级任务",
+				"INVALID_DATE_FORMAT": "无效日期格式",
+				"TASK_MOVE_INCONSISTENT_LEVEL": "任务移动非连续级别",
+
+				"GANTT_QUARTER_SHORT": "季度",
+				"GANTT_SEMESTER_SHORT": "半年"
+			};
+		}
+
+		//-------------------------------------------  Get project file as JSON (used for migrate project from gantt to Teamwork) ------------------------------------------------------
+		function getFile() {
+			$("#body-div" + getTime).find("#gimBaPrj").val(JSON.stringify(ge.saveProject()));
+			$("#body-div" + getTime).find("#gimmeBack").submit();
+			$("#body-div" + getTime).find("#gimBaPrj").val("");
+
+			/*  var uriContent = "data:text/html;charset=utf-8," + encodeURIComponent(JSON.stringify(prj));
+			 neww=window.open(uriContent,"dl");*/
+		}
+
+		//-------------------------------------------  LOCAL STORAGE MANAGEMENT (for this demo only) ------------------------------------------------------
+		Storage.prototype.setObject = function(key, value) {
+			this.setItem(key, JSON.stringify(value));
+		};
+
+		Storage.prototype.getObject = function(key) {
+			return this.getItem(key) && JSON.parse(this.getItem(key));
+		};
+
+		function loadFromLocalStorage() {
+			var ret;
+			//wy
+			/*if (localStorage) {
+			    if (localStorage.getObject("teamworkGantDemo")) {
+			        ret = localStorage.getObject("teamworkGantDemo");
+			    }
+			} else {
+			    $("#taZone").show();
+			}*/
+			//wy
+			if(!ret || !ret.tasks || ret.tasks.length == 0) {
+				if($.trim($("#body-div" + getTime).find("#ta").val())){
+					ret = JSON.parse($("#body-div" + getTime).find("#ta").val());
+					//actualiza data
+					var offset = new Date().getTime() - ret.tasks[0].start;
+					for(var i = 0; i < ret.tasks.length; i++)
+						ret.tasks[i].start = ret.tasks[i].start + offset;
+				}
+				else{
+					ret = {tasks:[],"selectedRow":0,"canWrite":false,"canWriteOnParent":true};				
+				}
+			}
+			ge.loadProject(ret);
+			ge.checkpoint(); //empty the undo stack
+			ge.levelCode();
+		}
+
+		function saveInLocalStorage() {
+			var prj = ge.saveProject();
+			console.log(JSON.stringify(prj))
+			if(localStorage) {
+				localStorage.setObject("teamworkGantDemo", prj);
+			} else {
+				$("#body-div" + getTime).find("#ta").val(JSON.stringify(prj));
+			}
+		}
+
+		//-------------------------------------------  Open a black popup for managing resources. This is only an axample of implementation (usually resources come from server) ------------------------------------------------------
+
+		function editResources() {
+
+			//wy
+			//make resource editor
+			var resourceEditor = $.JST.createFromTemplate({}, "RESOURCE_EDITOR");
+			var resTbl = resourceEditor.find("#resourcesTable");
+
+			for(var i = 0; i < ge.resources.length; i++) {
+				var res = ge.resources[i];
+				resTbl.append($.JST.createFromTemplate(res, "RESOURCE_ROW"))
+			}
+
+			//bind add resource
+			resourceEditor.find("#addResource").click(function() {
+				resTbl.append($.JST.createFromTemplate({
+					id: "new",
+					name: "resource"
+				}, "RESOURCE_ROW"))
+			});
+
+			//bind save event
+			resourceEditor.find("#resSaveButton").click(function() {
+				var newRes = [];
+				//find for deleted res
+				for(var i = 0; i < ge.resources.length; i++) {
+					var res = ge.resources[i];
+					var row = resourceEditor.find("[resId=" + res.id + "]");
+					if(row.length > 0) {
+						//if still there save it
+						var name = row.find("input[name]").val();
+						if(name && name != "")
+							res.name = name;
+						newRes.push(res);
+					} else {
+						//remove assignments
+						for(var j = 0; j < ge.tasks.length; j++) {
+							var task = ge.tasks[j];
+							var newAss = [];
+							for(var k = 0; k < task.assigs.length; k++) {
+								var ass = task.assigs[k];
+								if(ass.resourceId != res.id)
+									newAss.push(ass);
+							}
+							task.assigs = newAss;
+						}
+					}
+				}
+
+				//loop on new rows
+				var cnt = 0
+				resourceEditor.find("[resId=new]").each(function() {
+					cnt++;
+					var row = $(this);
+					var name = row.find("input[name]").val();
+					if(name && name != "")
+						newRes.push(new Resource("tmp_" + new Date().getTime() + "_" + cnt, name));
+				});
+
+				ge.resources = newRes;
+
+				closeBlackPopup();
+				ge.redraw();
+			});
+
+			var ndo = createModalPopup(400, 500).append(resourceEditor);
+
+			/*//make resource editor
+			var resourceEditor = $.JST.createFromTemplate({}, "RESOURCE_EDITOR");
+			var resTbl = resourceEditor.find("#resourcesTable");
+
+			for (var i = 0; i < ge.resources.length; i++) {
+			    var res = ge.resources[i];
+			    resTbl.append($.JST.createFromTemplate(res, "RESOURCE_ROW"))
+			}
+
+			//bind add resource
+			resourceEditor.find("#addResource").click(function () {
+			    resTbl.append($.JST.createFromTemplate({
+			        id: "new",
+			        name: "resource"
+			    }, "RESOURCE_ROW"))
+			});
+
+			//bind save event
+			resourceEditor.find("#resSaveButton").click(function () {
+			    var newRes = [];
+			    //find for deleted res
+			    for (var i = 0; i < ge.resources.length; i++) {
+			        var res = ge.resources[i];
+			        var row = resourceEditor.find("[resId=" + res.id + "]");
+			        if (row.size() > 0) {
+			            //if still there save it
+			            var name = row.find("input[name]").val();
+			            if (name && name != "")
+			                res.name = name;
+			            newRes.push(res);
+			        } else {
+			            //remove assignments
+			            for (var j = 0; j < ge.tasks.length; j++) {
+			                var task = ge.tasks[j];
+			                var newAss = [];
+			                for (var k = 0; k < task.assigs.length; k++) {
+			                    var ass = task.assigs[k];
+			                    if (ass.resourceId != res.id)
+			                        newAss.push(ass);
+			                }
+			                task.assigs = newAss;
+			            }
+			        }
+			    }
+
+			    //loop on new rows
+			    resourceEditor.find("[resId=new]").each(function () {
+			        var row = $(this);
+			        var name = row.find("input[name]").val();
+			        if (name && name != "")
+			            newRes.push(new Resource("tmp_" + new Date().getTime(), name));
+			    });
+
+			    ge.resources = newRes;
+
+			    closeBlackPopup();
+			    ge.redraw();
+			    //TODO:朱书彦 自动生成code
+			    ge.levelCode();
+			});*/
+			//var ndo = createBlackPage(400, 500).append(resourceEditor);
+		}
+
+		$.JST.loadDecorator("ASSIGNMENT_ROW", function (assigTr, taskAssig) {
+
+            var resEl = assigTr.find("[name=resourceId]");
+            for (var i in taskAssig.task.master.resources) {
+                var res = taskAssig.task.master.resources[i];
+                var opt = $("<option>");
+                opt.val(res.id).html(res.name);
+                if (taskAssig.assig.resourceId == res.id)
+                    opt.attr("selected", "true");
+                resEl.append(opt);
+            }
+
+
+            var roleEl = assigTr.find("[name=roleId]");
+            for (var i in taskAssig.task.master.roles) {
+                var role = taskAssig.task.master.roles[i];
+                var optr = $("<option>");
+                optr.val(role.id).html(role.name);
+                if (taskAssig.assig.roleId == role.id)
+                    optr.attr("selected", "true");
+                roleEl.append(optr);
+            }
+
+            if (taskAssig.task.master.canWrite && taskAssig.task.canWrite) {
+                assigTr.find(".delAssig").click(function () {
+                    var tr = $(this).closest("[assigId]").fadeOut(200, function () {
+                        $(this).remove();
+                    });
+                });
+            }
+
+
+        });
+
+
+	});
+</script>
+<style>
+	.gantt-div .resEdit {
+		padding: 15px;
+	}
+	
+	.gantt-div .resLine {
+		width: 95%;
+		padding: 3px;
+		margin: 5px;
+		border: 1px solid #d0d0d0;
+	}
+	
+	.gantt-div .ganttButtonBar h1 {
+		color: #000000;
+		font-weight: bold;
+		font-size: 28px;
+		margin-left: 10px;
+	}
+	.gantt-div #workSpace-gantt{
+		margin: 0px !important;
+	}
+</style>
